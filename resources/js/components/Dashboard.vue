@@ -107,13 +107,12 @@
                                         </td>
                                         <td>
                                             <span>{{ item.transaction_no }}</span> 
-                                            <span v-if="training_control_no">
+                                            <span v-if="item.training_control_no">
                                                 /
                                                 {{ item.training_control_no }}</span>
                                         </td>
                                         <td>
                                             <span v-if="item.payee">{{ item.payee.bank_account_payee }}</span> 
-
                                         </td>
                                         <td>
                                             <span v-if="item.particulars">{{ item.particulars }}</span>
@@ -123,12 +122,13 @@
                                         </td>
                                         <td>
                                             <span v-for="(i,ix) in item.accounting_expenditures" :key="`obj${ix}`">
-                                                <span>{{i.allotment_class_code}}</span>
+                                                <span>{{i.allotment_class_code}} ({{ i.allotment_class}}) - {{ i.object_expenditure.object_expenditure }}</span>
                                                 <span v-if="ix < item.accounting_expenditures.length - 1">, </span>
                                             </span>
                                         
                                         </td>
                                     </tr>
+                                    
                                 </table>
                             </div>
 
@@ -170,6 +170,7 @@ export default{
             data: [],
 
             financialYears: [],
+            allotmentClasses: [],
            
 
         }
