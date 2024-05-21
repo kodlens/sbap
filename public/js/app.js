@@ -15237,7 +15237,8 @@ __webpack_require__.r(__webpack_exports__);
         doc: 'ALL'
       },
       data: [],
-      financialYears: []
+      financialYears: [],
+      allotmentClasses: []
     };
   },
   methods: {
@@ -55175,7 +55176,7 @@ var render = function () {
                           _c("td", [
                             _c("span", [_vm._v(_vm._s(item.transaction_no))]),
                             _vm._v(" "),
-                            _vm.training_control_no
+                            item.training_control_no
                               ? _c("span", [
                                   _vm._v(
                                     "\n                                               /\n                                               " +
@@ -55216,7 +55217,16 @@ var render = function () {
                               function (i, ix) {
                                 return _c("span", { key: "obj" + ix }, [
                                   _c("span", [
-                                    _vm._v(_vm._s(i.allotment_class_code)),
+                                    _vm._v(
+                                      _vm._s(i.allotment_class_code) +
+                                        " (" +
+                                        _vm._s(i.allotment_class) +
+                                        ") - " +
+                                        _vm._s(
+                                          i.object_expenditure
+                                            .object_expenditure
+                                        )
+                                    ),
                                   ]),
                                   _vm._v(" "),
                                   ix < item.accounting_expenditures.length - 1
