@@ -7947,6 +7947,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios.get('/load-financial-years').then(function (res) {
         _this4.financialYears = res.data;
+        _this4.fields.financial_year_id = res.data.filter(function (fy) {
+          return fy.active === 1;
+        })[0].financial_year_id;
       });
     },
     emitPayee: function emitPayee(row) {
@@ -11037,6 +11040,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -11217,6 +11224,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     numberWithCommas: function numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    setActive: function setActive(row) {
+      var _this6 = this;
+
+      axios.post('/set-active/' + row.financial_year_id).then(function (res) {
+        if (res.data.status === 'active') {
+          _this6.$buefy.toast.open({
+            message: 'Successfully set to active.',
+            type: 'is-success'
+          });
+
+          _this6.loadAsyncData();
+        }
+      });
     }
   },
   mounted: function mounted() {
@@ -11486,6 +11507,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       isModalCreate: false,
       fields: {
+        object_expenditure_id: null,
         financial_year_id: null,
         object_expenditure: null,
         allotment_class_code: null,
@@ -11553,7 +11575,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     openModal: function openModal() {
       this.isModalCreate = true;
-      this.fields = {};
+      this.clearFields();
       this.errors = {};
     },
     submit: function submit() {
@@ -11637,7 +11659,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     clearFields: function clearFields() {
-      this.fields.financial_year_id = 0;
+      //this.fields.financial_year_id = 0;
+      this.fields.object_expenditure_id = 0;
       this.fields.object_expenditure = null;
       this.fields.allotment_class_code = null;
       this.fields.allotment_class = null;
@@ -11661,6 +11684,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/load-financial-years').then(function (res) {
         _this6.financialYears = res.data;
+        _this6.fields.financial_year_id = res.data.filter(function (fy) {
+          return fy.active === 1;
+        })[0].financial_year_id;
       });
     },
     loadAllotmentClasses: function loadAllotmentClasses() {
@@ -48663,6 +48689,29 @@ var render = function () {
                                     ],
                                     1
                                   ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-tooltip",
+                                    {
+                                      attrs: {
+                                        label: "Active",
+                                        type: "is-info",
+                                      },
+                                    },
+                                    [
+                                      _c("b-button", {
+                                        staticClass:
+                                          "button is-small is-info mr-1",
+                                        attrs: { "icon-right": "thumb-up" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.setActive(props.row)
+                                          },
+                                        },
+                                      }),
+                                    ],
+                                    1
+                                  ),
                                 ],
                                 1
                               ),
@@ -49274,7 +49323,11 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.approved_budget) +
+                                  _vm._s(
+                                    _vm._f("numberWithCommas")(
+                                      props.row.approved_budget
+                                    )
+                                  ) +
                                   "\n                        "
                               ),
                             ]
@@ -49295,7 +49348,11 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.beginning_budget) +
+                                  _vm._s(
+                                    _vm._f("numberWithCommas")(
+                                      props.row.beginning_budget
+                                    )
+                                  ) +
                                   "\n                        "
                               ),
                             ]

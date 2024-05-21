@@ -96,6 +96,10 @@
                                     <b-tooltip label="Delete" type="is-danger">
                                         <b-button class="button is-small is-danger mr-1" icon-right="delete" @click="confirmDelete(props.row.financial_year_id)"></b-button>
                                     </b-tooltip>
+                                    <b-tooltip label="Active" type="is-info">
+                                        <b-button class="button is-small is-info mr-1" icon-right="thumb-up" 
+                                            @click="setActive(props.row)"></b-button>
+                                    </b-tooltip>
                                 </div>
                             </b-table-column>
                         </b-table>
@@ -381,7 +385,7 @@ export default{
 
 
         //update code here
-    getData: function(data_id){
+        getData: function(data_id){
             this.clearFields();
             this.global_id = data_id;
             this.isModalCreate = true;
@@ -392,9 +396,24 @@ export default{
             });
         },
 
-    numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+
+
+        numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+
+
+        setActive(row){
+            axios.post('/set-active/' + row.financial_year_id).then(res=>{
+                if(res.data.status === 'active'){
+                    this.$buefy.toast.open({
+                        message: 'Successfully set to active.',
+                        type: 'is-success'
+                    })
+                    this.loadAsyncData()
+                }
+            })
+        }
 
 
 

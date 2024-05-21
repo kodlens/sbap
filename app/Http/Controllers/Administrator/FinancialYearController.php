@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\FinancialYear;
+use Illuminate\Support\Facades\DB;
 
 class FinancialYearController extends Controller
 {
@@ -65,7 +66,7 @@ class FinancialYearController extends Controller
         ], 200);
     }
 
-    public function setACtive($ayId){
+    public function setActive($id){
 
         DB::table('financial_years')
             ->where('active', 1)
@@ -74,7 +75,7 @@ class FinancialYearController extends Controller
             ]);
 
         DB::table('financial_years')
-            ->where('acadyear_id', $ayId)
+            ->where('financial_year_id', $id)
             ->update([
                 'active' => 1
             ]);
@@ -90,5 +91,7 @@ class FinancialYearController extends Controller
             'status' => 'deleted'
         ], 200);
     }
+
+  
 
 }

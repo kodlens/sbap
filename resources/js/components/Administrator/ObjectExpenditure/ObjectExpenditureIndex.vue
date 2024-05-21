@@ -81,11 +81,11 @@
                             </b-table-column>
 
                             <b-table-column field="approved_budget" label="Approved Budget" v-slot="props">
-                                {{ props.row.approved_budget }}
+                                {{ props.row.approved_budget | numberWithCommas }}
                             </b-table-column>
 
                             <b-table-column field="beginning_budget" label="Beginning Budget" v-slot="props">
-                                {{ props.row.beginning_budget }}
+                                {{ props.row.beginning_budget | numberWithCommas}}
                             </b-table-column>
 
                             <b-table-column label="Action" v-slot="props">
@@ -254,6 +254,7 @@ export default{
             isModalCreate: false,
 
             fields: {
+                object_expenditure_id: null,
                 financial_year_id: null,
                 object_expenditure: null,
                 allotment_class_code: null,
@@ -333,7 +334,7 @@ export default{
 
         openModal(){
             this.isModalCreate=true;
-            this.fields = {};
+            this.clearFields()
             this.errors = {};
         },
 
@@ -411,7 +412,8 @@ export default{
         },
 
         clearFields(){
-            this.fields.financial_year_id = 0;
+            //this.fields.financial_year_id = 0;
+            this.fields.object_expenditure_id = 0
             this.fields.object_expenditure = null;
             this.fields.allotment_class_code = null;
             this.fields.allotment_class = null;
@@ -436,6 +438,8 @@ export default{
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
                 this.financialYears = res.data
+                this.fields.financial_year_id = res.data.filter(fy => fy.active === 1)[0].financial_year_id
+
             })
         },
         loadAllotmentClasses(){

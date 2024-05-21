@@ -95,6 +95,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     Route::resource('/financial-years', App\Http\Controllers\Administrator\FinancialYearController::class);
     Route::get('/get-financial-years', [App\Http\Controllers\Administrator\FinancialYearController::class, 'getData']);
+    Route::post('/set-active/{id}', [App\Http\Controllers\Administrator\FinancialYearController::class, 'setActive']);
 
 
     Route::resource('/users', App\Http\Controllers\Administrator\UserController::class);

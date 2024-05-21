@@ -354,6 +354,8 @@ export default{
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
                 this.financialYears = res.data
+
+                this.fields.financial_year_id = res.data.filter(fy => fy.active === 1)[0].financial_year_id;
             })
         },
 
