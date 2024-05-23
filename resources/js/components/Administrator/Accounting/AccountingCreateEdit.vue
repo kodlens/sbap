@@ -177,14 +177,13 @@
                                         :message="errors.total_amount ? errors.total_amount[0] : ''">
                                         <b-numberinput placholder="Total Amount"
                                             :controls="false" step="0.0001"
+                                            disabled
                                             v-model="fields.total_amount">
                                         </b-numberinput>
                                     </b-field>
                                 </div>
                             </div>
                             
-
-
                             <div class="columns">
                                 <div class="column">
 
@@ -570,9 +569,8 @@ export default{
 
                 this.fields.accounting_id = result.accounting_id
                 this.fields.financial_year_id = result.financial_year_id
-                this.fields.fund_source_id = result.fund_source_id
-
-                this.fields.date_time = new Date(result.date_time)
+     
+                this.fields.date_transaction = new Date(result.date_transaction)
                 this.fields.transaction_no = result.transaction_no
                 this.fields.training_control_no = result.training_control_no
                 this.fields.transaction_type_id = result.transaction_type_id
@@ -582,6 +580,21 @@ export default{
 
                 this.fields.particulars = result.particulars
                 this.fields.total_amount = Number(result.total_amount)
+
+                //OOE
+                 if(result.accounting_expenditures.length > 0){
+                    result.accounting_expenditures.forEach((item, index) =>{
+                        this.fields.objectExpenditures.push({
+                            accounting_expenditure_id: item.accounting_expenditure_id,
+                            object_expenditure_id: item.object_expenditure_id,
+                            allotment_class_code: item.allotment_class_code,
+                            allotment_class: item.allotment_class,
+                            amount: item.amount,
+                            object_expenditure: item.object_expenditure.object_expenditure
+                        });
+                    });
+                }
+
 
                 //attachments
                 if(result.accounting_documentary_attachments.length > 0){
@@ -594,8 +607,6 @@ export default{
                     })
                 }
                
-
-
                 this.fields.office_id = result.office.office_id
                 this.fields.office = '(' + result.office.office + ') ' + result.office.description
                 this.fields.others = result.others

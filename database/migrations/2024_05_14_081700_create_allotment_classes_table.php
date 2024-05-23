@@ -30,6 +30,6 @@ class CreateAllotmentClassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('allotment_class');
+        Schema::dropIfExists('allotment_classes');
     }
 }

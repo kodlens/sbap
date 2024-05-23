@@ -164,8 +164,7 @@ class AccountingController extends Controller
 
         $req->validate([
             'financial_year_id' => ['required'],
-            'fund_source_id' => ['required'],
-            'date_time' => ['required'],
+            'date_transaction' => ['required'],
             'transaction_no' => ['required'],
             'training_control_no' => ['required'],
             'transaction_type_id' => ['required'],
@@ -184,19 +183,18 @@ class AccountingController extends Controller
         $data = Accounting::find($id);
 
         $data->financial_year_id = $req->financial_year_id;
-        $data->fund_source_id =  $req->fund_source_id;
+        $data->date_transaction =  $req->date_transaction;
         $data->date_time =  $req->date_time;
         $data->transaction_no =  $req->transaction_no;
         $data->training_control_no =  $req->training_control_no;
         $data->transaction_type_id =  $req->transaction_type_id;
         $data->payee_id =  $req->payee_id;
         $data->particulars =  $req->particulars;
+        $data->total_amount = (float)$req->total_amount;
+    
         //if e modify ang account, ebalik ang budget
-        $balik = (float)$data->total_amount -  (float)$req->total_amount;
+        //$balik = (float)$data->total_amount -  (float)$req->total_amount;
 
-        $data->total_amount =  (float)$req->total_amount;
-
-        $data->priority_program_id =  $req->priority_program_id ? $req->priority_program_id : null;
         $data->office_id =  $req->office_id;
         $data->others =  $req->others;
         $data->save();
@@ -204,7 +202,7 @@ class AccountingController extends Controller
         //return $data->total_amount;
 
 
-        $financial = FinancialYear::find($req->financial_year_id);
+        $financial = FinancialYear::find($data->financial_year_id);
         $financial->decrement('balance', $balik);
         $financial->save();
 
@@ -248,27 +246,6 @@ class AccountingController extends Controller
                     'allotment_class_account_id' => $item['allotment_class_account_id'],
                     'amount' => $item['amount'],
                 ]);
-
-                // if($item['accounting_allotment_class_id'] > 0){
-                //     AccountingAllotmentClasses::where('accounting_allotment_class_id', $item['accounting_allotment_class_id'])
-                //         ->update(
-                //             [
-                //                 'allotment_class_id' => $item['allotment_class_id'],
-                //                 'allotment_class_account_id' => $item['allotment_class_account_id'],
-                //                 'amount' => $item['amount'],
-                //             ]
-                //         );
-                // }else{
-                //     AccountingAllotmentClasses::create([
-                //         [
-                //             'accounting_id' => $req->accounting_id,
-                //             'allotment_class_id' => $item['allotment_class_id'],
-                //             'allotment_class_account_id' => $item['allotment_class_account_id'],
-                //             'amount' => $item['amount'],
-                //         ]
-                //     ]);
-                // }
-
             }
         }
         //return $req;

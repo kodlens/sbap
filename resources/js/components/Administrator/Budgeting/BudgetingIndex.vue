@@ -46,31 +46,24 @@
                                 class="is-primary">ADD RECORD</b-button>
                         </div>
 
-                        <b-table
-                            :data="data"
-                            :loading="loading"
-                            detailed
-                            paginated
-                            backend-pagination
+                        <b-table :data="data" 
+                            :loading="loading" 
+                            detailed paginated 
+                            backend-pagination 
                             :total="total"
-                            :bordered="true"
-                            :hoverable="true"
-                            :per-page="perPage"
-                            @page-change="onPageChange"
-                            aria-next-label="Next page"
-                            aria-previous-label="Previous page"
-                            aria-page-label="Page"
-                            aria-current-label="Current page"
-                            backend-sorting
-                            :default-sort-direction="defaultSortDirection"
-                            @sort="onSort">
+                            :bordered="true" 
+                            :hoverable="true" 
+                            :per-page="perPage" @page-change="onPageChange"
+                            aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page"
+                            aria-current-label="Current page" backend-sorting
+                            :default-sort-direction="defaultSortDirection" @sort="onSort">
 
                             <b-table-column field="accounting_id" label="ID" v-slot="props">
                                 {{ props.row.accounting_id }}
                             </b-table-column>
 
-                            <b-table-column field="date_time" label="Date & Time" v-slot="props">
-                                {{ props.row.date_time }}
+                            <b-table-column field="date_transaction" label="Date & Time" v-slot="props">
+                                {{ props.row.date_transaction }}
                             </b-table-column>
 
                             <b-table-column field="transaction_no" label="Transaction No" v-slot="props">
@@ -84,19 +77,31 @@
                             <b-table-column field="particulars" label="Particulars" v-slot="props">
                                 {{ props.row.particulars }}
                             </b-table-column>
+                            <b-table-column field="total_amount" label="Total Amount" v-slot="props">
+                                {{ props.row.total_amount }}
+                            </b-table-column>
 
+                            <b-table-column field="processor" label="Assigned Processor" v-slot="props">
+                                <span v-if="props.row.processor_id > 0">
+                                    {{ props.row.processor.lname }}, {{ props.row.processor.fname }} {{
+                                        props.row.processor.mname }}
+                                </span>
+                            </b-table-column>
 
                             <b-table-column label="Action" v-slot="props" v-if="propUser.role !== 'STAFF'">
                                 <div class="is-flex">
                                     <b-tooltip label="Edit" type="is-warning">
-                                        <b-button class="button is-small is-warning mr-1"
-                                            tag="a"
-                                            icon-right="pencil"
-                                            :href="`/budgeting/${props.row.accounting_id}/edit`"></b-button>
+                                        <b-button class="button is-small is-warning mr-1" tag="a" icon-right="pencil"
+                                            :href="`/accounting/${props.row.accounting_id}/edit`"></b-button>
                                     </b-tooltip>
                                     <b-tooltip label="Delete" type="is-danger">
-                                        <b-button class="button is-small is-danger mr-1" icon-right="delete" 
+                                        <b-button class="button is-small is-danger mr-1" icon-right="delete"
                                             @click="confirmDelete(props.row.accounting_id)"></b-button>
+                                    </b-tooltip>
+                                    <b-tooltip label="Assign Processor" type="is-info"
+                                        v-if="!props.row.processor_id > 0">
+                                        <modal-button-browse-processor :props-accounting-id="props.row.accounting_id"
+                                            @browseProcessor="emitBrowserProcessor"></modal-button-browse-processor>
                                     </b-tooltip>
                                 </div>
                             </b-table-column>
@@ -107,11 +112,10 @@
                                         <th>Documentary Attachment</th>
                                         <th>File</th>
                                     </tr>
-                                    <tr v-for="(i, ix) in props.row.budgeting_documentary_attachments" :key="ix">
+                                    <tr v-for="(i, ix) in props.row.accounting_documentary_attachments" :key="ix">
                                         <td>{{ i.documentary_attachment.documentary_attachment }}</td>
                                         <td>
-                                            <a :href="`/storage/budgeting_doc_attachments/${i.doc_attachment}`"
-                                                target="_blank">
+                                            <a :href="`/storage/doc_attachments/${i.doc_attachment}`" target="_blank">
                                                 Go to
                                             </a>
                                         </td>
@@ -122,15 +126,35 @@
                                     <tr>
                                         <th>Allotment Class</th>
                                         <th>Allotment Class Account</th>
+                                        <th>Object Expenditure</th>
                                         <th>Amount</th>
                                     </tr>
-                                    <tr v-for="(i, ix) in props.row.budgeting_allotment_classes" :key="ix">
-                                        <td>{{ i.allotment_class.allotment_class }}</td>
-                                        <td>({{ i.allotment_class_account.allotment_class_account_code  }}) {{ i.allotment_class_account.allotment_class_account }}</td>
+                                    <tr v-for="(i, ix) in props.row.accounting_expenditures" :key="ix">
+                                        <td>{{ i.object_expenditure.allotment_class }}</td>
+                                        <td>({{ i.object_expenditure.allotment_class_code }})</td>
+                                        <td>{{ i.object_expenditure.object_expenditure }}</td>
                                         <td>{{ i.amount }}</td>
 
                                     </tr>
                                 </table>
+
+                                <!-- <div v-if="props.row.processor_id">
+                                    Processor: {{ props.row.processor_id }}
+                                </div> -->
+                                <div class="my-1"></div>
+                                <table-bid-award :propRow="props.row" @emitRefresh="loadAsyncData"></table-bid-award>
+                                <br>
+                                <table-city-budget :propRow="props.row"
+                                    @emitRefresh="loadAsyncData"></table-city-budget>
+                                <br>
+                                <table-city-accounting :propRow="props.row"
+                                    @emitRefresh="loadAsyncData"></table-city-accounting>
+                                <br>
+                                <table-city-treasurer :propRow="props.row"
+                                    @emitRefresh="loadAsyncData"></table-city-treasurer>
+                                <br>
+                                <table-college-accounting :propRow="props.row"
+                                    @emitRefresh="loadAsyncData"></table-college-accounting>
 
                             </template>
 

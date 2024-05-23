@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use App\Models\AccountingAllotmentClasses;
 use Illuminate\Http\Request;
 use App\Models\Accounting;
 use App\Models\FinancialYear;
 use App\Models\AccountingDocumentaryAttachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Models\PriorityProgram;
+
 use App\Models\AllotmentClass;
-use App\Models\AllotmentClassAccount;
-use App\Models\Service;
+use App\Models\ObjectExpenditure;
+use App\Models\AccountingExpenditure;
 
 class BudgetingController extends Controller
 {
@@ -25,31 +24,29 @@ class BudgetingController extends Controller
     }
 
 
-    public function show($id){
-        $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_allotment_classes.allotment_class', 'accounting_allotment_classes.allotment_class_account',
-            'priority_program', 'office'
-        ])
-            ->find($id);
-
-        return $data;
-    }
-
-
     public function getData(Request $req){
 
         $sort = explode('.', $req->sort_by);
 
-        $data = Accounting::with(['fund_source', 'payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_allotment_classes', 'processor'])
-        ->where(function($q) use ($req){
-            $q->where('particulars', 'like', $req->key . '%')
-                ->orWhere('transaction_no', 'like', $req->key . '%')
-                ->orWhere('training_control_no', 'like', $req->key . '%');
-        })
-        ->where('doc_type', 'BUDGETING')
-        ->orderBy($sort[0], $sort[1])
-        ->paginate($req->perpage);
+        $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
+            'accounting_expenditures.object_expenditure', 'processor'])
+            ->where(function($q) use ($req){
+                $q->where('particulars', 'like', $req->key . '%')
+                    ->orWhere('transaction_no', 'like', $req->key . '%')
+                    ->orWhere('training_control_no', 'like', $req->key . '%');
+            })
+            ->where('doc_type', 'BUDGETING')
+            ->orderBy($sort[0], $sort[1])
+            ->paginate($req->perpage);
+
+        return $data;
+    }
+
+    public function show($id){
+        $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
+            'accounting_expenditures.object_expenditure', 'office'
+        ])
+            ->find($id);
 
         return $data;
     }
@@ -60,71 +57,52 @@ class BudgetingController extends Controller
             ->with('id', 0);
     }
 
-
-    public function edit($id){
-        return view('administrator.budgeting.budgeting-create-edit')
-            ->with('id', $id);
-    }
-
-
-
-
     public function store(Request $req){
-        //return $req->allotment_classes;
+       //return $req->allotment_classes;
         //return $req;
+
         $req->validate([
             'financial_year_id' => ['required'],
-            'fund_source_id' => ['required'],
-            'date_time' => ['required'],
+            
+            'date_transaction' => ['required'],
             'transaction_no' => ['required'],
             'training_control_no' => ['required'],
             'transaction_type_id' => ['required'],
             'payee_id' => ['required'],
             'particulars' => ['required'],
-            'total_amount' => ['required'],
-            'office_id' => ['required']
+            //'total_amount' => ['required'],
+            'office_id' => ['required'],
+           
 
         ],[
             'financial_year_id.required' => 'Please select financial year.',
             'transaction_type_id.required' => 'Please select transaction.',
             'payee_id.required' => 'Please select bank account/payee.',
-            'allotment_class_id.required' => 'Please allotment class.',
-            'allotment_class_account_id.required' => 'Please allotment class account.',
             'office.required' => 'Please select office.',
-
         ]);
 
         $data = Accounting::create([
             'financial_year_id' => $req->financial_year_id,
             'doc_type' => 'BUDGETING',
-            'fund_source_id' => $req->fund_source_id,
-            'date_time' => $req->date_time,
+           // 'fund_source_id' => $req->fund_source_id,
+            'date_transaction' => $req->date_transaction,
+            'transaction_type_id' => $req->transaction_type_id,
             'transaction_no' => $req->transaction_no,
             'training_control_no' => $req->training_control_no,
-            'transaction_type_id' => $req->transaction_type_id,
+           
             'payee_id' => $req->payee_id,
             'particulars' => $req->particulars,
             'total_amount' => (float)$req->total_amount,
-            'priority_program_id' => $req->priority_program_id,
+            //naa pai attachment
             'others' => $req->others,
             'office_id' => $req->office_id
-
         ]);
 
-        $finance = FinancialYear::find($req->financial_year_id);
-        $finance->decrement('balance', (float)$req->total_amount);
-        $finance->save();
+        $financial = FinancialYear::find($req->financial_year_id);
+        $financial->increment('utilize_budget', (float)$req->total_amount);
+        $financial->save();
 
-        $service = Service::where('financial_year_id', $req->financial_year_id)
-            ->where('service', 'BUDGETING')->first();
-        $service->decrement('balance', (float)$req->total_amount);
-        $service->save();
 
-        $pp = PriorityProgram::find($req->priority_program_id);
-        $pp->decrement('priority_program_balance', (float)$req->total_amount);
-        $pp->save();
-
-        
         if($req->has('documentary_attachments')){
             foreach ($req->documentary_attachments as $item) {
                 $n = [];
@@ -143,36 +121,44 @@ class BudgetingController extends Controller
         }
 
         $accountingId = $data->accounting_id;
-        if($req->has('allotment_classes')){
-            $allotmentClasses = [];
-            foreach ($req->allotment_classes as $item) {
-                $allotmentClasses[] = [
+        $financialYearId = $req->financial_year_id;
+
+        if($req->has('object_expenditures')){
+            $object_expenditures = [];
+            foreach ($req->object_expenditures as $item) {
+                $object_expenditures[] = [
                     'accounting_id' => $accountingId,
-                    'allotment_class_id' => $item['allotment_class_id'],
-                    'allotment_class_account_id' => $item['allotment_class_account_id'],
+                    'allotment_class' => $item['allotment_class'],
+                    'financial_year_id' => $financialYearId,
+                    'allotment_class_code' => $item['allotment_class_code'],
+                    'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
                 ];
-            
-                $data = AllotmentClassAccount::find($item['allotment_class_account_id']);
-                $data->decrement('allotment_class_account_balance', $item['amount']);
-                $data->save();
 
-                $data = AllotmentClass::find($item['allotment_class_id']);
-                $data->decrement('allotment_class_balance', $item['amount']);
-                $data->save();
+                $objEx = ObjectExpenditure::find($item['object_expenditure_id']);
+                $objEx->decrement('utilize_budget', $item['amount']);
+                $objEx->save();
             }
 
-            AccountingAllotmentClasses::insert($allotmentClasses);
+            AccountingExpenditure::insert($object_expenditures);
         }
 
-         return response()->json([
-             'status' => 'saved'
-         ], 200);
-
+        //return $req;
+        return response()->json([
+            'status' => 'saved'
+        ], 200);
+        
+    
     }
 
 
-    public function updateBudgeting(Request $req, $id){
+
+    public function edit($id){
+        return view('administrator.budgeting.budgeting-create-edit')
+            ->with('id', $id);
+    }
+
+    public function updateAccounting(Request $req, $id){
 
         $req->validate([
             'financial_year_id' => ['required'],
@@ -183,7 +169,7 @@ class BudgetingController extends Controller
             'transaction_type_id' => ['required'],
             'payee_id' => ['required'],
             'particulars' => ['required'],
-            'total_amount' => ['required'],
+            //'total_amount' => ['required'],
             'office_id' => ['required']
         ],[
             'financial_year_id.required' => 'Please select financial year.',
@@ -203,11 +189,28 @@ class BudgetingController extends Controller
         $data->transaction_type_id =  $req->transaction_type_id;
         $data->payee_id =  $req->payee_id;
         $data->particulars =  $req->particulars;
-        $data->total_amount =  $req->total_amount;
+        //if e modify ang account, ebalik ang budget
+        $balik = (float)$data->total_amount -  (float)$req->total_amount;
+
+        $data->total_amount =  (float)$req->total_amount;
+
         $data->priority_program_id =  $req->priority_program_id ? $req->priority_program_id : null;
         $data->office_id =  $req->office_id;
         $data->others =  $req->others;
         $data->save();
+
+        //return $data->total_amount;
+
+
+        $financial = FinancialYear::find($req->financial_year_id);
+        $financial->decrement('balance', $balik);
+        $financial->save();
+
+        $service = Service::where('service', 'ACCOUNTING')->first();
+        $service->decrement('balance', $balik);
+        $service->save();
+
+
 
         if($req->has('documentary_attachments')){
             foreach ($req->documentary_attachments as $item) {
@@ -233,27 +236,28 @@ class BudgetingController extends Controller
         }
 
 
-        if($req->has('allotment_classes')){
-            foreach ($req->allotment_classes as $item) {
-                AccountingAllotmentClasses::updateOrCreate([
-                    'accounting_allotment_class_id' => $item['accounting_allotment_class_id']
-                ],[
-                    'accounting_id' => $id,
-                    'allotment_class_id' => $item['allotment_class_id'],
-                    'allotment_class_account_id' => $item['allotment_class_account_id'],
-                    'amount' => $item['amount'],
-                ]);
-            }
-        }
-
-       return response()->json([
-           'status' => 'updated'
-       ], 200);
+        // if($req->has('allotment_classes')){
+        //     foreach ($req->allotment_classes as $item) {
+        //         AccountingAllotmentClasses::updateOrCreate([
+        //             'accounting_allotment_class_id' => $item['accounting_allotment_class_id']
+        //         ],[
+        //             'accounting_id' => $id,
+        //             'allotment_class_id' => $item['allotment_class_id'],
+        //             'allotment_class_account_id' => $item['allotment_class_account_id'],
+        //             'amount' => $item['amount'],
+        //         ]);
+        //     }
+        // }
+        //return $req;
+        return response()->json([
+            'status' => 'updated'
+        ], 200);
 
     }
 
 
 
+    //delete attachment and image from storage
     public function deleteAcctgDocAttachment($id){
 
         $data = AccountingDocumentaryAttachment::find($id);
@@ -275,48 +279,68 @@ class BudgetingController extends Controller
 
 
     //for excel
-    //for excel
-    public function fetchAccountings(){
+    public function fetchBudgeting(){
 
         return DB::select('
         SELECT
             a.`accounting_id`,
-            b.`financial_year_code`,
-            b.`financial_year_desc`,
-            c.`fund_source`,
             a.`transaction_no`,
             a.`training_control_no`,
-            d.`transaction_type`,
-            e.`bank_account_payee`,
-            a.`total_amount`,
-            gg.`allotment_class`,
-            hh.`allotment_class_account_code`,
-            hh.`allotment_class_account`,
-            g.`amount`,
-            h.`priority_program_code`,
-            h.`priority_program`,
-            f.`office`
+            a.`total_amount`
+           
 
             FROM accountings a
-            JOIN `financial_years` b ON a.`financial_year_id` = b.`financial_year_id`
-            JOIN fund_sources c ON a.`fund_source_id` = c.`fund_source_id`
-            JOIN `transaction_types` d ON a.`transaction_type_id` = d.`transaction_type_id`
-            JOIN payee AS e ON a.`payee_id` = e.`payee_id`
-            JOIN offices f ON a.`office_id` = f.`office_id`
-            LEFT JOIN `accounting_allotment_classes` g ON a.`accounting_id` = g.`accounting_id`
-            LEFT JOIN `allotment_classes` gg ON g.`allotment_class_id` = gg.`allotment_class_id`
-            LEFT JOIN `allotment_class_accounts` hh ON g.`accounting_allotment_class_id` = hh.`allotment_class_account_id`
-            LEFT JOIN priority_programs h ON a.`priority_program_id` = h.`priority_program_id`
+            join accounting_expenditures b on a.accouting_id = b.accounting_id
+            
         ');
     }
-
 
     public function destroy($id){
         Accounting::destroy($id);
 
+
         return response()->json([
             'status' => 'deleted'
         ], 200);
+    }
+    public function getModalProcessor(Request $req){
+
+        $sort = explode('.', $req->sort_by);
+
+        $data = User::where('role', 'PROCESSOR')
+            ->where('lname', 'like', $req->name . '%')
+            //->orWhere('fname', 'like', $req->name . '%')
+            ->orderBy($sort[0], $sort[1])
+            ->paginate($req->perpage);
+
+        return $data;
+    }
+    public function assignProcessor(Request $req){
+
+        $req->validate([
+            'accounting_id' => ['required'],
+            'user_id' => ['required'],
+        ]);
+
+        $acctgExpenditures = AccountingExpenditure::where('accounting_id', $id)
+            ->get();
+
+        foreach($acctgExpenditures as $item){
+
+            $objExps = ObjectExpenditure::find($item['object_expenditure_id']);
+            $objExps->decrement('utilize_budget', $item['amount']);
+            $objExps->save();
+        }
+        
+
+        $data = Accounting::find($req->accounting_id);
+        $data->processor_id = $req->user_id;
+        $data->save();
+
+        return response()->json([
+            'status' => 'assigned'
+        ], 200);
+
     }
 
 
