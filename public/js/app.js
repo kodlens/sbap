@@ -11489,6 +11489,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -15218,6 +15222,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.loadFinancialYears(); //this.loadFundSources()
@@ -15231,7 +15243,10 @@ __webpack_require__.r(__webpack_exports__);
           financial_year_desc: '',
           approved_budget: 0,
           beginning_budget: 0,
-          utilize_budget: 0
+          utilize_budget: 0,
+          active: 0,
+          created_at: null,
+          updated_at: null
         },
         allotment_class: '',
         doc: 'ALL'
@@ -15255,6 +15270,18 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/load-financial-years').then(function (res) {
         _this2.financialYears = res.data;
+        var item = res.data.filter(function (fy) {
+          return fy.active === 1;
+        })[0];
+        _this2.search.financial_year['financial_year_id'] = item.financial_year_id;
+        _this2.search.financial_year['financial_year_code'] = item.financial_year_code;
+        _this2.search.financial_year['financial_year_desc'] = item.financial_year_desc;
+        _this2.search.financial_year['approved_budget'] = item.approved_budget;
+        _this2.search.financial_year['beginning_budget'] = item.beginning_budget;
+        _this2.search.financial_year['utilize_budget'] = item.utilize_budget;
+        _this2.search.financial_year['active'] = item.active;
+        _this2.search.financial_year['created_at'] = item.created_at;
+        _this2.search.financial_year['updated_at'] = item.updated_at;
       });
     },
     loadAccountingUtilizations: function loadAccountingUtilizations() {
@@ -15266,10 +15293,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    totalUtilizations: function totalUtilizations() {
-      return 0;
-      return this.accountingUsedBudget; //
-    },
     computedEndBudget: function computedEndBudget() {
       return this.search.financial_year['beginning_budget'] - this.search.financial_year['utilize_budget'];
     }
@@ -49363,6 +49386,31 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
+                      attrs: {
+                        field: "utilize_budget",
+                        label: "Utilize Budget",
+                      },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "default",
+                          fn: function (props) {
+                            return [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm._f("numberWithCommas")(
+                                      props.row.utilize_budget
+                                    )
+                                  ) +
+                                  "\n                        "
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                    }),
+                    _vm._v(" "),
+                    _c("b-table-column", {
                       attrs: { label: "Action" },
                       scopedSlots: _vm._u([
                         {
@@ -54966,16 +55014,19 @@ var render = function () {
                                   approved_budget: item.approved_budget,
                                   beginning_budget: item.beginning_budget,
                                   utilize_budget: item.utilize_budget,
+                                  active: item.active,
+                                  created_at: item.created_at,
+                                  updated_at: item.updated_at,
                                 },
                               },
                             },
                             [
                               _vm._v(
-                                "\n                                       " +
+                                "\n                                    " +
                                   _vm._s(item.financial_year_code) +
-                                  "\n                                       -\n                                       " +
+                                  "\n                                    -\n                                    " +
                                   _vm._s(item.financial_year_desc) +
-                                  "\n                                   "
+                                  "\n                                "
                               ),
                             ]
                           )
@@ -55116,38 +55167,48 @@ var render = function () {
               _c("div", { staticClass: "column" }, [
                 _c("div", [
                   _c("strong", [_vm._v("APPROVED BUDGET:")]),
-                  _vm._v(
-                    " " +
-                      _vm._s(
-                        _vm._f("numberWithCommas")(
-                          _vm.search.financial_year["approved_budget"]
-                        )
-                      ) +
-                      "\n                           "
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("strong", [_vm._v("END BUDGET:")]),
-                  _vm._v(
-                    " " +
-                      _vm._s(
-                        _vm._f("numberWithCommas")(_vm.computedEndBudget)
-                      ) +
-                      " \n                           "
-                  ),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(
+                            _vm.search.financial_year["approved_budget"]
+                          )
+                        ) +
+                        "\n                            "
+                    ),
+                  ]),
                 ]),
                 _vm._v(" "),
                 _c("div", [
                   _c("strong", [_vm._v("BUDGET UTILIZE: ")]),
-                  _vm._v(
-                    " " +
-                      _vm._s(
-                        _vm._f("numberWithCommas")(
-                          _vm.search.financial_year["utilize_budget"]
-                        )
-                      )
-                  ),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(
+                            _vm.search.financial_year["utilize_budget"]
+                          )
+                        ) +
+                        "\n                            "
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("strong", [_vm._v("END BUDGET:")]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(_vm.computedEndBudget)
+                        ) +
+                        " \n                            "
+                    ),
+                  ]),
                 ]),
               ]),
             ]),
@@ -55167,9 +55228,9 @@ var render = function () {
                         return _c("tr", { key: "allotment" + index }, [
                           _c("td", [
                             _vm._v(
-                              "\n                                           " +
+                              "\n                                        " +
                                 _vm._s(item.doc_type) +
-                                "\n                                       "
+                                "\n                                    "
                             ),
                           ]),
                           _vm._v(" "),
@@ -55179,7 +55240,7 @@ var render = function () {
                             item.training_control_no
                               ? _c("span", [
                                   _vm._v(
-                                    "\n                                               /\n                                               " +
+                                    "\n                                            /\n                                            " +
                                       _vm._s(item.training_control_no)
                                   ),
                                 ])
@@ -55202,11 +55263,11 @@ var render = function () {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              "\n                                           " +
+                              "\n                                        " +
                                 _vm._s(
                                   _vm._f("numberWithCommas")(item.total_amount)
                                 ) +
-                                "\n                                       "
+                                "\n                                    "
                             ),
                           ]),
                           _vm._v(" "),

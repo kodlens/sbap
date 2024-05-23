@@ -22,7 +22,9 @@
                                             approved_budget: item.approved_budget,
                                             beginning_budget: item.beginning_budget,
                                             utilize_budget: item.utilize_budget,
-
+                                            active: item.active,
+                                            created_at: item.created_at,
+                                            updated_at: item.updated_at,
                                         }">
                                         {{ item.financial_year_code }}
                                         -
@@ -70,13 +72,24 @@
                     <div class="columns">
                         <div class="column">
                             <div>
-                                <strong>APPROVED BUDGET:</strong> {{ search.financial_year['approved_budget'] | numberWithCommas }}
+                                <strong>APPROVED BUDGET:</strong> 
+                                <span>
+                                    {{ search.financial_year['approved_budget'] | numberWithCommas }}
+                                </span>
+                            </div>
+                            
+                            <div>
+                                <strong>BUDGET UTILIZE: </strong> 
+                                <span>
+                                    {{ search.financial_year['utilize_budget'] | numberWithCommas }}
+                                </span>
                             </div>
                             <div>
-                                <strong>END BUDGET:</strong> {{ computedEndBudget | numberWithCommas }} 
+                                <strong>END BUDGET:</strong> 
+                                <span>
+                                    {{ computedEndBudget | numberWithCommas }} 
+                                </span>
                             </div>
-                            <div>
-                                <strong>BUDGET UTILIZE: </strong> {{ search.financial_year['utilize_budget'] | numberWithCommas }}</div>
                         </div>
                     </div>
 
@@ -85,11 +98,6 @@
                     <div class="columns">
                         <div class="column">
                             
-                            <!-- <div class="mb-2"><strong>UTILIZED BUDGET:</strong> {{ budgetUtilize | numberWithCommas }}</div>
- -->
-
-                            
-
                             <div class="table-container">
                                 <table class="table is-narrow is-fullwidth">
                                     <tr>
@@ -162,6 +170,9 @@ export default{
                     approved_budget: 0,
                     beginning_budget: 0,
                     utilize_budget: 0,
+                    active: 0,
+                    created_at: null,
+                    updated_at: null
                 },
                 allotment_class: '',
                 doc: 'ALL'
@@ -198,6 +209,18 @@ export default{
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
                 this.financialYears = res.data
+                const item = res.data.filter(fy => fy.active === 1)[0];
+
+                this.search.financial_year['financial_year_id'] = item.financial_year_id;
+                this.search.financial_year['financial_year_code'] = item.financial_year_code;
+                this.search.financial_year['financial_year_desc'] = item.financial_year_desc;
+                this.search.financial_year['approved_budget'] = item.approved_budget;
+                this.search.financial_year['beginning_budget'] = item.beginning_budget;
+                this.search.financial_year['utilize_budget'] = item.utilize_budget;
+                this.search.financial_year['active'] = item.active;
+                this.search.financial_year['created_at'] = item.created_at;
+                this.search.financial_year['updated_at'] = item.updated_at;
+
             })
         },
 
@@ -213,16 +236,9 @@ export default{
 
 
     computed: {
-        totalUtilizations(){
-            return 0
-            return this.accountingUsedBudget
-
-           
-            //
-        },
+     
 
         computedEndBudget(){
-
             return (this.search.financial_year['beginning_budget'] - this.search.financial_year['utilize_budget'])
         }
     }

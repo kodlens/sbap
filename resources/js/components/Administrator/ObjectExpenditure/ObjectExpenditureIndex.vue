@@ -88,6 +88,10 @@
                                 {{ props.row.beginning_budget | numberWithCommas}}
                             </b-table-column>
 
+                            <b-table-column field="utilize_budget" label="Utilize Budget" v-slot="props">
+                                {{ props.row.utilize_budget | numberWithCommas}}
+                            </b-table-column>
+
                             <b-table-column label="Action" v-slot="props">
                                 <div class="is-flex">
                                     <b-tooltip label="Edit" type="is-warning">
