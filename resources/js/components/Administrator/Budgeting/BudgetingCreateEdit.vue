@@ -156,7 +156,9 @@
                                             </div>
 
                                             <div class="column">
-                                                <b-numberinput v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
+                                                <b-numberinput 
+                                                    :disabled="item.accounting_expenditure_id > 0 ? true : false"
+                                                    v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
                                             </div>
 
                                             <div class="column">
@@ -177,6 +179,7 @@
                                         :message="errors.total_amount ? errors.total_amount[0] : ''">
                                         <b-numberinput placholder="Total Amount"
                                             :controls="false" step="0.0001"
+                                            disabled
                                             v-model="fields.total_amount">
                                         </b-numberinput>
                                     </b-field>
@@ -446,6 +449,7 @@ export default{
                     }
 
                     this.fields.objectExpenditures.splice(ix, 1)
+                    this.computeTotalAmount()
 
                 }
             });

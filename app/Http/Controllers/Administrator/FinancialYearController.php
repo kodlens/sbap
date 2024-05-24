@@ -21,6 +21,17 @@ class FinancialYearController extends Controller
     public function getData(Request $req){
         $sort = explode('.', $req->sort_by);
         return FinancialYear::where('financial_year_desc', 'like', $req->financial_year . '%')
+            ->select(
+                'financial_year_id',
+                'financial_year_code',
+                'financial_year_desc',
+                'approved_budget',
+                'beginning_budget',
+                DB::raw('(select sum(amount) from accounting_expenditures where financial_years.financial_year_id = accounting_expenditures.financial_year_id) as utilize_budget'),
+                'active',
+                'created_at',
+                'updated_at'
+            )
             ->orWhere('financial_year_code', 'like', $req->financial_year . '%')
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
@@ -30,15 +41,16 @@ class FinancialYearController extends Controller
         $req->validate([
             'financial_year_code' => ['required', 'unique:financial_years'],
             'financial_year_desc' => ['required'],
-            'financial_budget' => ['required']
+            'approved_budget' => ['required'],
+            'beginning_budget' => ['required']
 
         ]);
 
         FinancialYear::create([
             'financial_year_code' => strtoupper($req->financial_year_code),
             'financial_year_desc' => strtoupper($req->financial_year_desc),
-            'financial_budget' => $req->financial_budget,
-            'balance' => $req->balance,
+            'approved_budget' => $req->approved_budget,
+            'beginning_budget' => $req->beginning_budget,
             'active' => $req->active,
         ]);
 
@@ -51,13 +63,15 @@ class FinancialYearController extends Controller
         $req->validate([
             'financial_year_code' => ['required', 'unique:financial_years,financial_year_code,'.$id.',financial_year_id'],
             'financial_year_desc' => ['required'],
-            'financial_budget' => ['required']
+            'approved_budget' => ['required'],
+            'beginning_budget' => ['required']
         ]);
 
         $data = FinancialYear::find($id);
         $data->financial_year_code = strtoupper($req->financial_year_code);
         $data->financial_year_desc = strtoupper($req->financial_year_desc);
-        $data->financial_budget = $req->financial_budget;
+        $data->approved_budget = $req->approved_budget;
+        $data->beginning_budget = $req->beginning_budget;
         $data->active = $req->active;
         $data->save();
 

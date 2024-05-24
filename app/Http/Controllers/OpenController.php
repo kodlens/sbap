@@ -9,6 +9,7 @@ use App\Models\TransactionType;
 use App\Models\FinancialYear;
 use App\Models\AllotmentClass;
 use App\Models\Office;
+use Illuminate\Support\Facades\DB;
 
 class OpenController extends Controller
 {
@@ -21,7 +22,18 @@ class OpenController extends Controller
 
 
     public function loadFinancialYears(Request $req){
-        return FinancialYear::orderBy('financial_year_code', 'desc')
+        return FinancialYear::select(
+                'financial_year_id',
+                'financial_year_code',
+                'financial_year_desc',
+                'approved_budget',
+                'beginning_budget',
+                DB::raw('(select sum(amount) from accounting_expenditures where financial_years.financial_year_id = accounting_expenditures.financial_year_id) as utilize_budget'),
+                'active',
+                'created_at',
+                'updated_at'
+            )
+            ->orderBy('financial_year_code', 'desc')
             ->get();
     }
 

@@ -88,6 +88,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/report-transaction-by-office', [App\Http\Controllers\Report\ReportTransactionByOfficeController::class, 'index']);
     Route::get('/load-report-transaction-by-office', [App\Http\Controllers\Report\ReportTransactionByOfficeController::class, 'loadReportTransacationByOffice']);
 
+
+    Route::resource('/accounting-expenditures', App\Http\Controllers\AccountingExpenditureController::class);
+    Route::get('/get-accounting-expenditures', [App\Http\Controllers\AccountingExpenditureController::class, 'getData']);
+
 });
 
 

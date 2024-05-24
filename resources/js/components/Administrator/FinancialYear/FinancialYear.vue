@@ -160,10 +160,22 @@
                             </div>
                             <div class="columns">
                                 <div class="column">
-                                    <b-field label="Financial Budget" label-position="on-border"
-                                        :type="errors.financial_budget ? 'is-danger':''"
-                                        :message="errors.financial_budget ? errors.financial_budget[0] : ''">
-                                        <b-input v-model="fields.financial_budget"
+                                    <b-field label="Approved Budget" label-position="on-border"
+                                        :type="errors.approved_budget ? 'is-danger':''"
+                                        :message="errors.approved_budget ? errors.approved_budget[0] : ''">
+                                        <b-input v-model="fields.approved_budget"
+                                            placeholder="Financial Budget" required>
+                                        </b-input>
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Beginning Budget" label-position="on-border"
+                                        :type="errors.beginning_budget ? 'is-danger':''"
+                                        :message="errors.beginning_budget ? errors.beginning_budget[0] : ''">
+                                        <b-input v-model="fields.beginning_budget"
                                             placeholder="Financial Budget" required>
                                         </b-input>
                                     </b-field>
@@ -399,7 +411,10 @@ export default{
 
 
         numberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if(x > 0)
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            else
+                return 0
         },
 
 

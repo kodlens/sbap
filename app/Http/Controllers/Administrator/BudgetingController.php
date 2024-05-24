@@ -63,17 +63,15 @@ class BudgetingController extends Controller
 
         $req->validate([
             'financial_year_id' => ['required'],
-            
             'date_transaction' => ['required'],
             'transaction_no' => ['required'],
             'training_control_no' => ['required'],
             'transaction_type_id' => ['required'],
             'payee_id' => ['required'],
             'particulars' => ['required'],
-            //'total_amount' => ['required'],
             'office_id' => ['required'],
-           
-
+            'object_expenditures' => ['required'],
+            'object_expenditures.*' => ['required']
         ],[
             'financial_year_id.required' => 'Please select financial year.',
             'transaction_type_id.required' => 'Please select transaction.',
@@ -81,72 +79,78 @@ class BudgetingController extends Controller
             'office.required' => 'Please select office.',
         ]);
 
-        $data = Accounting::create([
-            'financial_year_id' => $req->financial_year_id,
-            'doc_type' => 'BUDGETING',
-           // 'fund_source_id' => $req->fund_source_id,
-            'date_transaction' => $req->date_transaction,
-            'transaction_type_id' => $req->transaction_type_id,
-            'transaction_no' => $req->transaction_no,
-            'training_control_no' => $req->training_control_no,
-           
-            'payee_id' => $req->payee_id,
-            'particulars' => $req->particulars,
-            'total_amount' => (float)$req->total_amount,
-            //naa pai attachment
-            'others' => $req->others,
-            'office_id' => $req->office_id
-        ]);
+        DB::beginTransaction();
 
-        $financial = FinancialYear::find($req->financial_year_id);
-        $financial->increment('utilize_budget', (float)$req->total_amount);
-        $financial->save();
+        try {
 
+            $data = Accounting::create([
+                'financial_year_id' => $req->financial_year_id,
+                'doc_type' => 'BUDGETING',
+                'date_transaction' => $req->date_transaction,
+                'transaction_type_id' => $req->transaction_type_id,
+                'transaction_no' => $req->transaction_no,
+                'training_control_no' => $req->training_control_no,
+                'payee_id' => $req->payee_id,
+                'particulars' => $req->particulars,
+                'total_amount' => (float)$req->total_amount,
+                'others' => $req->others,
+                'office_id' => $req->office_id
+            ]);
 
-        if($req->has('documentary_attachments')){
-            foreach ($req->documentary_attachments as $item) {
-                $n = [];
-                if($item['file_upload']){
-                    $pathFile = $item['file_upload']->store('public/doc_attachments'); //get path of the file
-                    $n = explode('/', $pathFile); //split into array using /
+            if($req->has('documentary_attachments')){
+                foreach ($req->documentary_attachments as $item) {
+                    $n = [];
+                    if($item['file_upload']){
+                        $pathFile = $item['file_upload']->store('public/doc_attachments'); //get path of the file
+                        $n = explode('/', $pathFile); //split into array using /
+                    }
+    
+                    //insert into database after upload 1 image
+                    AccountingDocumentaryAttachment::create([
+                        'accounting_id' => $data->accounting_id,
+                        'documentary_attachment_id' => $item['documentary_attachment_id'],
+                        'doc_attachment' => $n[2]
+                    ]);
                 }
-
-                //insert into database after upload 1 image
-                AccountingDocumentaryAttachment::create([
-                    'accounting_id' => $data->accounting_id,
-                    'documentary_attachment_id' => $item['documentary_attachment_id'],
-                    'doc_attachment' => $n[2]
-                ]);
             }
+    
+            $accountingId = $data->accounting_id;
+            $financialYearId = $req->financial_year_id;
+    
+            if($req->has('object_expenditures')){
+                $object_expenditures = [];
+                foreach ($req->object_expenditures as $item) {
+                    $object_expenditures[] = [
+                        'accounting_id' => $accountingId,
+                        'allotment_class' => $item['allotment_class'],
+                        'financial_year_id' => $financialYearId,
+                        'allotment_class_code' => $item['allotment_class_code'],
+                        'object_expenditure_id' => $item['object_expenditure_id'],
+                        'amount' => $item['amount'],
+                    ];
+                }
+    
+                AccountingExpenditure::insert($object_expenditures);
+            }
+            DB::commit();
+    
+            //return $req;
+            return response()->json([
+                'status' => 'saved'
+            ], 200);
+
+        } catch (Exception $e) {
+            // Handle the exception
+            // Log error, return response, etc.
+            DB::rollBack();
+
+             return response()->json([
+                'status' => 'error',
+                'message' => $e
+            ], 500);
         }
 
-        $accountingId = $data->accounting_id;
-        $financialYearId = $req->financial_year_id;
-
-        if($req->has('object_expenditures')){
-            $object_expenditures = [];
-            foreach ($req->object_expenditures as $item) {
-                $object_expenditures[] = [
-                    'accounting_id' => $accountingId,
-                    'allotment_class' => $item['allotment_class'],
-                    'financial_year_id' => $financialYearId,
-                    'allotment_class_code' => $item['allotment_class_code'],
-                    'object_expenditure_id' => $item['object_expenditure_id'],
-                    'amount' => $item['amount'],
-                ];
-
-                $objEx = ObjectExpenditure::find($item['object_expenditure_id']);
-                $objEx->decrement('utilize_budget', $item['amount']);
-                $objEx->save();
-            }
-
-            AccountingExpenditure::insert($object_expenditures);
-        }
-
-        //return $req;
-        return response()->json([
-            'status' => 'saved'
-        ], 200);
+        
         
     
     }

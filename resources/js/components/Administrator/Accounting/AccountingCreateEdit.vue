@@ -156,7 +156,9 @@
                                             </div>
 
                                             <div class="column">
-                                                <b-numberinput v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
+                                                <b-numberinput 
+                                                    :disabled="item.accounting_expenditure_id > 0 ? true : false"
+                                                    v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
                                             </div>
 
                                             <div class="column">
@@ -418,7 +420,9 @@ export default{
 
         newObjectExpenditure(){
             this.fields.objectExpenditures.push({
-                object_expenditure_id: 0,
+                accounting_expenditure_id: 0,
+                object_expenditure_id: null,
+                accounting_id: 0,
                 financial_year_id: 0,
                 object_expenditure: null,
                 allotment_class: null,
@@ -445,6 +449,7 @@ export default{
                     }
 
                     this.fields.objectExpenditures.splice(ix, 1)
+                    this.computeTotalAmount()
 
                 }
             });

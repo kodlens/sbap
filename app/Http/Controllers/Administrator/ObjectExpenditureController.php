@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ObjectExpenditure;
+use Illuminate\Support\Facades\DB;
 
 class ObjectExpenditureController extends Controller
 {
@@ -19,6 +20,22 @@ class ObjectExpenditureController extends Controller
         $sort = explode('.', $req->sort_by);
 
         return ObjectExpenditure::with(['financial_year'])
+            ->select(
+                'financial_year_id',
+                'object_expenditure',
+                'allotment_class',
+                'allotment_class_code',
+                'approved_budget',
+                'beginning_budget',
+                DB::raw('(
+                        select sum(amount) from accounting_expenditures 
+                        where object_expenditures.financial_year_id = accounting_expenditures.financial_year_id
+                        and object_expenditures.object_expenditure_id = accounting_expenditures.object_expenditure_id
+                    ) as utilize_budget'
+                ),
+                'created_at',
+                'updated_at'
+            )
             ->where('allotment_class', 'like', '%'. $req->allotment . '%')
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);

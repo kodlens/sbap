@@ -7865,6 +7865,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -8001,7 +8003,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     newObjectExpenditure: function newObjectExpenditure() {
       this.fields.objectExpenditures.push({
-        object_expenditure_id: 0,
+        accounting_expenditure_id: 0,
+        object_expenditure_id: null,
+        accounting_id: 0,
         financial_year_id: 0,
         object_expenditure: null,
         allotment_class: null,
@@ -8030,6 +8034,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
 
           _this6.fields.objectExpenditures.splice(ix, 1);
+
+          _this6.computeTotalAmount();
         }
       });
     },
@@ -9734,6 +9740,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -9899,6 +9908,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
 
           _this6.fields.objectExpenditures.splice(ix, 1);
+
+          _this6.computeTotalAmount();
         }
       });
     },
@@ -10950,6 +10961,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -11129,7 +11152,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     numberWithCommas: function numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if (x > 0) return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");else return 0;
     },
     setActive: function setActive(row) {
       var _this6 = this;
@@ -43815,7 +43838,13 @@ var render = function () {
                                 { staticClass: "column" },
                                 [
                                   _c("b-numberinput", {
-                                    attrs: { controls: false },
+                                    attrs: {
+                                      disabled:
+                                        item.accounting_expenditure_id > 0
+                                          ? true
+                                          : false,
+                                      controls: false,
+                                    },
                                     on: { input: _vm.computeTotalAmount },
                                     model: {
                                       value: item.amount,
@@ -46681,7 +46710,13 @@ var render = function () {
                                 { staticClass: "column" },
                                 [
                                   _c("b-numberinput", {
-                                    attrs: { controls: false },
+                                    attrs: {
+                                      disabled:
+                                        item.accounting_expenditure_id > 0
+                                          ? true
+                                          : false,
+                                      controls: false,
+                                    },
                                     on: { input: _vm.computeTotalAmount },
                                     model: {
                                       value: item.amount,
@@ -46747,6 +46782,7 @@ var render = function () {
                               placholder: "Total Amount",
                               controls: false,
                               step: "0.0001",
+                              disabled: "",
                             },
                             model: {
                               value: _vm.fields.total_amount,
@@ -48811,13 +48847,13 @@ var render = function () {
                             "b-field",
                             {
                               attrs: {
-                                label: "Financial Budget",
+                                label: "Approved Budget",
                                 "label-position": "on-border",
-                                type: _vm.errors.financial_budget
+                                type: _vm.errors.approved_budget
                                   ? "is-danger"
                                   : "",
-                                message: _vm.errors.financial_budget
-                                  ? _vm.errors.financial_budget[0]
+                                message: _vm.errors.approved_budget
+                                  ? _vm.errors.approved_budget[0]
                                   : "",
                               },
                             },
@@ -48828,15 +48864,56 @@ var render = function () {
                                   required: "",
                                 },
                                 model: {
-                                  value: _vm.fields.financial_budget,
+                                  value: _vm.fields.approved_budget,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.fields, "approved_budget", $$v)
+                                  },
+                                  expression: "fields.approved_budget",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
+                          _c(
+                            "b-field",
+                            {
+                              attrs: {
+                                label: "Beginning Budget",
+                                "label-position": "on-border",
+                                type: _vm.errors.beginning_budget
+                                  ? "is-danger"
+                                  : "",
+                                message: _vm.errors.beginning_budget
+                                  ? _vm.errors.beginning_budget[0]
+                                  : "",
+                              },
+                            },
+                            [
+                              _c("b-input", {
+                                attrs: {
+                                  placeholder: "Financial Budget",
+                                  required: "",
+                                },
+                                model: {
+                                  value: _vm.fields.beginning_budget,
                                   callback: function ($$v) {
                                     _vm.$set(
                                       _vm.fields,
-                                      "financial_budget",
+                                      "beginning_budget",
                                       $$v
                                     )
                                   },
-                                  expression: "fields.financial_budget",
+                                  expression: "fields.beginning_budget",
                                 },
                               }),
                             ],
