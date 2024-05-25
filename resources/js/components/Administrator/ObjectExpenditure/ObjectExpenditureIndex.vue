@@ -2,7 +2,7 @@
     <div>
         <div class="section">
             <div class="columns is-centered">
-                <div class="column is-8">
+                <div class="column is-10-widescreen is-10-desktop is-11-tablet">
                     <div class="box">
 
                         <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">
@@ -433,7 +433,7 @@ export default{
             this.isModalCreate = true;
             
             //nested axios for getting the address 1 by 1 or request by request
-            axios.get('/object-expenditures/'+data_id).then(res=>{
+            axios.get('/object-expenditures/'+ data_id).then(res=>{
                 this.fields = res.data;
                 
             });

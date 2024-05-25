@@ -48834,158 +48834,93 @@ var render = function () {
     [
       _c("div", { staticClass: "section" }, [
         _c("div", { staticClass: "columns is-centered" }, [
-          _c("div", { staticClass: "column is-8" }, [
-            _c(
-              "div",
-              { staticClass: "box" },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass: "is-flex is-justify-content-center mb-2",
-                    staticStyle: { "font-size": "20px", "font-weight": "bold" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                        LIST OF OBJECT OF EXPENDITURE"
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "level" }, [
+          _c(
+            "div",
+            {
+              staticClass: "column is-10-widescreen is-10-desktop is-11-tablet",
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "box" },
+                [
                   _c(
                     "div",
-                    { staticClass: "level-left" },
+                    {
+                      staticClass: "is-flex is-justify-content-center mb-2",
+                      staticStyle: {
+                        "font-size": "20px",
+                        "font-weight": "bold",
+                      },
+                    },
                     [
-                      _c(
-                        "b-field",
-                        { attrs: { label: "Page" } },
-                        [
-                          _c(
-                            "b-select",
-                            {
-                              on: { input: _vm.setPerPage },
-                              model: {
-                                value: _vm.perPage,
-                                callback: function ($$v) {
-                                  _vm.perPage = $$v
-                                },
-                                expression: "perPage",
-                              },
-                            },
-                            [
-                              _c("option", { attrs: { value: "5" } }, [
-                                _vm._v("5 per page"),
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "10" } }, [
-                                _vm._v("10 per page"),
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "15" } }, [
-                                _vm._v("15 per page"),
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "20" } }, [
-                                _vm._v("20 per page"),
-                              ]),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-select",
-                            {
-                              on: { input: _vm.loadAsyncData },
-                              model: {
-                                value: _vm.sortOrder,
-                                callback: function ($$v) {
-                                  _vm.sortOrder = $$v
-                                },
-                                expression: "sortOrder",
-                              },
-                            },
-                            [
-                              _c("option", { attrs: { value: "asc" } }, [
-                                _vm._v("ASC"),
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "desc" } }, [
-                                _vm._v("DESC"),
-                              ]),
-                            ]
-                          ),
-                        ],
-                        1
+                      _vm._v(
+                        "\n                        LIST OF OBJECT OF EXPENDITURE"
                       ),
-                    ],
-                    1
+                    ]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "level-right" }, [
+                  _c("div", { staticClass: "level" }, [
                     _c(
                       "div",
-                      { staticClass: "level-item" },
+                      { staticClass: "level-left" },
                       [
                         _c(
                           "b-field",
-                          { attrs: { label: "Search" } },
+                          { attrs: { label: "Page" } },
                           [
-                            _c("b-input", {
-                              attrs: { type: "text", placeholder: "Search..." },
-                              nativeOn: {
-                                keyup: function ($event) {
-                                  if (
-                                    !$event.type.indexOf("key") &&
-                                    _vm._k(
-                                      $event.keyCode,
-                                      "enter",
-                                      13,
-                                      $event.key,
-                                      "Enter"
-                                    )
-                                  ) {
-                                    return null
-                                  }
-                                  return _vm.loadAsyncData.apply(
-                                    null,
-                                    arguments
-                                  )
+                            _c(
+                              "b-select",
+                              {
+                                on: { input: _vm.setPerPage },
+                                model: {
+                                  value: _vm.perPage,
+                                  callback: function ($$v) {
+                                    _vm.perPage = $$v
+                                  },
+                                  expression: "perPage",
                                 },
                               },
-                              model: {
-                                value: _vm.search.program,
-                                callback: function ($$v) {
-                                  _vm.$set(_vm.search, "program", $$v)
-                                },
-                                expression: "search.program",
-                              },
-                            }),
+                              [
+                                _c("option", { attrs: { value: "5" } }, [
+                                  _vm._v("5 per page"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "10" } }, [
+                                  _vm._v("10 per page"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "15" } }, [
+                                  _vm._v("15 per page"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "20" } }, [
+                                  _vm._v("20 per page"),
+                                ]),
+                              ]
+                            ),
                             _vm._v(" "),
                             _c(
-                              "p",
-                              { staticClass: "control" },
-                              [
-                                _c(
-                                  "b-tooltip",
-                                  {
-                                    attrs: {
-                                      label: "Search",
-                                      type: "is-success",
-                                    },
+                              "b-select",
+                              {
+                                on: { input: _vm.loadAsyncData },
+                                model: {
+                                  value: _vm.sortOrder,
+                                  callback: function ($$v) {
+                                    _vm.sortOrder = $$v
                                   },
-                                  [
-                                    _c("b-button", {
-                                      attrs: {
-                                        type: "is-primary",
-                                        "icon-right": "account-filter",
-                                      },
-                                      on: { click: _vm.loadAsyncData },
-                                    }),
-                                  ],
-                                  1
-                                ),
-                              ],
-                              1
+                                  expression: "sortOrder",
+                                },
+                              },
+                              [
+                                _c("option", { attrs: { value: "asc" } }, [
+                                  _vm._v("ASC"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "desc" } }, [
+                                  _vm._v("DESC"),
+                                ]),
+                              ]
                             ),
                           ],
                           1
@@ -48993,270 +48928,69 @@ var render = function () {
                       ],
                       1
                     ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "b-table",
-                  {
-                    attrs: {
-                      data: _vm.data,
-                      loading: _vm.loading,
-                      paginated: "",
-                      "backend-pagination": "",
-                      total: _vm.total,
-                      bordered: true,
-                      hoverable: true,
-                      "per-page": _vm.perPage,
-                      "aria-next-label": "Next page",
-                      "aria-previous-label": "Previous page",
-                      "aria-page-label": "Page",
-                      "aria-current-label": "Current page",
-                      "backend-sorting": "",
-                      "default-sort-direction": _vm.defaultSortDirection,
-                    },
-                    on: { "page-change": _vm.onPageChange, sort: _vm.onSort },
-                  },
-                  [
-                    _c("b-table-column", {
-                      attrs: { field: "object_expenditure_id", label: "ID" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.object_expenditure_id) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
                     _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "financial_year",
-                        label: "Financial Year",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    props.row.financial_year.financial_year_code
-                                  ) +
-                                  "\n                            -\n                            " +
-                                  _vm._s(
-                                    props.row.financial_year.financial_year_desc
-                                  ) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "object_expenditure",
-                        label: "Object Expenditure",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.object_expenditure) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { field: "allotment_class_code", label: "Code" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.allotment_class_code) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "allotment_class",
-                        label: "Allotment Class",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.allotment_class) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "approved_budget",
-                        label: "Approved Budget",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    _vm._f("numberWithCommas")(
-                                      props.row.approved_budget
+                    _c("div", { staticClass: "level-right" }, [
+                      _c(
+                        "div",
+                        { staticClass: "level-item" },
+                        [
+                          _c(
+                            "b-field",
+                            { attrs: { label: "Search" } },
+                            [
+                              _c("b-input", {
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Search...",
+                                },
+                                nativeOn: {
+                                  keyup: function ($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.loadAsyncData.apply(
+                                      null,
+                                      arguments
                                     )
-                                  ) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "beginning_budget",
-                        label: "Beginning Budget",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    _vm._f("numberWithCommas")(
-                                      props.row.beginning_budget
-                                    )
-                                  ) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "utilize_budget",
-                        label: "Utilize Budget",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    _vm._f("numberWithCommas")(
-                                      props.row.utilize_budget
-                                    )
-                                  ) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { label: "Action" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
+                                  },
+                                },
+                                model: {
+                                  value: _vm.search.program,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.search, "program", $$v)
+                                  },
+                                  expression: "search.program",
+                                },
+                              }),
+                              _vm._v(" "),
                               _c(
-                                "div",
-                                { staticClass: "is-flex" },
+                                "p",
+                                { staticClass: "control" },
                                 [
                                   _c(
                                     "b-tooltip",
                                     {
                                       attrs: {
-                                        label: "Edit",
-                                        type: "is-warning",
+                                        label: "Search",
+                                        type: "is-success",
                                       },
                                     },
                                     [
                                       _c("b-button", {
-                                        staticClass:
-                                          "button is-small is-warning mr-1",
                                         attrs: {
-                                          tag: "a",
-                                          "icon-right": "pencil",
+                                          type: "is-primary",
+                                          "icon-right": "account-filter",
                                         },
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.getData(
-                                              props.row.object_expenditure_id
-                                            )
-                                          },
-                                        },
-                                      }),
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "b-tooltip",
-                                    {
-                                      attrs: {
-                                        label: "Delete",
-                                        type: "is-danger",
-                                      },
-                                    },
-                                    [
-                                      _c("b-button", {
-                                        staticClass:
-                                          "button is-small is-danger mr-1",
-                                        attrs: { "icon-right": "delete" },
-                                        on: {
-                                          click: function ($event) {
-                                            return _vm.confirmDelete(
-                                              props.row.object_expenditure_id
-                                            )
-                                          },
-                                        },
+                                        on: { click: _vm.loadAsyncData },
                                       }),
                                     ],
                                     1
@@ -49264,35 +48998,315 @@ var render = function () {
                                 ],
                                 1
                               ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "buttons mt-3" },
-                  [
-                    _c(
-                      "b-button",
-                      {
-                        staticClass: "is-success",
-                        attrs: { "icon-right": "account-arrow-up-outline" },
-                        on: { click: _vm.openModal },
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "b-table",
+                    {
+                      attrs: {
+                        data: _vm.data,
+                        loading: _vm.loading,
+                        paginated: "",
+                        "backend-pagination": "",
+                        total: _vm.total,
+                        bordered: true,
+                        hoverable: true,
+                        "per-page": _vm.perPage,
+                        "aria-next-label": "Next page",
+                        "aria-previous-label": "Previous page",
+                        "aria-page-label": "Page",
+                        "aria-current-label": "Current page",
+                        "backend-sorting": "",
+                        "default-sort-direction": _vm.defaultSortDirection,
                       },
-                      [_vm._v("NEW")]
-                    ),
-                  ],
-                  1
-                ),
-              ],
-              1
-            ),
-          ]),
+                      on: { "page-change": _vm.onPageChange, sort: _vm.onSort },
+                    },
+                    [
+                      _c("b-table-column", {
+                        attrs: { field: "object_expenditure_id", label: "ID" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(props.row.object_expenditure_id) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "financial_year",
+                          label: "Financial Year",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(
+                                      props.row.financial_year
+                                        .financial_year_code
+                                    ) +
+                                    "\n                            -\n                            " +
+                                    _vm._s(
+                                      props.row.financial_year
+                                        .financial_year_desc
+                                    ) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "object_expenditure",
+                          label: "Object Expenditure",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(props.row.object_expenditure) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: { field: "allotment_class_code", label: "Code" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(props.row.allotment_class_code) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "allotment_class",
+                          label: "Allotment Class",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(props.row.allotment_class) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "approved_budget",
+                          label: "Approved Budget",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        props.row.approved_budget
+                                      )
+                                    ) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "beginning_budget",
+                          label: "Beginning Budget",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        props.row.beginning_budget
+                                      )
+                                    ) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: {
+                          field: "utilize_budget",
+                          label: "Utilize Budget",
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        props.row.utilize_budget
+                                      )
+                                    ) +
+                                    "\n                        "
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                      _vm._v(" "),
+                      _c("b-table-column", {
+                        attrs: { label: "Action" },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function (props) {
+                              return [
+                                _c(
+                                  "div",
+                                  { staticClass: "is-flex" },
+                                  [
+                                    _c(
+                                      "b-tooltip",
+                                      {
+                                        attrs: {
+                                          label: "Edit",
+                                          type: "is-warning",
+                                        },
+                                      },
+                                      [
+                                        _c("b-button", {
+                                          staticClass:
+                                            "button is-small is-warning mr-1",
+                                          attrs: {
+                                            tag: "a",
+                                            "icon-right": "pencil",
+                                          },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.getData(
+                                                props.row.object_expenditure_id
+                                              )
+                                            },
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "b-tooltip",
+                                      {
+                                        attrs: {
+                                          label: "Delete",
+                                          type: "is-danger",
+                                        },
+                                      },
+                                      [
+                                        _c("b-button", {
+                                          staticClass:
+                                            "button is-small is-danger mr-1",
+                                          attrs: { "icon-right": "delete" },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.confirmDelete(
+                                                props.row.object_expenditure_id
+                                              )
+                                            },
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    ),
+                                  ],
+                                  1
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "buttons mt-3" },
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          staticClass: "is-success",
+                          attrs: { "icon-right": "account-arrow-up-outline" },
+                          on: { click: _vm.openModal },
+                        },
+                        [_vm._v("NEW")]
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ]
+          ),
         ]),
       ]),
       _vm._v(" "),

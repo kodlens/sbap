@@ -21,6 +21,7 @@ class ObjectExpenditureController extends Controller
 
         return ObjectExpenditure::with(['financial_year'])
             ->select(
+                'object_expenditure_id',
                 'financial_year_id',
                 'object_expenditure',
                 'allotment_class',
