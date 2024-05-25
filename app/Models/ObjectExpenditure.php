@@ -15,6 +15,7 @@ class ObjectExpenditure extends Model
     protected $fillable = [
         'financial_year_id',
         'object_expenditure',
+        'account_code',
         'allotment_class',
         'allotment_class_code',
         'approved_budget',

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ObjectExpenditure;
 use Illuminate\Support\Facades\DB;
+use App\Models\FinancialYear;
 
 class ObjectExpenditureController extends Controller
 {
@@ -17,6 +18,8 @@ class ObjectExpenditureController extends Controller
     }
 
     public function getData(Request $req){
+        $fy = FinancialYear::where('active', 1)->first();
+
         $sort = explode('.', $req->sort_by);
 
         return ObjectExpenditure::with(['financial_year'])
@@ -24,6 +27,7 @@ class ObjectExpenditureController extends Controller
                 'object_expenditure_id',
                 'financial_year_id',
                 'object_expenditure',
+                'account_code',
                 'allotment_class',
                 'allotment_class_code',
                 'approved_budget',
@@ -38,6 +42,7 @@ class ObjectExpenditureController extends Controller
                 'updated_at'
             )
             ->where('allotment_class', 'like', '%'. $req->allotment . '%')
+            ->where('financial_year_id', $fy->financial_year_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
     }
@@ -88,6 +93,7 @@ class ObjectExpenditureController extends Controller
         ObjectExpenditure::create([
             'financial_year_id' => $req->financial_year_id,
             'object_expenditure' => strtoupper($req->object_expenditure),
+            'account_code' => strtoupper($req->account_code),
             'allotment_class' => strtoupper($req->allotment_class['allotment_class']),
             'allotment_class_code' => strtoupper($req->allotment_class['allotment_class_code']),
             'approved_budget' => $req->approved_budget,
@@ -101,7 +107,7 @@ class ObjectExpenditureController extends Controller
     }
 
     public function update(Request $req, $id){
-
+        
         $req->validate([
             'financial_year_id' => ['required'],
             'object_expenditure' => ['required'],
@@ -129,6 +135,7 @@ class ObjectExpenditureController extends Controller
             ->update([
                 'financial_year_id' => $req->financial_year_id,
                 'object_expenditure' => strtoupper($req->object_expenditure),
+                'account_code' => strtoupper($req->account_code),
                 'allotment_class' => strtoupper($req->allotment_class['allotment_class']),
                 'allotment_class_code' => strtoupper($req->allotment_class['allotment_class_code']),
                 'approved_budget' => $req->approved_budget,
@@ -136,6 +143,14 @@ class ObjectExpenditureController extends Controller
             ]);
         return response()->json([
             'status' => 'updated'
+        ], 200);
+    }
+
+    public function destroy($id){
+        ObjectExpenditure::destroy($id);
+
+        return response()->json([
+            'status' => 'deleted'
         ], 200);
     }
 

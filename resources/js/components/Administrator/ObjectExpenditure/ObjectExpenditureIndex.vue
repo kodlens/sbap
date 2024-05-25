@@ -76,6 +76,10 @@
                                 {{ props.row.allotment_class_code }}
                             </b-table-column>
 
+                            <b-table-column field="account_code" label="Account Code" v-slot="props">
+                                {{ props.row.account_code }}
+                            </b-table-column>
+
                             <b-table-column field="allotment_class" label="Allotment Class" v-slot="props">
                                 {{ props.row.allotment_class }}
                             </b-table-column>
@@ -175,6 +179,18 @@
 
                             <div class="columns">
                                 <div class="column">
+                                    <b-field label="Account Code" label-position="on-border"
+                                        :type="errors.account_code ? 'is-danger':''"
+                                        :message="errors.account_code ? errors.account_code[0] : ''">
+                                        <b-input v-model="fields.account_code"
+                                            placeholder="Account Code" required>
+                                        </b-input>
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
                                     <b-field label="Allotment Class"
                                         expanded
                                         :type="errors.allotment_class ? 'is-danger':''"
@@ -184,7 +200,7 @@
                                             placeholder="Allotment Class">
                                             <option v-for="(item, indx) in allotmentClasses"
                                                 :key="`fy${indx}`"
-                                                :value="item">
+                                                :value="{ allotment_class: item.allotment_class, allotment_class_code: item.allotment_class_code }">
                                                 {{ item.allotment_class_code }}
                                                 -
                                                 {{ item.allotment_class }}
@@ -262,7 +278,10 @@ export default{
                 financial_year_id: null,
                 object_expenditure: null,
                 allotment_class_code: null,
-                allotment_class: null,
+                allotment_class: {
+                    allotment_class: null,
+                    allotment_class_code: null
+                },
                 approved_budget: 0,
                 beginning_budget: 0
             },
@@ -417,10 +436,14 @@ export default{
 
         clearFields(){
             //this.fields.financial_year_id = 0;
+            this.global_id = 0
             this.fields.object_expenditure_id = 0
             this.fields.object_expenditure = null;
             this.fields.allotment_class_code = null;
-            this.fields.allotment_class = null;
+            this.fields.allotment_class = {
+                allotment_class: null,
+                allotment_class_code: null
+            };
             this.fields.approved_budget = 0;
             this.fields.beginning_budget = 0;
         },
@@ -434,8 +457,19 @@ export default{
             
             //nested axios for getting the address 1 by 1 or request by request
             axios.get('/object-expenditures/'+ data_id).then(res=>{
-                this.fields = res.data;
+                this.fields.object_expenditure_id = res.data.object_expenditure_id
+                this.fields.financial_year_id = res.data.financial_year_id;
+                this.fields.object_expenditure = res.data.object_expenditure;
+                this.fields.account_code = res.data.account_code;
+
+                this.fields.allotment_class = {
+                    allotment_class: res.data.allotment_class,
+                    allotment_class_code: res.data.allotment_class_code
+                }
                 
+                console.log(this.fields.allotment_class)
+                this.fields.approved_budget = res.data.approved_budget
+                this.fields.beginning_budget = res.data.beginning_budget
             });
         },
 

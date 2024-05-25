@@ -70,9 +70,7 @@
                     </b-navbar-item><b-navbar-item href="/object-expenditures">
                         Object Expenditures
                     </b-navbar-item>
-                    {{-- <b-navbar-item href="/allotment-class-accounts">
-                        Allotment Class Accounts
-                    </b-navbar-item> --}}
+                    
                     <b-navbar-item href="/supplier-payee">
                         Supplier/Payee
                     </b-navbar-item>
@@ -84,6 +82,12 @@
                     </b-navbar-item>
                     <b-navbar-item href="/offices">
                         Office/Institutes
+                    </b-navbar-item>
+                    <b-navbar-item href="/realignments">
+                        Realignment
+                    </b-navbar-item>
+                    <b-navbar-item href="/supplemental">
+                        Supplemental
                     </b-navbar-item>
                     
                     {{-- <b-navbar-item href="/priority-programs">

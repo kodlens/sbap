@@ -165,6 +165,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/get-modal-allotment-class-accounts', [App\Http\Controllers\Administrator\AllotmentClassAccountController::class, 'getModalAllotmentClassAccounts']);
     Route::get('/get-modal-payee', [App\Http\Controllers\Administrator\PayeeController::class, 'getModalPayee']);
 
+
+    Route::resource('/realignments', App\Http\Controllers\RealignmentController::class);
+
+
 });
 
 Route::middleware(['auth', 'budget'])->group(function() {

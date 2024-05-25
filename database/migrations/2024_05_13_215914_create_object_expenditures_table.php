@@ -23,6 +23,7 @@ class CreateObjectExpendituresTable extends Migration
                 ->onUpdate('cascade');
 
             $table->string('object_expenditure', 100)->nullable();
+            $table->string('account_code', 100)->nullable();
 
             $table->string('allotment_class', 100)->nullable();
             $table->string('allotment_class_code', 100)->nullable();
