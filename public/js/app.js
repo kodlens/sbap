@@ -15056,6 +15056,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.loadFinancialYears(); //this.loadFundSources()
@@ -15086,7 +15087,7 @@ __webpack_require__.r(__webpack_exports__);
     loadReportDashboard: function loadReportDashboard() {
       var _this = this;
 
-      var params = ["fy=".concat(this.search.financial_year['financial_year_id']), "allotment=".concat(this.search.allotment_class), "doc=".concat(this.search.doc)].join('&');
+      var params = ["fy=".concat(this.search.financial_year['financial_year_id']), "doc=".concat(this.search.doc)].join('&');
       axios.get("/load-report-dashboard?".concat(params)).then(function (res) {
         _this.data = res.data;
       });
@@ -54648,9 +54649,7 @@ var render = function () {
                 ],
                 1
               ),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "columns" }, [
+              _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "column" },
@@ -54701,58 +54700,9 @@ var render = function () {
                 ],
                 1
               ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "column" },
-                [
-                  _c(
-                    "b-field",
-                    {
-                      attrs: {
-                        label: "Allotment Class",
-                        "label-position": "on-border",
-                        expanded: "",
-                      },
-                    },
-                    [
-                      _c(
-                        "b-select",
-                        {
-                          attrs: { expanded: "" },
-                          model: {
-                            value: _vm.search.allotment_class,
-                            callback: function ($$v) {
-                              _vm.$set(_vm.search, "allotment_class", $$v)
-                            },
-                            expression: "search.allotment_class",
-                          },
-                        },
-                        [
-                          _c("option", { attrs: { value: "" } }, [
-                            _vm._v("ALL"),
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(_vm.allotmentClasses, function (allot, ix) {
-                            return _c(
-                              "option",
-                              {
-                                key: "allotclass" + ix,
-                                domProps: { value: allot.allotment_class },
-                              },
-                              [_vm._v(_vm._s(allot.allotment_class))]
-                            )
-                          }),
-                        ],
-                        2
-                      ),
-                    ],
-                    1
-                  ),
-                ],
-                1
-              ),
-              _vm._v(" "),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "columns" }, [
               _c("div", { staticClass: "column" }, [
                 _c(
                   "div",

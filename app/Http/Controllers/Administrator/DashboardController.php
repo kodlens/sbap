@@ -23,10 +23,20 @@ class DashboardController extends Controller
     }
 
 
-    public function loadReportDashboard(){
+    public function loadReportDashboard(Request $req){
         
-        $data = Accounting::with(['accounting_expenditures', 'payee'])
-            ->get();
+
+        if($req->doc === 'ALL'){
+            $data = Accounting::with(['accounting_expenditures', 'payee'])
+                ->where('financial_year_id', $req->fy)
+                ->get();
+        }else{
+            $data = Accounting::with(['accounting_expenditures', 'payee'])
+                ->where('financial_year_id', $req->fy)
+                ->where('doc_type', 'LIKE', $req->doc . '%')
+                ->get();
+        }
+        
 
         return $data;
 

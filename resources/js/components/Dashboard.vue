@@ -33,9 +33,6 @@
                                 </b-select>
                             </b-field>
                         </div>
-                    </div>
-
-                    <div class="columns">
                         <div class="column">
                             <b-field label="Document Type" label-position="on-border"
                                 expanded>
@@ -48,7 +45,11 @@
                                 </b-select>
                             </b-field>
                         </div>
-                        <div class="column">
+                    </div>
+
+                    <div class="columns">
+                        
+                        <!-- <div class="column">
                             <b-field label="Allotment Class" label-position="on-border"
                                 expanded>
                                 <b-select v-model="search.allotment_class"
@@ -59,7 +60,7 @@
                                         :value="allot.allotment_class">{{ allot.allotment_class }}</option>
                                 </b-select>
                             </b-field>
-                        </div>
+                        </div> -->
 
                         <div class="column">
                             <div class="buttons is-right">
@@ -193,7 +194,6 @@ export default{
             const params = [
                
                `fy=${this.search.financial_year['financial_year_id']}`,
-               `allotment=${this.search.allotment_class}`,
                `doc=${this.search.doc}`
            ].join('&')
 
