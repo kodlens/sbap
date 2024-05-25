@@ -8,13 +8,13 @@
 
                         <div class="mt-2">
 
-                            <b-button
+                            <!-- <b-button
                                 @click="debug"
                                 icon-left="note-multiple-outline"
                                 class="button is-info"
                                 outlined
                                 label="Debug">
-                            </b-button>
+                            </b-button> -->
 
                             <div class="columns">
                                 <div class="column">

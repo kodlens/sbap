@@ -4,7 +4,7 @@
             <div class="columns is-centered">
                 <div class="column is-8-desktop is-10-tablet">
                     <div class="box">
-                        <div class="has-text-weight-bold">ADD/EDIT RECORD ()DEBUG</div>
+                        <div class="has-text-weight-bold">ADD/EDIT RECORD</div>
 
                         <div class="mt-2">
 
@@ -24,7 +24,6 @@
                                         :message="errors.financial_year_id ? errors.financial_year_id[0] : ''">
                                         <b-select v-model="fields.financial_year_id" expanded
                                             required
-                                            @input="loadAllotmentClasses"
                                             placeholder="Financial Year">
                                             <option v-for="(item, indx) in financialYears"
                                                 :key="`fy${indx}`"
@@ -36,30 +35,15 @@
                                         </b-select>
                                     </b-field>
                                 </div>
-                                <div class="column">
-                                    <b-field label="Fund Source"
-                                        expanded
-                                        :type="errors.fund_source_id ? 'is-danger':''"
-                                        :message="errors.fund_source_id ? errors.fund_source_id[0] : ''">
-                                        <b-select v-model="fields.fund_source_id" expanded
-                                            @input="clearChargeTo"
-                                            required
-                                            placeholder="Fund Source">
-                                            <option v-for="(item,index) in fundSources"
-                                                :key="`fund${index}`" :value="item.fund_source_id">
-                                                {{ item.fund_source }}</option>
-
-                                        </b-select>
-                                    </b-field>
-                                </div>
+                                
                             </div>
 
                             <div class="columns">
                                 <div class="column">
                                     <b-field label="Date Time"
-                                        :type="errors.date_time ? 'is-danger':''"
-                                        :message="errors.date_time ? errors.date_time[0] : ''">
-                                        <b-datetimepicker v-model="fields.date_time" required></b-datetimepicker>
+                                        :type="errors.date_transaction ? 'is-danger':''"
+                                        :message="errors.date_transaction ? errors.date_transaction[0] : ''">
+                                        <b-datetimepicker v-model="fields.date_transaction" required></b-datetimepicker>
                                     </b-field>
                                 </div>
                                 <div class="column">
@@ -96,19 +80,7 @@
                                 </div>
                             </div>
 
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Total Amount (PR Amount)"
-                                        :type="errors.pr_amount ? 'is-danger':''"
-                                        :message="errors.pr_amount ? errors.pr_amount[0] : ''">
-                                        <b-numberinput placholder="Total Amount"
-                                            :controls="false" 
-                                            step="0.0001"
-                                            v-model="fields.pr_amount">
-                                        </b-numberinput>
-                                    </b-field>
-                                </div>
-                            </div>
+                          
 
                             <div class="columns">
                                 <div class="column">
@@ -123,7 +95,94 @@
                             </div>
 
 
+                            <div class="columns">
+                                <div class="column">
+                                    <modal-browse-office
+                                        label="Office"
+                                        :type="errors.office_id ? 'is-danger':''"
+                                        :message="errors.office_id ? errors.office_id[0] : ''"
+                                        @browseOffice="emitBrowseOffice"
+                                        :prop-name="fields.office"
+                                    ></modal-browse-office>
+                                </div>
+                            </div>
 
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Status">
+                                        <b-input type="text" v-model="fields.pr_status"
+                                            placeholder="Status">
+                                        </b-input>
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Others">
+                                        <b-input type="text" v-model="fields.others"
+                                            placeholder="Others">
+                                        </b-input>
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            
+                            <div class="columns">
+                                <div class="column">
+
+                                    <b-field label="Charge To"></b-field>
+                                    <div class="buttons">
+                                        <b-button @click="newObjectExpenditure"
+                                            icon-left="plus"
+                                            class="button is-small is-outlined is-primary">
+                                            NEW OOE
+                                        </b-button>
+                                    </div>
+
+                                    <div v-for="(item, index) in fields.objectExpenditures" :key="`ooe${index}`">
+
+                                        <div class="columns">
+                                            <div class="column">
+                                                <b-field label="Select OOE" label-position="on-border" class="mb-2 ml-4"
+                                                    :type="errors.object_expenditure ? 'is-danger':''"
+                                                    :message="errors.object_expenditure ? errors.object_expenditure[0] : ''">
+                                                    <modal-browse-object-expenditures
+                                                        :prop-financial-year-id="fields.financial_year_id"
+                                                        :prop-object-expenditure="item.object_expenditure"
+                                                        @browseObjectExpenditure="emitObjectExpenditure($event, index)"></modal-browse-object-expenditures>
+                                                </b-field>
+                                            </div>
+
+                                            <div class="column">
+                                                <b-numberinput 
+                                                    v-model="item.amount" 
+                                                    @input="computeTotalAmount" :controls="false"/>
+                                            </div>
+
+                                            <div class="column">
+                                                <b-button class="ml-1" type="is-danger" icon-right="delete" @click="removeObjectExpenditure(index)"></b-button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Total Amount (PR Amount)"
+                                        :type="errors.pr_amount ? 'is-danger':''"
+                                        :message="errors.pr_amount ? errors.pr_amount[0] : ''">
+                                        <b-numberinput placholder="Total Amount"
+                                            :controls="false" 
+                                            step="0.0001"
+                                            v-model="fields.pr_amount">
+                                        </b-numberinput>
+                                    </b-field>
+                                </div>
+                            </div>
 
                             <div class="columns">
                                 <div class="column">
@@ -168,8 +227,6 @@
                                                         </b-button>
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
                                             <div class="buttons mt-2">
@@ -185,153 +242,6 @@
                             </div>
 
 
-                            <div v-if="fields.fund_source_id === 1">
-                                <div class="has-text-weight-bold mb-4">CHARGE TO</div>
-                                <div class="ml-4" v-for="(item, index) in fields.allotment_classes" :key="`acc${index}`">
-                                    <div class="columns">
-                                        <div class="column">
-                                            <b-field label="Allotment Class" label-position="on-border"
-                                                expanded
-                                                :type="errors.allotment_class_id ? 'is-danger':''"
-                                                :message="errors.allotment_class_id ? errors.allotment_class_id[0] : ''">
-                                                <b-select v-model="item.allotment_class_id"
-                                                    expanded>
-                                                    <option v-for="(allot, ix) in allotmentClasses"
-                                                        :key="`allotclass${ix}`"
-                                                        :value="allot.allotment_class_id">{{ allot.allotment_class }}</option>
-                                                </b-select>
-                                            </b-field>
-                                        </div>
-                                        <div class="column">
-                                            <b-field label="Account" label-position="on-border"
-                                                :type="errors.allotment_class_account_id ? 'is-danger':''"
-                                                :message="errors.allotment_class_account_id ? errors.allotment_class_account_id[0] : ''">
-                                            <modal-browse-allotment-class-account
-                                                :prop-class-id="item.allotment_class_id"
-                                                :prop-allotment-account="item.allotment"
-                                                @browseAllotmentAccount="emitAllotmentAccount(index, $event)"></modal-browse-allotment-class-account>
-                                            </b-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="columns">
-                                        <div class="column">
-                                            <b-field label="Amount" label-position="on-border"
-                                                :type="errors.amount ? 'is-danger':''"
-                                                :message="errors.amount ? errors.amount[0] : ''">
-                                                <b-numberinput
-                                                    v-model="item.amount"
-                                                    @blur="computeTotalAmount"
-                                                    :controls="false"
-                                                    step="0.0001">
-                                                </b-numberinput>
-                                            </b-field>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div><!-- ccount loop-->
-                                <div class="buttons mt-2">
-                                    <b-button @click="newAllotmentClass"
-                                              icon-left="plus"
-                                              class="button is-small is-outlined is-primary">
-                                        NEW ALLOTMENT CLASS
-                                    </b-button>
-                                </div>
-                            </div><!--container div for loop -->
-
-
-
-
-
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Priority Program"
-                                        :type="errors.priority_program_id ? 'is-danger':''"
-                                        :message="errors.priority_program_id ? errors.priority_program_id[0] : ''">
-                                        <modal-browse-priority-program
-                                            :prop-priority-program="fields.priority_program"
-                                            @browsePriorityProgram="emitPriorityProgram"></modal-browse-priority-program>
-                                    </b-field>
-                                </div>
-                            </div>
-
-                            <!-- <div class="columns">
-                                <div class="column">
-                                    <b-field label="Supplemental Budget"
-                                        :type="errors.supplemental_budget ? 'is-danger':''"
-                                        :message="errors.supplemental_budget ? errors.supplemental_budget[0] : ''">
-                                        <b-input type="text" v-model="fields.supplemental_budget"
-                                                 placeholder="Supplemental Budget"
-                                                 required>
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                                <div class="column">
-                                    <b-field label="Capital Outlay"
-                                        :type="errors.capital_outlay ? 'is-danger':''"
-                                        :message="errors.capital_outlay ? errors.capital_outlay[0] : ''">
-                                        <b-input type="text" v-model="fields.capital_outlay"
-                                                 placeholder="Capital Outlay"
-                                                 required>
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                            </div>
-
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Accounts Payable"
-                                        :type="errors.account_payable ? 'is-danger':''"
-                                        :message="errors.account_payable ? errors.account_payable[0] : ''">
-                                        <b-input type="text" v-model="fields.account_payable"
-                                            placeholder="Accounts Payable"
-                                            required>
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                                <div class="column">
-                                    <b-field label="TES Trust Fund"
-                                        :type="errors.tes_trust_fund ? 'is-danger':''"
-                                        :message="errors.tes_trust_fund ? errors.tes_trust_fund[0] : ''">
-                                        <b-input type="text" v-model="fields.tes_trust_fund"
-                                            placeholder="TES Trust Fund"
-                                            required>
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                            </div>-->
-
-                            <div class="columns">
-                                <div class="column">
-                                    <modal-browse-office
-                                        label="Office"
-                                        :type="errors.office_id ? 'is-danger':''"
-                                        :message="errors.office_id ? errors.office_id[0] : ''"
-                                        @browseOffice="emitBrowseOffice"
-                                        :prop-name="fields.office"
-                                    ></modal-browse-office>
-                                </div>
-                            </div>
-
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Status">
-                                        <b-input type="text" v-model="fields.pr_status"
-                                            placeholder="Status">
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                            </div>
-
-                            <div class="columns">
-                                <div class="column">
-                                    <b-field label="Others">
-                                        <b-input type="text" v-model="fields.others"
-                                            placeholder="Others">
-                                        </b-input>
-                                    </b-field>
-                                </div>
-                            </div>
 
                             <div class="buttons mt-4">
                                 <b-button
@@ -377,8 +287,7 @@ export default{
             fields: {
                 accounting_id: 0,
                 financial_year_id: null,
-                fund_source_id: null,
-                date_time: new Date(),
+                date_transaction: new Date(),
                 transaction_no: null,
                 training_control_no : null,
                 transaction_type_id: null,
@@ -387,13 +296,8 @@ export default{
                 particulars: null,
 
                 documentary_attachments: [],
-
-                allotment_classes: [],
-                pr_amount: null,
-
-                priority_program_id: null,
-                priority_program: null,
-                allotment_classes: [],
+                objectExpenditures: [],
+                pr_amount: 0,
 
                 office_id: null,
                 office: null,
@@ -411,16 +315,13 @@ export default{
                 bank_account_payee: '',
             },
 
-            priority_program: {
-                priority_program: ''
-            },
+          
             office: {
                 office: ''
             },
 
             documentaryAttachments: [],
-            allotmentClasses: [],
-
+   
         }
     },
 
@@ -451,6 +352,9 @@ export default{
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
                 this.financialYears = res.data
+
+                this.fields.financial_year_id = res.data.filter(fy => fy.active === 1)[0].financial_year_id;
+
             })
         },
 
@@ -467,18 +371,15 @@ export default{
             this.fields.payee_id = row.payee_id
         },
 
-        emitAllotmentAccount(index, row){
-            this.fields.allotment_classes[index].allotment = '(' + row.allotment_class_account_code + ') ' + row.allotment_class_account
-            this.fields.allotment_classes[index].allotment_class_id = row.allotment_class_id
-            this.fields.allotment_classes[index].allotment_class_account_id = row.allotment_class_account_id
+        emitObjectExpenditure(row, index){
+            console.log(row, index); 
+            this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure
+            this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id
+            this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class
+            this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code
         },
 
-        emitPriorityProgram(row){
-            this.fields.priority_program = "(" + row.priority_program_code + ") " + row.priority_program
-            this.fields.priority_program_id = row.priority_program_id
-        },
-
-
+      
         emitBrowseOffice(row){
             this.office.office = row.office + ` (${row.description})`
             this.fields.office_id = row.office_id
@@ -519,35 +420,38 @@ export default{
         },
 
 
-        //attaching documents
-        newAllotmentClass(){
-            this.fields.allotment_classes.push({
-                accounting_allotment_class_id: 0,
-                allotment_class_id: 0,
-                allotment_class_account_id: 0,
+        newObjectExpenditure(){
+            this.fields.objectExpenditures.push({
+                accounting_expenditure_id: 0,
+                object_expenditure_id: null,
+                accounting_id: 0,
+                financial_year_id: 0,
+                object_expenditure: null,
+                allotment_class: null,
+                allotment_class_code: null,
                 amount: 0,
-                allotment: null
             })
         },
-        removeAllotmentClass(ix){
+        removeObjectExpenditure(ix){
             this.$buefy.dialog.confirm({
                 title: 'DELETE?',
-                message: 'Are you sure you want to remove this attachment? This cannot be undone.',
+                message: 'Are you sure you want to remove this OOE? This cannot be undone.',
 
                 onConfirm: ()=>{
-                    let nId = this.fields.accounts[ix].account_id;
+                    let nId = this.fields.objectExpenditures[ix].accounting_expenditure_id;
                     if(nId > 0){
-                        axios.delete('/#/' + nId).then(res=>{
+                        axios.delete('/accounting-expenditures/' + nId).then(res=>{
                             if(res.data.status === 'deleted'){
                                 this.$buefy.toast.open({
-                                    message: `Account deleted successfully.`,
+                                    message: `OOE successfully removed.`,
                                     type: 'is-primary'
                                 })
                             }
                         });
                     }
 
-                    this.fields.accounts.splice(ix, 1)
+                    this.fields.objectExpenditures.splice(ix, 1)
+                    this.computeTotalAmount()
 
                 }
             });
@@ -563,9 +467,7 @@ export default{
             let formData = new FormData();
             formData.append('accounting_id', this.id);
             formData.append('financial_year_id', this.fields.financial_year_id ? this.fields.financial_year_id : '');
-            formData.append('fund_source_id', this.fields.fund_source_id ? this.fields.fund_source_id : '');
-
-            formData.append('date_time', this.fields.date_time ? this.$formatDateAndTime(this.fields.date_time) : '');
+            formData.append('date_transaction', this.fields.date_transaction ? this.$formatDateAndTime(this.fields.date_transaction) : '');
             formData.append('pr_no', this.fields.pr_no ? this.fields.pr_no : '');
             formData.append('training_control_no', this.fields.training_control_no ? this.fields.training_control_no : '');
             formData.append('transaction_type_id', this.fields.transaction_type_id ? this.fields.transaction_type_id : '');
@@ -581,15 +483,16 @@ export default{
                 });
             }
             //will be code later
-            if(this.fields.allotment_classes){
-                this.fields.allotment_classes.forEach((item, index) =>{
-                    formData.append(`allotment_classes[${index}][accounting_allotment_class_id]`, item.accounting_allotment_class_id);
-                    formData.append(`allotment_classes[${index}][allotment_class_id]`, item.allotment_class_id);
-                    formData.append(`allotment_classes[${index}][allotment_class_account_id]`, item.allotment_class_account_id);
-                    formData.append(`allotment_classes[${index}][amount]`, item.amount);
+            if(this.fields.objectExpenditures){
+                this.fields.objectExpenditures.forEach((item, index) =>{
+                    formData.append(`object_expenditures[${index}][accounting_expenditure_id]`, item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
+                    formData.append(`object_expenditures[${index}][object_expenditure_id]`, item.object_expenditure_id ? item.object_expenditure_id : 0);
+                    formData.append(`object_expenditures[${index}][allotment_class_code]`, item.allotment_class_code);
+                    formData.append(`object_expenditures[${index}][allotment_class]`, item.allotment_class);
+                    formData.append(`object_expenditures[${index}][amount]`, item.amount);
                 });
             }
-            formData.append('priority_program_id', this.fields.priority_program_id ? this.fields.priority_program_id : '');
+           
             formData.append('others', this.fields.others ? this.fields.others : '');
             formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
 
@@ -643,16 +546,11 @@ export default{
 
 
 
-        clearChargeTo(){
-            this.fields.allotment_classes = []
-        },
-
         debug(){
 
-            this.fields.financial_year_id = 1
-            this.fields.fund_source_id = 2
+            this.fields.financial_year_id = 2
 
-            this.fields.date_time = new Date();
+            this.fields.date_transaction = new Date();
             this.fields.transaction_no = '23-01-0001'
             this.fields.training_control_no = 'TD-1234-22-1122'
             this.fields.transaction_type_id = 1
@@ -677,7 +575,7 @@ export default{
                 this.fields.financial_year_id = result.financial_year_id
                 this.fields.fund_source_id = result.fund_source_id
 
-                this.fields.date_time = new Date(result.date_time)
+                this.fields.date_transaction = new Date(result.date_transaction)
 
                 this.fields.training_control_no = result.training_control_no
                 this.fields.pr_no = result.pr_no
@@ -688,43 +586,34 @@ export default{
                 this.fields.particulars = result.particulars
                 this.fields.pr_amount = Number(result.pr_amount)
 
+                //OOE
+                if(result.accounting_expenditures.length > 0){
+                    result.accounting_expenditures.forEach((item, index) =>{
+                        this.fields.objectExpenditures.push({
+                            accounting_expenditure_id: item.accounting_expenditure_id,
+                            object_expenditure_id: item.object_expenditure_id,
+                            allotment_class_code: item.allotment_class_code,
+                            allotment_class: item.allotment_class,
+                            amount: item.amount,
+                            object_expenditure: item.object_expenditure.object_expenditure
+                        });
+                    });
+                }
+
+
                 //attachments
-
-                // if(result.procurement_documentary_attachments.length > 0){
-                //     result.procurement_documentary_attachments.forEach(item => {
-                //         this.fields.documentary_attachments.push({
-                //             documentary_attachment_id: item.documentary_attachment_id,
-                //             acctg_doc_attachment_id: item.acctg_doc_attachment_id,
-                //             procurement_id: item.procurement_id,
-                //         });
-                //     })
-                // }
-                
-
-
-                // //async call
-                // this.loadAllotmentClasses().then(()=>{
-                //     result.procurement_allotment_classes.forEach(item => {
-                //         this.fields.allotment_classes.push({
-                //             procurement_allotment_class_id: item.procurement_allotment_class_id,
-                //             allotment_class_id: item.allotment_class_id,
-                //             allotment_class_account_id: item.allotment_class_account_id,
-                //             amount: item.amount,
-                //             //for viewing only
-                //             allotment: '(' + item.allotment_class_account.allotment_class_account_code + ') ' + item.allotment_class_account.allotment_class_account
-                //         });
-                //     })
-                // })
-                
-                // //if has priority program
-                // if(result.priority_program_id){
-                //     this.fields.priority_program = "(" + result.priority_program.priority_program_code + ") " + result.priority_program.priority_program
-                //     this.fields.priority_program_id = result.priority_program_id
-                // }
-
-                // this.fields.office_id = result.office.office_id
-                // this.fields.office = '(' + result.office.office + ') ' + result.office.description
-                // this.fields.others = result.others
+                if(result.accounting_documentary_attachments.length > 0){
+                    result.acctg_documentary_attachments.forEach(item => {
+                        this.fields.documentary_attachments.push({
+                            documentary_attachment_id: item.documentary_attachment_id,
+                            acctg_doc_attachment_id: item.acctg_doc_attachment_id,
+                            accounting_id: item.accounting_id,
+                        });
+                    })
+                }
+                this.fields.office_id = result.office.office_id
+                this.fields.office = '(' + result.office.office + ') ' + result.office.description
+                this.fields.others = result.others
 
             })
         },
@@ -734,7 +623,7 @@ export default{
 
             let total = 0;
 
-            this.fields.allotment_classes.forEach((item, index) =>{
+            this.fields.objectExpenditures.forEach((item, index) =>{
                total += item.amount
             });
             this.fields.pr_amount = total
@@ -744,14 +633,12 @@ export default{
 
     mounted(){
         this.loadFinancialYears()
-        this.loadFundSources()
         if(this.id > 0){
             this.getData()
         }
 
         this.loadTransactionTypes()
         this.loadDocumentaryAttachments()
-        //this.loadAllotmentClasses()
     }
 }
 </script>

@@ -26,7 +26,7 @@ class AccountingController extends Controller
 
 
     public function getData(Request $req){
-
+        $fy = FinancialYear::where('active', 1)->first();
         $sort = explode('.', $req->sort_by);
 
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
@@ -37,6 +37,7 @@ class AccountingController extends Controller
                     ->orWhere('training_control_no', 'like', $req->key . '%');
             })
             ->where('doc_type', 'ACCOUNTING')
+            ->where('financial_year_id', $fy->financial_year_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
 

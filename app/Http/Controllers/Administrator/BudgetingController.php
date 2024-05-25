@@ -25,6 +25,7 @@ class BudgetingController extends Controller
 
 
     public function getData(Request $req){
+        $fy = FinancialYear::where('active', 1)->first();
 
         $sort = explode('.', $req->sort_by);
 
@@ -36,6 +37,7 @@ class BudgetingController extends Controller
                     ->orWhere('training_control_no', 'like', $req->key . '%');
             })
             ->where('doc_type', 'BUDGETING')
+            ->where('financial_year_id', $fy->financial_year_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
 

@@ -8,13 +8,13 @@
 
                         <div class="mt-2">
 
-                            <b-button
+                            <!-- <b-button
                                 @click="debug"
                                 icon-left="note-multiple-outline"
                                 class="button is-info"
                                 outlined
                                 label="Debug">
-                            </b-button>
+                            </b-button> -->
 
                             <div class="columns">
                                 <div class="column">
@@ -157,8 +157,8 @@
 
                                             <div class="column">
                                                 <b-numberinput 
-                                                    :disabled="item.accounting_expenditure_id > 0 ? true : false"
-                                                    v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
+                                                    v-model="item.amount" 
+                                                    @input="computeTotalAmount" :controls="false"/>
                                             </div>
 
                                             <div class="column">
@@ -491,7 +491,7 @@ export default{
                     formData.append(`object_expenditures[${index}][amount]`, item.amount);
                 });
             }
-            //formData.append('priority_program_id', this.fields.priority_program_id ? this.fields.priority_program_id : '');
+
             formData.append('others', this.fields.others ? this.fields.others : '');
             formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
 
@@ -552,7 +552,6 @@ export default{
         debug(){
 
             this.fields.financial_year_id = 2
-            this.fields.fund_source = 1
 
             this.fields.date_transaction = new Date();
 
@@ -587,7 +586,7 @@ export default{
                 this.fields.total_amount = Number(result.total_amount)
 
                 //OOE
-                 if(result.accounting_expenditures.length > 0){
+                if(result.accounting_expenditures.length > 0){
                     result.accounting_expenditures.forEach((item, index) =>{
                         this.fields.objectExpenditures.push({
                             accounting_expenditure_id: item.accounting_expenditure_id,
@@ -643,7 +642,6 @@ export default{
 
         this.loadTransactionTypes()
         this.loadDocumentaryAttachments()
-        //this.loadAllotmentClasses()
     },
 
     computed: {

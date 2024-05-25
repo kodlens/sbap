@@ -27,12 +27,13 @@ class CreateAccountingsTable extends Migration
             $table->date('date_transaction')->nullable();
             $table->string('doc_type', 30)->nullable();
 
-            $table->unsignedBigInteger('transaction_type_id');
-            $table->foreign('transaction_type_id')
-                ->references('transaction_type_id')
-                ->on('transaction_types')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->unsignedBigInteger('transaction_type_id')
+                ->default(0);
+            // $table->foreign('transaction_type_id')
+            //     ->references('transaction_type_id')
+            //     ->on('transaction_types')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
             $table->string('transaction_no', 30)->nullable();
             $table->string('training_control_no', 30)->nullable();

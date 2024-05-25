@@ -70,7 +70,7 @@
                             </b-table-column>
 
                             <b-table-column field="date_time" label="Date & Time" v-slot="props">
-                                {{ props.row.date_time }}
+                                {{ props.row.date_transaction }}
                             </b-table-column>
 
                             <b-table-column field="training_control_no" label="Training/Activity No" v-slot="props">
