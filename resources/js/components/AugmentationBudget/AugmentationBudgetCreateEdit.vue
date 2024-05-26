@@ -65,7 +65,7 @@
                                     </b-field>
                                 </div>
                                 <div class="column">
-                                    <b-field label="Amount Transfer"
+                                    <b-field label="Amount"
                                         :type="errors.amount_transfer ? 'is-danger':''"
                                         :message="errors.amount_transfer ? errors.amount_transfer[0] : ''">
                                         <b-numberinput :controls="false"

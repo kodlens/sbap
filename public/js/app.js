@@ -56267,7 +56267,7 @@ var render = function () {
                       "b-field",
                       {
                         attrs: {
-                          label: "Amount Transfer",
+                          label: "Amount",
                           type: _vm.errors.amount_transfer ? "is-danger" : "",
                           message: _vm.errors.amount_transfer
                             ? _vm.errors.amount_transfer[0]
