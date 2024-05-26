@@ -18711,6 +18711,319 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    id: {
+      type: Number,
+      "default": 0
+    },
+    propUser: {
+      type: Object,
+      "default": function _default() {}
+    }
+  },
+  data: function data() {
+    return {
+      financialYears: [],
+      fields: {
+        financial_year_id: null,
+        remarks: null,
+        object_expenditure_id_from: 0,
+        object_expenditure_from: '',
+        approved_budget_from: 0,
+        beginning_budget_from: 0,
+        balance: 0,
+        object_expenditure_id_to: 0,
+        object_expenditure_to: '',
+        approved_budget_to: 0,
+        beginning_budget_to: 0,
+        amount_transfer: 0
+      },
+      errors: {},
+      transactionTypes: [],
+      global_id: 0,
+      payee: {
+        payee_id: 0,
+        bank_account_payee: ''
+      },
+      office: {
+        office: ''
+      },
+      documentaryAttachments: [],
+      object_expenditure: ''
+    };
+  },
+  methods: {
+    loadTransactionTypes: function loadTransactionTypes() {
+      var _this = this;
+
+      axios.get('/load-transaction-types').then(function (res) {
+        _this.transactionTypes = res.data;
+      });
+    },
+    loadDocumentaryAttachments: function loadDocumentaryAttachments() {
+      var _this2 = this;
+
+      axios.get('/load-documentary-attachments').then(function (res) {
+        _this2.documentaryAttachments = res.data;
+      })["catch"](function (err) {});
+    },
+    loadObjectExpenditures: function loadObjectExpenditures() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.get('/load-object-expenditures/' + _this3.fields.financial_year_id).then(function (res) {
+                  _this3.objectExpenditures = res.data;
+                })["catch"](function (err) {});
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    loadFinancialYears: function loadFinancialYears() {
+      var _this4 = this;
+
+      axios.get('/load-financial-years').then(function (res) {
+        _this4.financialYears = res.data;
+        _this4.fields.financial_year_id = res.data.filter(function (fy) {
+          return fy.active === 1;
+        })[0].financial_year_id;
+      });
+    },
+    emitPayee: function emitPayee(row) {
+      this.payee.payee_id = row.payee_id;
+      this.payee.bank_account_payee = row.bank_account_payee;
+      this.fields.payee_id = row.payee_id;
+    },
+    emitObjectExpenditureFrom: function emitObjectExpenditureFrom(row) {
+      console.log(row);
+      this.fields.object_expenditure_from = row.object_expenditure;
+      this.fields.object_expenditure_id_from = row.object_expenditure_id;
+      this.fields.approved_budget_from = row.approved_budget;
+      this.fields.beginning_budget_from = row.beginning_budget;
+      this.fields.balance = row.approved_budget - row.utilize_budget;
+    },
+    emitObjectExpenditureTo: function emitObjectExpenditureTo(row) {
+      console.log(row);
+      this.fields.object_expenditure_to = row.object_expenditure;
+      this.fields.object_expenditure_id_to = row.object_expenditure_id;
+      this.fields.approved_budget_to = row.approved_budget;
+      this.fields.beginning_budget_to = row.beginning_budget;
+    },
+    submit: function submit() {
+      var _this5 = this;
+
+      this.errors = {};
+
+      if (this.id > 0) {
+        //update
+        axios.post('/realignments-update/' + this.id, this.fields).then(function (res) {
+          if (res.data.status === 'updated') {
+            _this5.$buefy.dialog.alert({
+              title: 'UPDATED!',
+              message: 'Successfully updated.',
+              type: 'is-success',
+              onConfirm: function onConfirm() {
+                window.location = '/realignments';
+              }
+            });
+          }
+        })["catch"](function (err) {
+          if (err.response.status === 422) {
+            _this5.errors = err.response.data.errors;
+          }
+        });
+      } else {
+        //INSERT HERE
+        axios.post('/realignments', this.fields).then(function (res) {
+          if (res.data.status === 'saved') {
+            _this5.$buefy.dialog.alert({
+              title: 'SAVED!',
+              message: 'Successfully saved.',
+              type: 'is-success',
+              confirmText: 'OK',
+              onConfirm: function onConfirm() {
+                window.location = '/realignments';
+              }
+            });
+          }
+        })["catch"](function (err) {
+          if (err.response.status === 422) {
+            _this5.errors = err.response.data.errors;
+
+            _this5.$buefy.dialog.alert({
+              type: 'is-danger',
+              title: 'INVALID INPUT.',
+              message: 'Please check all inputs.'
+            });
+          }
+        });
+      }
+    },
+    getData: function getData() {
+      axios.get('/realignments/' + this.id).then(function (res) {
+        var result = res.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadFinancialYears(); //this.loadFundSources()
+
+    if (this.id > 0) {
+      this.getData();
+    }
+  },
+  computed: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentIndex.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentIndex.vue?vue&type=script&lang=js& ***!
@@ -18861,11 +19174,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     propUser: {
@@ -18880,7 +19188,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       data: [],
       total: 0,
       loading: false,
-      sortField: 'accounting_id',
+      sortField: 'realignment_id',
       sortOrder: 'desc',
       page: 1,
       perPage: 20,
@@ -18890,6 +19198,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: ''
       },
       isModalCreate: false,
+      fields: {
+        financial_year_id: null,
+        remarks: null,
+        object_expenditure_id_from: null,
+        object_expenditure_id_to: null,
+        amount_transfer: null
+      },
       errors: {},
       btnClass: {
         'is-success': true,
@@ -18907,7 +19222,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "key=".concat(this.search.key), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
       this.loading = true;
-      axios.get("/get-procurements-records?".concat(params)).then(function (_ref) {
+      axios.get("/get-realignments?".concat(params)).then(function (_ref) {
         var data = _ref.data;
         _this.data = [];
         var currentTotal = data.total;
@@ -18949,6 +19264,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.isModalCreate = true;
       this.clearFields();
       this.errors = {};
+    },
+    clearFields: function clearFields() {
+      this.fields.financial_year_id = null;
+      this.fields.remarks = null;
+      this.fields.object_expenditure_id_from = null;
+      this.fields.object_expenditure_id_to = null;
+      this.fields.amount_transfer = null;
     },
     //alert box ask for deletion
     confirmDelete: function confirmDelete(delete_id) {
@@ -42038,6 +42360,45 @@ component.options.__file = "resources/js/components/Processor/TableCollegeAccoun
 
 /***/ }),
 
+/***/ "./resources/js/components/Realignment/RealignmentCreateEdit.vue":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/Realignment/RealignmentCreateEdit.vue ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8& */ "./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8&");
+/* harmony import */ var _RealignmentCreateEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RealignmentCreateEdit.vue?vue&type=script&lang=js& */ "./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RealignmentCreateEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Realignment/RealignmentCreateEdit.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Realignment/RealignmentIndex.vue":
 /*!******************************************************************!*\
   !*** ./resources/js/components/Realignment/RealignmentIndex.vue ***!
@@ -42712,6 +43073,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableCollegeAccounting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TableCollegeAccounting.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Processor/TableCollegeAccounting.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableCollegeAccounting_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RealignmentCreateEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RealignmentCreateEdit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RealignmentCreateEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -43602,6 +43979,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableCollegeAccounting_vue_vue_type_template_id_918662f4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableCollegeAccounting_vue_vue_type_template_id_918662f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TableCollegeAccounting.vue?vue&type=template&id=918662f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Processor/TableCollegeAccounting.vue?vue&type=template&id=918662f4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8& ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RealignmentCreateEdit_vue_vue_type_template_id_aad2e3c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8&");
 
 
 /***/ }),
@@ -61205,6 +61599,300 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentCreateEdit.vue?vue&type=template&id=aad2e3c8& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "section" }, [
+      _c("div", { staticClass: "columns is-centered" }, [
+        _c("div", { staticClass: "column is-6-desktop is-10-tablet" }, [
+          _c("div", { staticClass: "box" }, [
+            _c("div", { staticClass: "has-text-weight-bold" }, [
+              _vm._v("ADD/EDIT REALIGNMENT RECORD"),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-2" }, [
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Financial Year",
+                          expanded: "",
+                          type: _vm.errors.financial_year_id ? "is-danger" : "",
+                          message: _vm.errors.financial_year_id
+                            ? _vm.errors.financial_year_id[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c(
+                          "b-select",
+                          {
+                            attrs: {
+                              expanded: "",
+                              required: "",
+                              placeholder: "Financial Year",
+                            },
+                            model: {
+                              value: _vm.fields.financial_year_id,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.fields, "financial_year_id", $$v)
+                              },
+                              expression: "fields.financial_year_id",
+                            },
+                          },
+                          _vm._l(_vm.financialYears, function (item, indx) {
+                            return _c(
+                              "option",
+                              {
+                                key: "fy" + indx,
+                                domProps: { value: item.financial_year_id },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(item.financial_year_code) +
+                                    "\n                                            -\n                                            " +
+                                    _vm._s(item.financial_year_desc) +
+                                    "\n                                        "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Remarks",
+                          type: _vm.errors.remarks ? "is-danger" : "",
+                          message: _vm.errors.remarks
+                            ? _vm.errors.remarks[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c("b-input", {
+                          attrs: {
+                            type: "text",
+                            placholder: "Remarks",
+                            required: "",
+                          },
+                          model: {
+                            value: _vm.fields.remarks,
+                            callback: function ($$v) {
+                              _vm.$set(_vm.fields, "remarks", $$v)
+                            },
+                            expression: "fields.remarks",
+                          },
+                        }),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Select OOE From",
+                          type: _vm.errors.object_expenditure_id_from
+                            ? "is-danger"
+                            : "",
+                          message: _vm.errors.object_expenditure_id_from
+                            ? _vm.errors.object_expenditure_id_from[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c("modal-browse-object-expenditures", {
+                          attrs: {
+                            "prop-financial-year-id":
+                              _vm.fields.financial_year_id,
+                            "prop-object-expenditure":
+                              _vm.fields.object_expenditure_from,
+                          },
+                          on: {
+                            browseObjectExpenditure: function ($event) {
+                              return _vm.emitObjectExpenditureFrom($event)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Balance",
+                          type: _vm.errors.balance ? "is-danger" : "",
+                          message: _vm.errors.balance
+                            ? _vm.errors.balance[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c("b-input", {
+                          attrs: { type: "text", readonly: "" },
+                          model: {
+                            value: _vm.fields.balance,
+                            callback: function ($$v) {
+                              _vm.$set(_vm.fields, "balance", $$v)
+                            },
+                            expression: "fields.balance",
+                          },
+                        }),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Select OOE To",
+                          type: _vm.errors.object_expenditure_id_to
+                            ? "is-danger"
+                            : "",
+                          message: _vm.errors.object_expenditure_id_to
+                            ? _vm.errors.object_expenditure_id_to[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c("modal-browse-object-expenditures", {
+                          attrs: {
+                            "prop-financial-year-id":
+                              _vm.fields.financial_year_id,
+                            "prop-object-expenditure":
+                              _vm.fields.object_expenditure_to,
+                          },
+                          on: {
+                            browseObjectExpenditure: function ($event) {
+                              return _vm.emitObjectExpenditureTo($event)
+                            },
+                          },
+                        }),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
+                    _c(
+                      "b-field",
+                      { attrs: { label: "Amount To Transfer" } },
+                      [
+                        _c("b-numberinput", {
+                          attrs: { controls: false },
+                          model: {
+                            value: _vm.fields.amount_transfer,
+                            callback: function ($$v) {
+                              _vm.$set(_vm.fields, "amount_transfer", $$v)
+                            },
+                            expression: "fields.amount_transfer",
+                          },
+                        }),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "buttons mt-4" },
+                [
+                  _c("b-button", {
+                    staticClass: "button is-primary",
+                    attrs: {
+                      "icon-left": "note-multiple-outline",
+                      label: "Save Transaction",
+                    },
+                    on: { click: _vm.submit },
+                  }),
+                ],
+                1
+              ),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentIndex.vue?vue&type=template&id=d285f368&":
 /*!****************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Realignment/RealignmentIndex.vue?vue&type=template&id=d285f368& ***!
@@ -61226,7 +61914,7 @@ var render = function () {
       _c("div", { staticClass: "columns is-centered" }, [
         _c(
           "div",
-          { staticClass: "column is-10-widescreen is-12-desktop is-12-tablet" },
+          { staticClass: "column is-11-widescreen is-12-desktop is-12-tablet" },
           [
             _c(
               "div",
@@ -61396,7 +62084,7 @@ var render = function () {
                             staticClass: "is-primary",
                             attrs: {
                               tag: "a",
-                              href: "/procurements/create",
+                              href: "/realignments/create",
                               "icon-right": "mower",
                             },
                           },
@@ -61438,7 +62126,7 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.accounting_id) +
+                                  _vm._s(props.row.realignment_id) +
                                   "\n                        "
                               ),
                             ]
@@ -61448,87 +62136,7 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
-                      attrs: { field: "date_time", label: "Date & Time" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.date_transaction) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "training_control_no",
-                        label: "Training/Activity No",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.training_control_no) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { field: "pr_number", label: "PR No" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.pr_no) +
-                                  "\n                        "
-                              ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { field: "payee", label: "Payee" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              props.row.payee
-                                ? _c("span", [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(
-                                          props.row.payee.bank_account_payee
-                                        )
-                                    ),
-                                  ])
-                                : _vm._e(),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { field: "pr_amount", label: "PR Amount" },
+                      attrs: { field: "date_time", label: "Date" },
                       scopedSlots: _vm._u([
                         {
                           key: "default",
@@ -61537,9 +62145,9 @@ var render = function () {
                               _vm._v(
                                 "\n                            " +
                                   _vm._s(
-                                    _vm._f("numberWithCommas")(
-                                      props.row.total_amount
-                                    )
+                                    new Date(
+                                      props.row.created_at
+                                    ).toLocaleDateString()
                                   ) +
                                   "\n                        "
                               ),
@@ -61550,7 +62158,7 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
-                      attrs: { field: "particulars", label: "Particulars" },
+                      attrs: { field: "remarks", label: "Remarks" },
                       scopedSlots: _vm._u([
                         {
                           key: "default",
@@ -61558,7 +62166,7 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.particulars) +
+                                  _vm._s(props.row.remarks) +
                                   "\n                        "
                               ),
                             ]
@@ -61567,81 +62175,85 @@ var render = function () {
                       ]),
                     }),
                     _vm._v(" "),
-                    _vm.propUser.role !== "STAFF"
-                      ? _c("b-table-column", {
-                          attrs: { label: "Action" },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "default",
-                                fn: function (props) {
-                                  return [
-                                    _c(
-                                      "div",
-                                      { staticClass: "is-flex" },
-                                      [
-                                        _c(
-                                          "b-tooltip",
-                                          {
-                                            attrs: {
-                                              label: "Edit",
-                                              type: "is-warning",
-                                            },
-                                          },
-                                          [
-                                            _c("b-button", {
-                                              staticClass:
-                                                "button is-small is-warning mr-1 is-outlined",
-                                              attrs: {
-                                                tag: "a",
-                                                "icon-right": "pencil",
-                                                href:
-                                                  "/procurements/" +
-                                                  props.row.accounting_id +
-                                                  "/edit",
-                                              },
-                                            }),
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "b-tooltip",
-                                          {
-                                            attrs: {
-                                              label: "Delete",
-                                              type: "is-danger",
-                                            },
-                                          },
-                                          [
-                                            _c("b-button", {
-                                              staticClass:
-                                                "button is-small is-danger mr-1 is-outlined",
-                                              attrs: { "icon-right": "delete" },
-                                              on: {
-                                                click: function ($event) {
-                                                  return _vm.confirmDelete(
-                                                    props.row.accounting_id
-                                                  )
-                                                },
-                                              },
-                                            }),
-                                          ],
-                                          1
-                                        ),
-                                      ],
-                                      1
-                                    ),
-                                  ]
-                                },
-                              },
-                            ],
-                            null,
-                            false,
-                            3385367324
-                          ),
-                        })
-                      : _vm._e(),
+                    _c("b-table-column", {
+                      attrs: {
+                        field: "object_expenditure_id_from",
+                        label: "From",
+                      },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "default",
+                          fn: function (props) {
+                            return [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    props.row.object_expenditure_from
+                                      .object_expenditure
+                                  ) +
+                                  " - " +
+                                  _vm._s(
+                                    props.row.object_expenditure_from
+                                      .allotment_class
+                                  ) +
+                                  "\n                        "
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                    }),
+                    _vm._v(" "),
+                    _c("b-table-column", {
+                      attrs: { field: "object_expenditure_id_to", label: "To" },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "default",
+                          fn: function (props) {
+                            return [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    props.row.object_expenditure_to
+                                      .object_expenditure
+                                  ) +
+                                  " - " +
+                                  _vm._s(
+                                    props.row.object_expenditure_from
+                                      .allotment_class
+                                  ) +
+                                  "\n                        "
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                    }),
+                    _vm._v(" "),
+                    _c("b-table-column", {
+                      attrs: {
+                        field: "amount_transfer",
+                        label: "Amount Transfer",
+                      },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "default",
+                          fn: function (props) {
+                            return [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    _vm._f("numberWithCommas")(
+                                      props.row.amount_transfer
+                                    )
+                                  ) +
+                                  "\n                        "
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                    }),
                   ],
                   1
                 ),
@@ -85913,6 +86525,7 @@ var map = {
 	"./components/Processor/TableCityBudget.vue": "./resources/js/components/Processor/TableCityBudget.vue",
 	"./components/Processor/TableCityTreasurer.vue": "./resources/js/components/Processor/TableCityTreasurer.vue",
 	"./components/Processor/TableCollegeAccounting.vue": "./resources/js/components/Processor/TableCollegeAccounting.vue",
+	"./components/Realignment/RealignmentCreateEdit.vue": "./resources/js/components/Realignment/RealignmentCreateEdit.vue",
 	"./components/Realignment/RealignmentIndex.vue": "./resources/js/components/Realignment/RealignmentIndex.vue",
 	"./components/SignupComponent.vue": "./resources/js/components/SignupComponent.vue",
 	"./components/UserNavbar.vue": "./resources/js/components/UserNavbar.vue"

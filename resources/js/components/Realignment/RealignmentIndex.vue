@@ -2,7 +2,7 @@
     <div>
         <div class="section">
             <div class="columns is-centered">
-                <div class="column is-10-widescreen is-12-desktop is-12-tablet">
+                <div class="column is-11-widescreen is-12-desktop is-12-tablet">
                     <div class="box">
 
                         <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">REALIGNMENT RECORDS</div>
@@ -42,7 +42,7 @@
 
                         <div class="buttons mt-3 is-right" v-if="propUser.role !== 'STAFF'">
                             <b-button tag="a"
-                                href="/procurements/create"
+                                href="/realignments/create"
                                 icon-right="mower"
                                 class="is-primary">ADD RECORD</b-button>
                         </div>
@@ -66,35 +66,30 @@
                             @sort="onSort">
 
                             <b-table-column field="Id" label="ID" v-slot="props">
-                                {{ props.row.accounting_id }}
+                                {{ props.row.realignment_id }}
                             </b-table-column>
 
-                            <b-table-column field="date_time" label="Date & Time" v-slot="props">
-                                {{ props.row.date_transaction }}
+                            <b-table-column field="date_time" label="Date" v-slot="props">
+                                {{ new Date(props.row.created_at).toLocaleDateString() }}
                             </b-table-column>
 
-                            <b-table-column field="training_control_no" label="Training/Activity No" v-slot="props">
-                                {{ props.row.training_control_no }}
+                            <b-table-column field="remarks" label="Remarks" v-slot="props">
+                                {{ props.row.remarks }}
                             </b-table-column>
 
-                            <b-table-column field="pr_number" label="PR No" v-slot="props">
-                                {{ props.row.pr_no }}
+                            <b-table-column field="object_expenditure_id_from" label="From" v-slot="props">
+                                {{ props.row.object_expenditure_from.object_expenditure }} - {{ props.row.object_expenditure_from.allotment_class }}
                             </b-table-column>
 
-                            <b-table-column field="payee" label="Payee" v-slot="props">
-                                <span v-if="props.row.payee"> {{ props.row.payee.bank_account_payee }}</span>
-                            </b-table-column>
-                            
-                            <b-table-column field="pr_amount" label="PR Amount" v-slot="props">
-                                {{ props.row.total_amount | numberWithCommas }}
+                            <b-table-column field="object_expenditure_id_to" label="To" v-slot="props">
+                                {{ props.row.object_expenditure_to.object_expenditure }} - {{ props.row.object_expenditure_from.allotment_class }}
                             </b-table-column>
 
-                            <b-table-column field="particulars" label="Particulars" v-slot="props">
-                                {{ props.row.particulars }}
+                            <b-table-column field="amount_transfer" label="Amount Transfer" v-slot="props">
+                                {{ props.row.amount_transfer | numberWithCommas }}
                             </b-table-column>
 
-
-                            <b-table-column label="Action" v-slot="props" v-if="propUser.role !== 'STAFF'">
+                            <!-- <b-table-column label="Action" v-slot="props" v-if="propUser.role !== 'STAFF'">
                                 <div class="is-flex">
                                     <b-tooltip label="Edit" type="is-warning">
                                         <b-button class="button is-small is-warning mr-1 is-outlined" 
@@ -108,7 +103,7 @@
                                             @click="confirmDelete(props.row.accounting_id)"></b-button>
                                     </b-tooltip>
                                 </div>
-                            </b-table-column>
+                            </b-table-column> -->
 
 
                         </b-table>
@@ -152,7 +147,7 @@ export default{
             data: [],
             total: 0,
             loading: false,
-            sortField: 'accounting_id',
+            sortField: 'realignment_id',
             sortOrder: 'desc',
             page: 1,
             perPage: 20,
@@ -166,7 +161,13 @@ export default{
 
             isModalCreate: false,
 
-
+            fields: {
+                financial_year_id: null,
+                remarks: null,
+                object_expenditure_id_from: null,
+                object_expenditure_id_to: null,
+                amount_transfer: null,
+            },
             errors: {},
 
 
@@ -195,7 +196,7 @@ export default{
             ].join('&')
 
             this.loading = true
-            axios.get(`/get-procurements-records?${params}`)
+            axios.get(`/get-realignments?${params}`)
                 .then(({data}) => {
                     this.data = [];
                     let currentTotal = data.total
@@ -239,6 +240,14 @@ export default{
             this.isModalCreate = true;
             this.clearFields()
             this.errors = {};
+        },
+
+        clearFields(){
+            this.fields.financial_year_id = null
+            this.fields.remarks = null
+            this.fields.object_expenditure_id_from = null
+            this.fields.object_expenditure_id_to = null
+            this.fields.amount_transfer = null
         },
 
         //alert box ask for deletion

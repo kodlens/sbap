@@ -167,6 +167,7 @@ Route::middleware(['auth'])->group(function() {
 
 
     Route::resource('/realignments', App\Http\Controllers\RealignmentController::class);
+    Route::get('/get-realignments', [App\Http\Controllers\RealignmentController::class, 'getData']);
 
 
 });

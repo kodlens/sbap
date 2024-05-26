@@ -86,8 +86,8 @@
                     <b-navbar-item href="/realignments">
                         Realignment
                     </b-navbar-item>
-                    <b-navbar-item href="/supplemental">
-                        Supplemental
+                    <b-navbar-item href="/augmentation-budget">
+                        Augmentation Budget
                     </b-navbar-item>
                     
                     {{-- <b-navbar-item href="/priority-programs">
