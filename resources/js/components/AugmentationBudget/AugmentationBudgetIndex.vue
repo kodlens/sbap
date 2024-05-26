@@ -81,7 +81,7 @@
                                 {{ props.row.object_expenditure.object_expenditure }}
                             </b-table-column>
 
-                            <b-table-column field="amount_transfer" label="Amount Transfer" v-slot="props">
+                            <b-table-column field="amount_transfer" label="Amount" v-slot="props">
                                 {{ props.row.amount_transfer | numberWithCommas }}
                             </b-table-column>
 
@@ -104,7 +104,7 @@
 
                         </b-table>
 
-                        <div class="buttons">
+                        <!-- <div class="buttons">
                             <download-excel
                                 class="button is-primary"
                                 size="is-small"
@@ -114,7 +114,7 @@
                             >
                                 Download to Excel
                             </download-excel>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div><!--col -->

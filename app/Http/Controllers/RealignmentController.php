@@ -74,10 +74,19 @@ class RealignmentController extends Controller
         ]);
 
 
-        $objexp = ObjectExpenditure::find($req->object_expenditure_id_from);
-        $objexp->decrement('approved_budget', $req->amount_transfer);
+        $objexpFrom = ObjectExpenditure::find($req->object_expenditure_id_from);
+        $objexpFrom->decrement('approved_budget', $req->amount_transfer);
         //$objexp->decrement('beginning_budget', $req->amount_transfer);
-        $objexp->save();
+        $objexpFrom->save();
+
+
+        $objexpTo = ObjectExpenditure::find($req->object_expenditure_id_to);
+        $objexpTo->increment('approved_budget', $req->amount_transfer);
+        //$objexp->decrement('beginning_budget', $req->amount_transfer);
+        $objexpTo->save();
+
+        //return $objexp;
+
 
         Realignment::create([
             'financial_year_id' => $req->financial_year_id,

@@ -56629,10 +56629,7 @@ var render = function () {
                     }),
                     _vm._v(" "),
                     _c("b-table-column", {
-                      attrs: {
-                        field: "amount_transfer",
-                        label: "Amount Transfer",
-                      },
+                      attrs: { field: "amount_transfer", label: "Amount" },
                       scopedSlots: _vm._u([
                         {
                           key: "default",
@@ -56652,31 +56649,6 @@ var render = function () {
                         },
                       ]),
                     }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "buttons" },
-                  [
-                    _c(
-                      "download-excel",
-                      {
-                        staticClass: "button is-primary",
-                        attrs: {
-                          size: "is-small",
-                          fetch: _vm.fetchData,
-                          type: "csv",
-                          name: "filename.xls",
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n                            Download to Excel\n                        "
-                        ),
-                      ]
-                    ),
                   ],
                   1
                 ),
@@ -63389,9 +63361,9 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(props.row.realignment_id) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
@@ -63407,13 +63379,13 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(
                                     new Date(
                                       props.row.created_at
                                     ).toLocaleDateString()
                                   ) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
@@ -63429,9 +63401,9 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(props.row.remarks) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
@@ -63450,7 +63422,7 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(
                                     props.row.object_expenditure_from
                                       .object_expenditure
@@ -63460,7 +63432,7 @@ var render = function () {
                                     props.row.object_expenditure_from
                                       .allotment_class
                                   ) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
@@ -63476,7 +63448,7 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(
                                     props.row.object_expenditure_to
                                       .object_expenditure
@@ -63486,7 +63458,7 @@ var render = function () {
                                     props.row.object_expenditure_from
                                       .allotment_class
                                   ) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
@@ -63505,44 +63477,19 @@ var render = function () {
                           fn: function (props) {
                             return [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(
                                     _vm._f("numberWithCommas")(
                                       props.row.amount_transfer
                                     )
                                   ) +
-                                  "\n                        "
+                                  "\n                            "
                               ),
                             ]
                           },
                         },
                       ]),
                     }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "buttons" },
-                  [
-                    _c(
-                      "download-excel",
-                      {
-                        staticClass: "button is-primary",
-                        attrs: {
-                          size: "is-small",
-                          fetch: _vm.fetchData,
-                          type: "csv",
-                          name: "filename.xls",
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n                            Download to Excel\n                        "
-                        ),
-                      ]
-                    ),
                   ],
                   1
                 ),

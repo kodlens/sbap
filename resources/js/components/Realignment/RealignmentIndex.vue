@@ -107,7 +107,7 @@
 
 
                         </b-table>
-
+<!-- 
                         <div class="buttons">
                             <download-excel
                                 class="button is-primary"
@@ -118,7 +118,7 @@
                             >
                                 Download to Excel
                             </download-excel>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div><!--col -->
