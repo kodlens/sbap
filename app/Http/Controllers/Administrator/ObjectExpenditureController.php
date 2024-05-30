@@ -22,14 +22,13 @@ class ObjectExpenditureController extends Controller
 
         $sort = explode('.', $req->sort_by);
 
-        return ObjectExpenditure::with(['financial_year'])
+        return ObjectExpenditure::with(['financial_year', 'allotment_class'])
             ->select(
                 'object_expenditure_id',
                 'financial_year_id',
+                'allotment_class_id',
                 'object_expenditure',
                 'account_code',
-                'allotment_class',
-                'allotment_class_code',
                 'approved_budget',
                 'beginning_budget',
                 DB::raw('(
@@ -57,7 +56,8 @@ class ObjectExpenditureController extends Controller
     public function getModalObjectExpenditures(Request $req){
         $sort = explode('.', $req->sort_by);
 
-        $data = ObjectExpenditure::where('financial_year_id', $req->financial)
+        $data = ObjectExpenditure::with(['allotment_class'])
+            ->where('financial_year_id', $req->financial)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);
 

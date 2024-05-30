@@ -32,8 +32,17 @@ class CreateAccountingExpendituresTable extends Migration
 
             $table->unsignedBigInteger('financial_year_id');
 
-            $table->string('allotment_class_code')->nullable();
-            $table->string('allotment_class')->nullable();
+
+            $table->unsignedBigInteger('allotment_class_id');
+            $table->foreign('allotment_class_id')
+                ->references('allotment_class_id')
+                ->on('allotment_classes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            // $table->string('allotment_class_code')->nullable();
+            // $table->string('allotment_class')->nullable();
+            
             $table->unsignedBigInteger('amount');
             
 

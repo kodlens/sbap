@@ -99,7 +99,7 @@
                     <div class="columns">
                         <div class="column">
                             
-                            <div class="table-container">
+                            <!-- <div class="table-container">
                                 <table class="table is-narrow is-fullwidth">
                                     <tr>
                                         <th>Date Transaction</th>
@@ -139,9 +139,12 @@
                                     </tr>
                                     
                                 </table>
-                            </div>
-
+                            </div> -->
                         </div>
+                    </div>
+
+                    <div class="allotments">
+
                     </div>
 
 
@@ -156,6 +159,7 @@ export default{
 
     mounted(){
         this.loadFinancialYears()
+        this.loadAllotments()
         //this.loadFundSources()
 
     },
@@ -230,6 +234,12 @@ export default{
             })
         },
 
+        loadAllotments(){
+            axios.get('/load-allotment-classes').then(res=>{
+                this.allotmentClasses = res.data
+            })
+        }
+
    
 
     },
@@ -246,3 +256,10 @@ export default{
 }
 
 </script>
+
+<style scoped>
+    .allotment {
+        display: flex;
+
+    }
+</style>

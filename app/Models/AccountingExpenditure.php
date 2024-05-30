@@ -18,6 +18,7 @@ class AccountingExpenditure extends Model
         'accounting_id',
         'object_expenditure_id',
         'financial_year_id',
+        'allotment_class_id',
         'allotment_class_code',
         'allotment_class',
         'amount'

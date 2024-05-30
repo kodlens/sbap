@@ -355,7 +355,6 @@ export default{
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
                 this.financialYears = res.data
-
                 this.fields.financial_year_id = res.data.filter(fy => fy.active === 1)[0].financial_year_id;
             })
         },
@@ -367,12 +366,10 @@ export default{
         },
 
 
-        emitObjectExpenditure(row, index){
-            console.log(row, index); 
+        emitObjectExpenditure(row, index){ 
             this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure
             this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id
-            this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class
-            this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code
+            this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id
         },
 
 
@@ -425,6 +422,7 @@ export default{
                 accounting_id: 0,
                 financial_year_id: 0,
                 object_expenditure: null,
+                allotment_class_id: 0,
                 allotment_class: null,
                 allotment_class_code: null,
                 amount: 0,
@@ -486,8 +484,7 @@ export default{
                 this.fields.objectExpenditures.forEach((item, index) =>{
                     formData.append(`object_expenditures[${index}][accounting_expenditure_id]`, item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
                     formData.append(`object_expenditures[${index}][object_expenditure_id]`, item.object_expenditure_id ? item.object_expenditure_id : 0);
-                    formData.append(`object_expenditures[${index}][allotment_class_code]`, item.allotment_class_code);
-                    formData.append(`object_expenditures[${index}][allotment_class]`, item.allotment_class);
+                    formData.append(`object_expenditures[${index}][allotment_class_id]`, item.allotment_class_id);
                     formData.append(`object_expenditures[${index}][amount]`, item.amount);
                 });
             }
@@ -562,9 +559,6 @@ export default{
             this.fields.others = 'sample others'
         },
 
-
-
-
         getData(){
 
             axios.get('/accounting/' + this.id).then(res=>{
@@ -586,13 +580,15 @@ export default{
                 this.fields.total_amount = Number(result.total_amount)
 
                 //OOE
+                //console.log(result.accounting_expenditures )
                 if(result.accounting_expenditures.length > 0){
                     result.accounting_expenditures.forEach((item, index) =>{
                         this.fields.objectExpenditures.push({
                             accounting_expenditure_id: item.accounting_expenditure_id,
                             object_expenditure_id: item.object_expenditure_id,
-                            allotment_class_code: item.allotment_class_code,
-                            allotment_class: item.allotment_class,
+                            // allotment_class_code: item.allotment_class_code,
+                            allotment_class_id: item.allotment_class_id,
+                            // allotment_class: item.allotment_class,
                             amount: item.amount,
                             object_expenditure: item.object_expenditure.object_expenditure
                         });

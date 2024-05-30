@@ -30,7 +30,7 @@ class AccountingController extends Controller
         $sort = explode('.', $req->sort_by);
 
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'processor'])
+            'accounting_expenditures.object_expenditure.allotment_class', 'processor'])
             ->where(function($q) use ($req){
                 $q->where('particulars', 'like', $req->key . '%')
                     ->orWhere('transaction_no', 'like', $req->key . '%')
@@ -46,8 +46,8 @@ class AccountingController extends Controller
 
     public function show($id){
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'office'
-        ])
+                'accounting_expenditures.object_expenditure.allotment_class', 'office'
+            ])
             ->find($id);
 
         return $data;
@@ -125,9 +125,10 @@ class AccountingController extends Controller
                 foreach ($req->object_expenditures as $item) {
                     $object_expenditures[] = [
                         'accounting_id' => $accountingId,
-                        'allotment_class' => $item['allotment_class'],
+                        //'allotment_class' => $item['allotment_class'],
+                        'allotment_class_id' => $item['allotment_class_id'],
                         'financial_year_id' => $financialYearId,
-                        'allotment_class_code' => $item['allotment_class_code'],
+                        //'allotment_class_code' => $item['allotment_class_code'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
                     ];
@@ -195,7 +196,6 @@ class AccountingController extends Controller
         $data->payee_id =  $req->payee_id;
         $data->particulars =  $req->particulars;
         $data->total_amount = (float)$req->total_amount;
-
         $data->office_id =  $req->office_id;
         $data->others =  $req->others;
         $data->save();
@@ -236,9 +236,10 @@ class AccountingController extends Controller
                 ],
                 [
                     'accounting_id' => $accountingId,
-                    'allotment_class' => $item['allotment_class'],
+                    //'allotment_class' => $item['allotment_class'],
                     'financial_year_id' => $financialYearId,
-                    'allotment_class_code' => $item['allotment_class_code'],
+                    'allotment_class_id' => $item['allotment_class_id'],
+                    //'allotment_class_code' => $item['allotment_class_code'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
                 ]);

@@ -157,7 +157,6 @@
 
                                             <div class="column">
                                                 <b-numberinput 
-                                                    :disabled="item.accounting_expenditure_id > 0 ? true : false"
                                                     v-model="item.amount" @input="computeTotalAmount" :controls="false"/>
                                             </div>
 
@@ -373,6 +372,7 @@ export default{
             console.log(row, index); 
             this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure
             this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id
+            this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id
             this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class
             this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code
         },
@@ -425,6 +425,7 @@ export default{
                 object_expenditure_id: 0,
                 financial_year_id: 0,
                 object_expenditure: null,
+                allotment_class_id: 0,
                 allotment_class: null,
                 allotment_class_code: null,
                 amount: 0,
@@ -473,7 +474,9 @@ export default{
             formData.append('payee_id', this.fields.payee_id ? this.fields.payee_id : '');
             formData.append('particulars', this.fields.particulars ? this.fields.particulars : '');
             formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : '');
-
+            formData.append('others', this.fields.others ? this.fields.others : '');
+            formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
+            
             //doc attachment
             if(this.fields.documentary_attachments){
                 this.fields.documentary_attachments.forEach((doc, index) =>{
@@ -486,15 +489,12 @@ export default{
                 this.fields.objectExpenditures.forEach((item, index) =>{
                     formData.append(`object_expenditures[${index}][accounting_expenditure_id]`, item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
                     formData.append(`object_expenditures[${index}][object_expenditure_id]`, item.object_expenditure_id ? item.object_expenditure_id : 0);
+                    formData.append(`object_expenditures[${index}][allotment_class_id]`, item.allotment_class_id);
                     formData.append(`object_expenditures[${index}][allotment_class_code]`, item.allotment_class_code);
                     formData.append(`object_expenditures[${index}][allotment_class]`, item.allotment_class);
                     formData.append(`object_expenditures[${index}][amount]`, item.amount);
                 });
             }
-            //formData.append('priority_program_id', this.fields.priority_program_id ? this.fields.priority_program_id : '');
-            formData.append('others', this.fields.others ? this.fields.others : '');
-            formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
-
 
             if(this.id > 0){
                 //update
@@ -574,9 +574,8 @@ export default{
 
                 this.fields.accounting_id = result.accounting_id
                 this.fields.financial_year_id = result.financial_year_id
-                this.fields.fund_source_id = result.fund_source_id
-
-                this.fields.date_time = new Date(result.date_time)
+        
+                this.fields.date_transaction = new Date(result.date_transaction)
                 this.fields.transaction_no = result.transaction_no
                 this.fields.training_control_no = result.training_control_no
                 this.fields.transaction_type_id = result.transaction_type_id
@@ -587,6 +586,20 @@ export default{
                 this.fields.particulars = result.particulars
                 this.fields.total_amount = Number(result.total_amount)
 
+                //OOE
+                if(result.accounting_expenditures.length > 0){
+                    result.accounting_expenditures.forEach((item, index) =>{
+                        this.fields.objectExpenditures.push({
+                            accounting_expenditure_id: item.accounting_expenditure_id,
+                            object_expenditure_id: item.object_expenditure_id,
+                            allotment_class_code: item.allotment_class_code,
+                            allotment_class_id: item.allotment_class_id,
+                            allotment_class: item.allotment_class,
+                            amount: item.amount,
+                            object_expenditure: item.object_expenditure.object_expenditure
+                        });
+                    });
+                }
                 //attachments
                 if(result.accounting_documentary_attachments.length > 0){
                     result.acctg_documentary_attachments.forEach(item => {
@@ -597,9 +610,6 @@ export default{
                         });
                     })
                 }
-               
-
-
                 this.fields.office_id = result.office.office_id
                 this.fields.office = '(' + result.office.office + ') ' + result.office.description
                 this.fields.others = result.others

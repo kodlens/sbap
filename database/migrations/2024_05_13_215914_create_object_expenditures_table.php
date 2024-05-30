@@ -25,8 +25,16 @@ class CreateObjectExpendituresTable extends Migration
             $table->string('object_expenditure', 100)->nullable();
             $table->string('account_code', 100)->nullable();
 
-            $table->string('allotment_class', 100)->nullable();
-            $table->string('allotment_class_code', 100)->nullable();
+
+            $table->unsignedBigInteger('allotment_class_id');
+            $table->foreign('allotment_class_id')
+                ->references('allotment_class_id')
+                ->on('allotment_classes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+                
+            // $table->string('allotment_class', 100)->nullable();
+            // $table->string('allotment_class_code', 100)->nullable();
 
             $table->double('approved_budget')->default(0);
             $table->double('beginning_budget')->default(0);

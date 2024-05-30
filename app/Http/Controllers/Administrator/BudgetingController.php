@@ -126,6 +126,7 @@ class BudgetingController extends Controller
                         'accounting_id' => $accountingId,
                         'allotment_class' => $item['allotment_class'],
                         'financial_year_id' => $financialYearId,
+                        'allotment_class_id' => $item['allotment_class_id'],
                         'allotment_class_code' => $item['allotment_class_code'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
@@ -164,12 +165,12 @@ class BudgetingController extends Controller
             ->with('id', $id);
     }
 
-    public function updateAccounting(Request $req, $id){
+    public function updateBudgeting (Request $req, $id){
+        //return $req;
 
         $req->validate([
             'financial_year_id' => ['required'],
-            'fund_source_id' => ['required'],
-            'date_time' => ['required'],
+            'date_transaction' => ['required'],
             'transaction_no' => ['required'],
             'training_control_no' => ['required'],
             'transaction_type_id' => ['required'],
@@ -179,44 +180,25 @@ class BudgetingController extends Controller
             'office_id' => ['required']
         ],[
             'financial_year_id.required' => 'Please select financial year.',
-            'fund_source_id.required' => 'Please select financial year.',
             'transaction_type_id.required' => 'Please select transaction.',
             'payee_id.required' => 'Please select bank account/payee.',
             'office_id.required' => 'Please select office.'
         ]);
 
         $data = Accounting::find($id);
-
         $data->financial_year_id = $req->financial_year_id;
-        $data->fund_source_id =  $req->fund_source_id;
-        $data->date_time =  $req->date_time;
+        $data->date_transaction =  $req->date_transaction;
         $data->transaction_no =  $req->transaction_no;
         $data->training_control_no =  $req->training_control_no;
         $data->transaction_type_id =  $req->transaction_type_id;
         $data->payee_id =  $req->payee_id;
         $data->particulars =  $req->particulars;
-        //if e modify ang account, ebalik ang budget
-        $balik = (float)$data->total_amount -  (float)$req->total_amount;
-
-        $data->total_amount =  (float)$req->total_amount;
-
-        $data->priority_program_id =  $req->priority_program_id ? $req->priority_program_id : null;
+        $data->total_amount = (float)$req->total_amount;
         $data->office_id =  $req->office_id;
         $data->others =  $req->others;
+
+
         $data->save();
-
-        //return $data->total_amount;
-
-
-        $financial = FinancialYear::find($req->financial_year_id);
-        $financial->decrement('balance', $balik);
-        $financial->save();
-
-        $service = Service::where('service', 'ACCOUNTING')->first();
-        $service->decrement('balance', $balik);
-        $service->save();
-
-
 
         if($req->has('documentary_attachments')){
             foreach ($req->documentary_attachments as $item) {
@@ -235,26 +217,33 @@ class BudgetingController extends Controller
                     ]);
 
                 }
-
                 //insert into database after upload 1 image
+            }
+        }
+
+        $accountingId = $data->accounting_id;
+        $financialYearId = $req->financial_year_id;
+        //return $req->object_expenditures;
+
+        if($req->has('object_expenditures')){
+            $object_expenditures = [];
+            foreach ($req->object_expenditures as $item) {
+                AccountingExpenditure::updateOrCreate([
+                    'accounting_expenditure_id' => $item['accounting_expenditure_id']
+                ],
+                [
+                    'accounting_id' => $accountingId,
+                    'allotment_class' => $item['allotment_class'],
+                    'financial_year_id' => $financialYearId,
+                    'allotment_class_id' => $item['allotment_class_id'],
+                    'allotment_class_code' => $item['allotment_class_code'],
+                    'object_expenditure_id' => $item['object_expenditure_id'],
+                    'amount' => $item['amount'],
+                ]);
 
             }
         }
 
-
-        // if($req->has('allotment_classes')){
-        //     foreach ($req->allotment_classes as $item) {
-        //         AccountingAllotmentClasses::updateOrCreate([
-        //             'accounting_allotment_class_id' => $item['accounting_allotment_class_id']
-        //         ],[
-        //             'accounting_id' => $id,
-        //             'allotment_class_id' => $item['allotment_class_id'],
-        //             'allotment_class_account_id' => $item['allotment_class_account_id'],
-        //             'amount' => $item['amount'],
-        //         ]);
-        //     }
-        // }
-        //return $req;
         return response()->json([
             'status' => 'updated'
         ], 200);

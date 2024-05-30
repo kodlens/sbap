@@ -7959,11 +7959,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fields.payee_id = row.payee_id;
     },
     emitObjectExpenditure: function emitObjectExpenditure(row, index) {
-      console.log(row, index);
       this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure;
       this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id;
-      this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class;
-      this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code;
+      this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id;
     },
     emitBrowseOffice: function emitBrowseOffice(row) {
       this.office.office = row.office + " (".concat(row.description, ")");
@@ -8008,6 +8006,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         accounting_id: 0,
         financial_year_id: 0,
         object_expenditure: null,
+        allotment_class_id: 0,
         allotment_class: null,
         allotment_class_code: null,
         amount: 0
@@ -8066,8 +8065,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.fields.objectExpenditures.forEach(function (item, index) {
           formData.append("object_expenditures[".concat(index, "][accounting_expenditure_id]"), item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][object_expenditure_id]"), item.object_expenditure_id ? item.object_expenditure_id : 0);
-          formData.append("object_expenditures[".concat(index, "][allotment_class_code]"), item.allotment_class_code);
-          formData.append("object_expenditures[".concat(index, "][allotment_class]"), item.allotment_class);
+          formData.append("object_expenditures[".concat(index, "][allotment_class_id]"), item.allotment_class_id);
           formData.append("object_expenditures[".concat(index, "][amount]"), item.amount);
         });
       }
@@ -8148,14 +8146,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this8.fields.payee_id = result.payee_id;
         _this8.fields.particulars = result.particulars;
         _this8.fields.total_amount = Number(result.total_amount); //OOE
+        //console.log(result.accounting_expenditures )
 
         if (result.accounting_expenditures.length > 0) {
           result.accounting_expenditures.forEach(function (item, index) {
             _this8.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
-              allotment_class_code: item.allotment_class_code,
-              allotment_class: item.allotment_class,
+              // allotment_class_code: item.allotment_class_code,
+              allotment_class_id: item.allotment_class_id,
+              // allotment_class: item.allotment_class,
               amount: item.amount,
               object_expenditure: item.object_expenditure.object_expenditure
             });
@@ -8220,7 +8220,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -9756,7 +9755,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -9852,6 +9850,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log(row, index);
       this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure;
       this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id;
+      this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id;
       this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class;
       this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code;
     },
@@ -9896,6 +9895,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         object_expenditure_id: 0,
         financial_year_id: 0,
         object_expenditure: null,
+        allotment_class_id: 0,
         allotment_class: null,
         allotment_class_code: null,
         amount: 0
@@ -9940,7 +9940,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append('training_control_no', this.fields.training_control_no ? this.fields.training_control_no : '');
       formData.append('payee_id', this.fields.payee_id ? this.fields.payee_id : '');
       formData.append('particulars', this.fields.particulars ? this.fields.particulars : '');
-      formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : ''); //doc attachment
+      formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : '');
+      formData.append('others', this.fields.others ? this.fields.others : '');
+      formData.append('office_id', this.fields.office_id ? this.fields.office_id : ''); //doc attachment
 
       if (this.fields.documentary_attachments) {
         this.fields.documentary_attachments.forEach(function (doc, index) {
@@ -9954,15 +9956,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.fields.objectExpenditures.forEach(function (item, index) {
           formData.append("object_expenditures[".concat(index, "][accounting_expenditure_id]"), item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][object_expenditure_id]"), item.object_expenditure_id ? item.object_expenditure_id : 0);
+          formData.append("object_expenditures[".concat(index, "][allotment_class_id]"), item.allotment_class_id);
           formData.append("object_expenditures[".concat(index, "][allotment_class_code]"), item.allotment_class_code);
           formData.append("object_expenditures[".concat(index, "][allotment_class]"), item.allotment_class);
           formData.append("object_expenditures[".concat(index, "][amount]"), item.amount);
         });
-      } //formData.append('priority_program_id', this.fields.priority_program_id ? this.fields.priority_program_id : '');
-
-
-      formData.append('others', this.fields.others ? this.fields.others : '');
-      formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
+      }
 
       if (this.id > 0) {
         //update
@@ -10030,15 +10029,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         console.log(result.accounting_allotment_classes);
         _this8.fields.accounting_id = result.accounting_id;
         _this8.fields.financial_year_id = result.financial_year_id;
-        _this8.fields.fund_source_id = result.fund_source_id;
-        _this8.fields.date_time = new Date(result.date_time);
+        _this8.fields.date_transaction = new Date(result.date_transaction);
         _this8.fields.transaction_no = result.transaction_no;
         _this8.fields.training_control_no = result.training_control_no;
         _this8.fields.transaction_type_id = result.transaction_type_id;
         _this8.payee.bank_account_payee = result.payee.bank_account_payee;
         _this8.fields.payee_id = result.payee_id;
         _this8.fields.particulars = result.particulars;
-        _this8.fields.total_amount = Number(result.total_amount); //attachments
+        _this8.fields.total_amount = Number(result.total_amount); //OOE
+
+        if (result.accounting_expenditures.length > 0) {
+          result.accounting_expenditures.forEach(function (item, index) {
+            _this8.fields.objectExpenditures.push({
+              accounting_expenditure_id: item.accounting_expenditure_id,
+              object_expenditure_id: item.object_expenditure_id,
+              allotment_class_code: item.allotment_class_code,
+              allotment_class_id: item.allotment_class_id,
+              allotment_class: item.allotment_class,
+              amount: item.amount,
+              object_expenditure: item.object_expenditure.object_expenditure
+            });
+          });
+        } //attachments
+
 
         if (result.accounting_documentary_attachments.length > 0) {
           result.acctg_documentary_attachments.forEach(function (item) {
@@ -15674,9 +15687,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
-    this.loadFinancialYears(); //this.loadFundSources()
+    this.loadFinancialYears();
+    this.loadAllotments(); //this.loadFundSources()
   },
   data: function data() {
     return {
@@ -15733,6 +15750,13 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/load-accounting-utilizations/' + this.search.financial_year['financial_year_id'] + '/?doc=' + this.search.doc).then(function (res) {
         _this3.accountingUsedBudget = res.data;
+      });
+    },
+    loadAllotments: function loadAllotments() {
+      var _this4 = this;
+
+      axios.get('/load-allotment-classes').then(function (res) {
+        _this4.allotmentClasses = res.data;
       });
     }
   },
@@ -16435,7 +16459,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -38703,6 +38726,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-card-title[data-v-705f41e1]{\
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.allotment[data-v-040e2ab9] {\n    display: flex;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=style&index=0&id=6bdc8b8e&scoped=true&lang=css&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=style&index=0&id=6bdc8b8e&scoped=true&lang=css& ***!
@@ -40257,6 +40304,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UserPage_vue_vue_type_style_index_0_id_705f41e1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_style_index_0_id_040e2ab9_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_style_index_0_id_040e2ab9_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_style_index_0_id_040e2ab9_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -42315,23 +42392,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=template&id=040e2ab9& */ "./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&");
+/* harmony import */ var _Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true& */ "./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true&");
 /* harmony import */ var _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=script&lang=js& */ "./resources/js/components/Dashboard.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Dashboard_vue_vue_type_style_index_0_id_040e2ab9_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& */ "./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "040e2ab9",
   null
   
 )
@@ -43935,6 +44014,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_style_index_0_id_040e2ab9_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=style&index=0&id=040e2ab9&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Login.vue?vue&type=style&index=0&id=6bdc8b8e&scoped=true&lang=css&":
 /*!****************************************************************************************************!*\
   !*** ./resources/js/components/Login.vue?vue&type=style&index=0&id=6bdc8b8e&scoped=true&lang=css& ***!
@@ -44405,19 +44497,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9& ***!
-  \******************************************************************************/
+/***/ "./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true& ***!
+  \******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=template&id=040e2ab9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_040e2ab9_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true&");
 
 
 /***/ }),
@@ -45907,6 +45999,7 @@ var render = function () {
                                         _vm._v(
                                           _vm._s(
                                             i.object_expenditure.allotment_class
+                                              .allotment_class
                                           )
                                         ),
                                       ]),
@@ -45916,6 +46009,7 @@ var render = function () {
                                           "(" +
                                             _vm._s(
                                               i.object_expenditure
+                                                .allotment_class
                                                 .allotment_class_code
                                             ) +
                                             ")"
@@ -48093,13 +48187,7 @@ var render = function () {
                               { staticClass: "column" },
                               [
                                 _c("b-numberinput", {
-                                  attrs: {
-                                    disabled:
-                                      item.accounting_expenditure_id > 0
-                                        ? true
-                                        : false,
-                                    controls: false,
-                                  },
+                                  attrs: { controls: false },
                                   on: { input: _vm.computeTotalAmount },
                                   model: {
                                     value: item.amount,
@@ -49041,7 +49129,7 @@ var render = function () {
                                                 tag: "a",
                                                 "icon-right": "pencil",
                                                 href:
-                                                  "/accounting/" +
+                                                  "/budgeting/" +
                                                   props.row.accounting_id +
                                                   "/edit",
                                               },
@@ -49111,7 +49199,7 @@ var render = function () {
                             ],
                             null,
                             false,
-                            3382663682
+                            997985318
                           ),
                         })
                       : _vm._e(),
@@ -50697,7 +50785,10 @@ var render = function () {
                               return [
                                 _vm._v(
                                   "\n                            " +
-                                    _vm._s(props.row.allotment_class_code) +
+                                    _vm._s(
+                                      props.row.allotment_class
+                                        .allotment_class_code
+                                    ) +
                                     "\n                        "
                                 ),
                               ]
@@ -50736,7 +50827,9 @@ var render = function () {
                               return [
                                 _vm._v(
                                   "\n                            " +
-                                    _vm._s(props.row.allotment_class) +
+                                    _vm._s(
+                                      props.row.allotment_class.allotment_class
+                                    ) +
                                     "\n                        "
                                 ),
                               ]
@@ -56833,10 +56926,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&":
-/*!*********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9& ***!
-  \*********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboard.vue?vue&type=template&id=040e2ab9&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -57050,97 +57143,9 @@ var render = function () {
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _c("div", { staticClass: "columns" }, [
-              _c("div", { staticClass: "column" }, [
-                _c("div", { staticClass: "table-container" }, [
-                  _c(
-                    "table",
-                    { staticClass: "table is-narrow is-fullwidth" },
-                    [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _vm._l(_vm.data, function (item, index) {
-                        return _c("tr", { key: "allotment" + index }, [
-                          _c("td", [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(item.doc_type) +
-                                "\n                                    "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("span", [_vm._v(_vm._s(item.transaction_no))]),
-                            _vm._v(" "),
-                            item.training_control_no
-                              ? _c("span", [
-                                  _vm._v(
-                                    "\n                                            /\n                                            " +
-                                      _vm._s(item.training_control_no)
-                                  ),
-                                ])
-                              : _vm._e(),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.payee
-                              ? _c("span", [
-                                  _vm._v(_vm._s(item.payee.bank_account_payee)),
-                                ])
-                              : _vm._e(),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            item.particulars
-                              ? _c("span", [_vm._v(_vm._s(item.particulars))])
-                              : _vm._e(),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(
-                                  _vm._f("numberWithCommas")(item.total_amount)
-                                ) +
-                                "\n                                    "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(
-                              item.accounting_expenditures,
-                              function (i, ix) {
-                                return _c("span", { key: "obj" + ix }, [
-                                  _c("span", [
-                                    _vm._v(
-                                      _vm._s(i.allotment_class_code) +
-                                        " (" +
-                                        _vm._s(i.allotment_class) +
-                                        ") - " +
-                                        _vm._s(
-                                          i.object_expenditure
-                                            .object_expenditure
-                                        )
-                                    ),
-                                  ]),
-                                  _vm._v(" "),
-                                  ix < item.accounting_expenditures.length - 1
-                                    ? _c("span", [_vm._v(", ")])
-                                    : _vm._e(),
-                                ])
-                              }
-                            ),
-                            0
-                          ),
-                        ])
-                      }),
-                    ],
-                    2
-                  ),
-                ]),
-              ]),
-            ]),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "allotments" }),
           ]
         ),
       ]),
@@ -57152,18 +57157,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("Date Transaction")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Voucher/Payroll No.")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Payee")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Description")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Amount")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Charge To")]),
+    return _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column" }),
     ])
   },
 ]
@@ -58629,7 +58624,10 @@ var render = function () {
                                   return [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(props.row.allotment_class_code) +
+                                        _vm._s(
+                                          props.row.allotment_class
+                                            .allotment_class_code
+                                        ) +
                                         "\n                            "
                                     ),
                                   ]
@@ -58650,7 +58648,10 @@ var render = function () {
                                   return [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(props.row.allotment_class) +
+                                        _vm._s(
+                                          props.row.allotment_class
+                                            .allotment_class
+                                        ) +
                                         "\n                            "
                                     ),
                                   ]
