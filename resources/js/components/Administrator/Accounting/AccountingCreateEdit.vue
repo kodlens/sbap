@@ -423,8 +423,6 @@ export default{
                 financial_year_id: 0,
                 object_expenditure: null,
                 allotment_class_id: 0,
-                allotment_class: null,
-                allotment_class_code: null,
                 amount: 0,
             })
         },
@@ -486,6 +484,7 @@ export default{
                     formData.append(`object_expenditures[${index}][object_expenditure_id]`, item.object_expenditure_id ? item.object_expenditure_id : 0);
                     formData.append(`object_expenditures[${index}][allotment_class_id]`, item.allotment_class_id);
                     formData.append(`object_expenditures[${index}][amount]`, item.amount);
+                    formData.append(`object_expenditures[${index}][accounting_id]`, item.accounting_id);
                 });
             }
 
@@ -586,10 +585,9 @@ export default{
                         this.fields.objectExpenditures.push({
                             accounting_expenditure_id: item.accounting_expenditure_id,
                             object_expenditure_id: item.object_expenditure_id,
-                            // allotment_class_code: item.allotment_class_code,
                             allotment_class_id: item.allotment_class_id,
-                            // allotment_class: item.allotment_class,
                             amount: item.amount,
+                            accounting_id: item.accounting_id ? item.accounting_id : 0,
                             object_expenditure: item.object_expenditure.object_expenditure
                         });
                     });

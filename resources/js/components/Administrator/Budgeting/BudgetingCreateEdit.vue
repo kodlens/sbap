@@ -373,8 +373,6 @@ export default{
             this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure
             this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id
             this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id
-            this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class
-            this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code
         },
 
 
@@ -422,12 +420,11 @@ export default{
 
         newObjectExpenditure(){
             this.fields.objectExpenditures.push({
+                accounting_id: 0,
                 object_expenditure_id: 0,
                 financial_year_id: 0,
                 object_expenditure: null,
                 allotment_class_id: 0,
-                allotment_class: null,
-                allotment_class_code: null,
                 amount: 0,
             })
         },
@@ -490,9 +487,9 @@ export default{
                     formData.append(`object_expenditures[${index}][accounting_expenditure_id]`, item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
                     formData.append(`object_expenditures[${index}][object_expenditure_id]`, item.object_expenditure_id ? item.object_expenditure_id : 0);
                     formData.append(`object_expenditures[${index}][allotment_class_id]`, item.allotment_class_id);
-                    formData.append(`object_expenditures[${index}][allotment_class_code]`, item.allotment_class_code);
-                    formData.append(`object_expenditures[${index}][allotment_class]`, item.allotment_class);
                     formData.append(`object_expenditures[${index}][amount]`, item.amount);
+                    formData.append(`object_expenditures[${index}][accounting_id]`, item.accounting_id);
+
                 });
             }
 

@@ -125,16 +125,12 @@ class AccountingController extends Controller
                 foreach ($req->object_expenditures as $item) {
                     $object_expenditures[] = [
                         'accounting_id' => $accountingId,
-                        //'allotment_class' => $item['allotment_class'],
                         'allotment_class_id' => $item['allotment_class_id'],
                         'financial_year_id' => $financialYearId,
-                        //'allotment_class_code' => $item['allotment_class_code'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
                     ];
                 }
-    
-    
                 AccountingExpenditure::insert($object_expenditures);
             }
 
@@ -229,17 +225,14 @@ class AccountingController extends Controller
         //return $req->object_expenditures;
 
         if($req->has('object_expenditures')){
-            $object_expenditures = [];
             foreach ($req->object_expenditures as $item) {
                 AccountingExpenditure::updateOrCreate([
                     'accounting_expenditure_id' => $item['accounting_expenditure_id']
                 ],
                 [
                     'accounting_id' => $accountingId,
-                    //'allotment_class' => $item['allotment_class'],
                     'financial_year_id' => $financialYearId,
                     'allotment_class_id' => $item['allotment_class_id'],
-                    //'allotment_class_code' => $item['allotment_class_code'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
                 ]);

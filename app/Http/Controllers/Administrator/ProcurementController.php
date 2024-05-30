@@ -28,7 +28,7 @@ class ProcurementController extends Controller
     public function show($id){
       
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'office'
+            'accounting_expenditures.object_expenditure.allotment_class', 'office'
         ])
             ->find($id);
 
@@ -40,7 +40,7 @@ class ProcurementController extends Controller
         $sort = explode('.', $req->sort_by);
 
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'processor'])
+            'accounting_expenditures.object_expenditure.allotment_class', 'processor'])
             ->where(function($q) use ($req){
                 $q->where('particulars', 'like', $req->key . '%')
                     ->orWhere('transaction_no', 'like', $req->key . '%')
@@ -68,6 +68,7 @@ class ProcurementController extends Controller
 
 
     public function store(Request $req){
+        //return $req;
 
         $req->validate([
             'financial_year_id' => ['required'],
@@ -127,15 +128,12 @@ class ProcurementController extends Controller
                 foreach ($req->object_expenditures as $item) {
                     $object_expenditures[] = [
                         'accounting_id' => $accountingId,
-                        'allotment_class' => $item['allotment_class'],
                         'financial_year_id' => $financialYearId,
-                        'allotment_class_code' => $item['allotment_class_code'],
+                        'allotment_class_id' => $item['allotment_class_id'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
                     ];
                 }
-    
-    
                 AccountingExpenditure::insert($object_expenditures);
             }
 
@@ -199,28 +197,13 @@ class ProcurementController extends Controller
                     $path = $n[2];
                     ProcurementDocumentaryAttachment::create(
                         [
-                            'procurement_id' => $data->procurement_id,
+                            'accounting_id' => $data->accounting_id,
                             'documentary_attachment_id' => $item['documentary_attachment_id'],
                             'doc_attachment' => is_file($item['file_upload']) ? $path : $data->doc_attachment
                         ]);
 
                 }
                 //insert into database after upload 1 image
-
-                if($req->has('allotment_classes')){
-                    foreach ($req->allotment_classes as $item) {
-                        ProcurementAllotmentClass::updateOrCreate([
-                            'procurement_allotment_class_id' => $item['procurement_allotment_class_id']
-                            //wala siay ID or 0 id
-                        ],[
-                            'procurement_id' => $id,
-                            'allotment_class_id' => $item['allotment_class_id'],
-                            'allotment_class_account_id' => $item['allotment_class_account_id'],
-                            'amount' => $item['amount'],
-                        ]);
-                    }
-                }
-
             }
         }
 
@@ -228,16 +211,14 @@ class ProcurementController extends Controller
         $financialYearId = $req->financial_year_id;
 
         if($req->has('object_expenditures')){
-            $object_expenditures = [];
             foreach ($req->object_expenditures as $item) {
                 AccountingExpenditure::updateOrCreate([
                     'accounting_expenditure_id' => $item['accounting_expenditure_id']
                 ],
                 [
                     'accounting_id' => $accountingId,
-                    'allotment_class' => $item['allotment_class'],
                     'financial_year_id' => $financialYearId,
-                    'allotment_class_code' => $item['allotment_class_code'],
+                    'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
                 ]);

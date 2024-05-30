@@ -8007,8 +8007,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         financial_year_id: 0,
         object_expenditure: null,
         allotment_class_id: 0,
-        allotment_class: null,
-        allotment_class_code: null,
         amount: 0
       });
     },
@@ -8067,6 +8065,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           formData.append("object_expenditures[".concat(index, "][object_expenditure_id]"), item.object_expenditure_id ? item.object_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][allotment_class_id]"), item.allotment_class_id);
           formData.append("object_expenditures[".concat(index, "][amount]"), item.amount);
+          formData.append("object_expenditures[".concat(index, "][accounting_id]"), item.accounting_id);
         });
       }
 
@@ -8153,10 +8152,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this8.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
-              // allotment_class_code: item.allotment_class_code,
               allotment_class_id: item.allotment_class_id,
-              // allotment_class: item.allotment_class,
               amount: item.amount,
+              accounting_id: item.accounting_id ? item.accounting_id : 0,
               object_expenditure: item.object_expenditure.object_expenditure
             });
           });
@@ -9851,8 +9849,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure;
       this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id;
       this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id;
-      this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class;
-      this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code;
     },
     emitBrowseOffice: function emitBrowseOffice(row) {
       this.office.office = row.office + " (".concat(row.description, ")");
@@ -9892,12 +9888,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     newObjectExpenditure: function newObjectExpenditure() {
       this.fields.objectExpenditures.push({
+        accounting_id: 0,
         object_expenditure_id: 0,
         financial_year_id: 0,
         object_expenditure: null,
         allotment_class_id: 0,
-        allotment_class: null,
-        allotment_class_code: null,
         amount: 0
       });
     },
@@ -9957,9 +9952,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           formData.append("object_expenditures[".concat(index, "][accounting_expenditure_id]"), item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][object_expenditure_id]"), item.object_expenditure_id ? item.object_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][allotment_class_id]"), item.allotment_class_id);
-          formData.append("object_expenditures[".concat(index, "][allotment_class_code]"), item.allotment_class_code);
-          formData.append("object_expenditures[".concat(index, "][allotment_class]"), item.allotment_class);
           formData.append("object_expenditures[".concat(index, "][amount]"), item.amount);
+          formData.append("object_expenditures[".concat(index, "][accounting_id]"), item.accounting_id);
         });
       }
 
@@ -12482,8 +12476,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log(row, index);
       this.fields.objectExpenditures[index]['object_expenditure'] = row.object_expenditure;
       this.fields.objectExpenditures[index]['object_expenditure_id'] = row.object_expenditure_id;
-      this.fields.objectExpenditures[index]['allotment_class'] = row.allotment_class;
-      this.fields.objectExpenditures[index]['allotment_class_code'] = row.allotment_class_code;
+      this.fields.objectExpenditures[index]['allotment_class_id'] = row.allotment_class_id;
     },
     emitBrowseOffice: function emitBrowseOffice(row) {
       this.office.office = row.office + " (".concat(row.description, ")");
@@ -12528,8 +12521,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         accounting_id: 0,
         financial_year_id: 0,
         object_expenditure: null,
-        allotment_class: null,
-        allotment_class_code: null,
+        allotment_class_id: 0,
         amount: 0
       });
     },
@@ -12586,8 +12578,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.fields.objectExpenditures.forEach(function (item, index) {
           formData.append("object_expenditures[".concat(index, "][accounting_expenditure_id]"), item.accounting_expenditure_id ? item.accounting_expenditure_id : 0);
           formData.append("object_expenditures[".concat(index, "][object_expenditure_id]"), item.object_expenditure_id ? item.object_expenditure_id : 0);
-          formData.append("object_expenditures[".concat(index, "][allotment_class_code]"), item.allotment_class_code);
-          formData.append("object_expenditures[".concat(index, "][allotment_class]"), item.allotment_class);
+          formData.append("object_expenditures[".concat(index, "][allotment_class_id]"), item.allotment_class_id);
           formData.append("object_expenditures[".concat(index, "][amount]"), item.amount);
         });
       }
@@ -12641,7 +12632,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     debug: function debug() {
-      this.fields.financial_year_id = 2;
       this.fields.date_transaction = new Date();
       this.fields.transaction_no = '23-01-0001';
       this.fields.training_control_no = 'TD-1234-22-1122';
@@ -12659,22 +12649,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var result = res.data;
         _this9.fields.procurement_id = result.procurement_id;
         _this9.fields.financial_year_id = result.financial_year_id;
-        _this9.fields.fund_source_id = result.fund_source_id;
         _this9.fields.date_transaction = new Date(result.date_transaction);
         _this9.fields.training_control_no = result.training_control_no;
         _this9.fields.pr_no = result.pr_no;
         _this9.payee.bank_account_payee = result.payee.bank_account_payee;
         _this9.fields.payee_id = result.payee_id;
         _this9.fields.particulars = result.particulars;
-        _this9.fields.pr_amount = Number(result.pr_amount); //OOE
+        _this9.fields.pr_amount = Number(result.total_amount); //OOE
 
         if (result.accounting_expenditures.length > 0) {
           result.accounting_expenditures.forEach(function (item, index) {
             _this9.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
-              allotment_class_code: item.allotment_class_code,
-              allotment_class: item.allotment_class,
+              allotment_class_id: item.allotment_class_id ? item.allotment_class_id : 0,
               amount: item.amount,
               object_expenditure: item.object_expenditure.object_expenditure
             });

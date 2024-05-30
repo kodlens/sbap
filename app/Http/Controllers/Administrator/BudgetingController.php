@@ -30,7 +30,7 @@ class BudgetingController extends Controller
         $sort = explode('.', $req->sort_by);
 
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'processor'])
+            'accounting_expenditures.object_expenditure.allotment_class', 'processor'])
             ->where(function($q) use ($req){
                 $q->where('particulars', 'like', $req->key . '%')
                     ->orWhere('transaction_no', 'like', $req->key . '%')
@@ -46,7 +46,7 @@ class BudgetingController extends Controller
 
     public function show($id){
         $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_expenditures.object_expenditure', 'office'
+            'accounting_expenditures.object_expenditure.allotment_class', 'office'
         ])
             ->find($id);
 
@@ -120,20 +120,18 @@ class BudgetingController extends Controller
             $financialYearId = $req->financial_year_id;
     
             if($req->has('object_expenditures')){
-                $object_expenditures = [];
                 foreach ($req->object_expenditures as $item) {
-                    $object_expenditures[] = [
+                    AccountingExpenditure::updateOrCreate([
+                        'accounting_expenditure_id' => $item['accounting_expenditure_id']
+                    ],
+                    [
                         'accounting_id' => $accountingId,
-                        'allotment_class' => $item['allotment_class'],
-                        'financial_year_id' => $financialYearId,
                         'allotment_class_id' => $item['allotment_class_id'],
-                        'allotment_class_code' => $item['allotment_class_code'],
+                        'financial_year_id' => $financialYearId,
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
-                    ];
+                    ]);                    
                 }
-    
-                AccountingExpenditure::insert($object_expenditures);
             }
             DB::commit();
     
@@ -176,7 +174,6 @@ class BudgetingController extends Controller
             'transaction_type_id' => ['required'],
             'payee_id' => ['required'],
             'particulars' => ['required'],
-            //'total_amount' => ['required'],
             'office_id' => ['required']
         ],[
             'financial_year_id.required' => 'Please select financial year.',
@@ -233,10 +230,8 @@ class BudgetingController extends Controller
                 ],
                 [
                     'accounting_id' => $accountingId,
-                    'allotment_class' => $item['allotment_class'],
                     'financial_year_id' => $financialYearId,
                     'allotment_class_id' => $item['allotment_class_id'],
-                    'allotment_class_code' => $item['allotment_class_code'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
                 ]);
@@ -278,7 +273,7 @@ class BudgetingController extends Controller
 
         return DB::select('
         SELECT
-            a.`accounting_id`,
+            a.`accounting_id`,  
             a.`transaction_no`,
             a.`training_control_no`,
             a.`total_amount`
