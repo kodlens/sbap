@@ -8399,6 +8399,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     propUser: {
@@ -8552,6 +8559,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.loadAsyncData();
+  },
+  computed: {
+    utilizeAmount: function utilizeAmount() {
+      var total = 0;
+      this.data.forEach(function (item) {
+        total += Number(item.total_amount);
+      });
+      return total;
+    }
   }
 });
 
@@ -10266,6 +10282,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     propUser: {
@@ -10398,10 +10423,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    emitBrowserProcessor: function emitBrowserProcessor(row) {
+      var _this4 = this;
+
+      //another code
+      axios.post('/accounting-assign-processor', row).then(function (res) {
+        if (res.data.status === 'assigned') {
+          _this4.$buefy.dialog.alert({
+            title: 'ASSIGNED!',
+            message: 'Successfully assigned.',
+            type: 'is-success',
+            onConfirm: function onConfirm() {
+              _this4.loadAsyncData();
+            }
+          });
+        }
+      });
     }
   },
   mounted: function mounted() {
     this.loadAsyncData();
+  },
+  computed: {
+    utilizeAmount: function utilizeAmount() {
+      var total = 0;
+      this.data.forEach(function (item) {
+        total += Number(item.total_amount);
+      });
+      return total;
+    }
   }
 });
 
@@ -12810,6 +12861,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     propUser: {
@@ -12946,6 +13004,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.loadAsyncData();
+  },
+  computed: {
+    utilizeAmount: function utilizeAmount() {
+      var total = 0;
+      this.data.forEach(function (item) {
+        total += Number(item.total_amount);
+      });
+      return total;
+    }
   }
 });
 
@@ -45726,6 +45793,25 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
+                _c("div", [
+                  _c("span", {}, [_vm._v("UTILIZE BUDGET: ")]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "has-text-weight-bold",
+                      staticStyle: {
+                        "font-family": "Consolas, monaco, monospace",
+                      },
+                    },
+                    [
+                      _vm._v(
+                        _vm._s(_vm._f("numberWithCommas")(_vm.utilizeAmount))
+                      ),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
                 _c(
                   "b-table",
                   {
@@ -46001,10 +46087,25 @@ var render = function () {
                           key: "default",
                           fn: function (props) {
                             return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.total_amount) +
-                                  "\n                        "
+                              _c(
+                                "span",
+                                {
+                                  staticStyle: {
+                                    "font-family":
+                                      "Consolas, monaco, monospace",
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm._f("numberWithCommas")(
+                                          props.row.total_amount
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]
                               ),
                             ]
                           },
@@ -48562,6 +48663,25 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
+                _c("div", [
+                  _c("span", {}, [_vm._v("UTILIZE BUDGET: ")]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "has-text-weight-bold",
+                      staticStyle: {
+                        "font-family": "Consolas, monaco, monospace",
+                      },
+                    },
+                    [
+                      _vm._v(
+                        _vm._s(_vm._f("numberWithCommas")(_vm.utilizeAmount))
+                      ),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
                 _c(
                   "b-table",
                   {
@@ -48837,10 +48957,25 @@ var render = function () {
                           key: "default",
                           fn: function (props) {
                             return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.total_amount) +
-                                  "\n                        "
+                              _c(
+                                "span",
+                                {
+                                  staticStyle: {
+                                    "font-family":
+                                      "Consolas, monaco, monospace",
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm._f("numberWithCommas")(
+                                          props.row.total_amount
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]
                               ),
                             ]
                           },
@@ -52645,6 +52780,25 @@ var render = function () {
                     )
                   : _vm._e(),
                 _vm._v(" "),
+                _c("div", [
+                  _c("span", {}, [_vm._v("UTILIZE BUDGET: ")]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "has-text-weight-bold",
+                      staticStyle: {
+                        "font-family": "Consolas, monaco, monospace",
+                      },
+                    },
+                    [
+                      _vm._v(
+                        _vm._s(_vm._f("numberWithCommas")(_vm.utilizeAmount))
+                      ),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
                 _c(
                   "b-table",
                   {
@@ -52772,14 +52926,25 @@ var render = function () {
                           key: "default",
                           fn: function (props) {
                             return [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    _vm._f("numberWithCommas")(
-                                      props.row.total_amount
-                                    )
-                                  ) +
-                                  "\n                        "
+                              _c(
+                                "span",
+                                {
+                                  staticStyle: {
+                                    "font-family":
+                                      "Consolas, monaco, monospace",
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm._f("numberWithCommas")(
+                                          props.row.total_amount
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]
                               ),
                             ]
                           },

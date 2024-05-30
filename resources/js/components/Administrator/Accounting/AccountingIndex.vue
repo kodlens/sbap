@@ -45,6 +45,11 @@
                             <b-button tag="a" href="/accounting/create" icon-right="bank-outline" class="is-primary">ADD
                                 RECORD</b-button>
                         </div>
+                            
+                        <div>
+                            <span class="">UTILIZE BUDGET: </span>
+                            <span class="has-text-weight-bold" style="font-family: Consolas, monaco, monospace;">{{ utilizeAmount | numberWithCommas }}</span>
+                        </div>
 
                         <b-table :data="data" :loading="loading" detailed paginated backend-pagination :total="total"
                             :bordered="true" 
@@ -74,7 +79,9 @@
                                 {{ props.row.particulars }}
                             </b-table-column>
                             <b-table-column field="total_amount" label="Total Amount" v-slot="props">
-                                {{ props.row.total_amount }}
+                                <span style="font-family: Consolas, monaco, monospace;">
+                                    {{ props.row.total_amount | numberWithCommas}}
+                                </span>
                             </b-table-column>
 
                             <b-table-column field="processor" label="Assigned Processor" v-slot="props">
@@ -333,7 +340,17 @@ export default {
 
     mounted() {
         this.loadAsyncData();
+    },
 
+
+    computed: {
+        utilizeAmount(){
+            let total = 0;
+            this.data.forEach(item => {
+                total += Number(item.total_amount)
+            });
+            return total;
+        }
     }
 }
 </script>

@@ -47,6 +47,11 @@
                                 class="is-primary">ADD RECORD</b-button>
                         </div>
 
+                        <div>
+                            <span class="">UTILIZE BUDGET: </span>
+                            <span class="has-text-weight-bold" style="font-family: Consolas, monaco, monospace;">{{ utilizeAmount | numberWithCommas }}</span>
+                        </div>
+
                         <b-table
                             :data="data"
                             :loading="loading"
@@ -86,7 +91,9 @@
                             </b-table-column>
                             
                             <b-table-column field="pr_amount" label="PR Amount" v-slot="props">
-                                {{ props.row.total_amount | numberWithCommas }}
+                                <span style="font-family: Consolas, monaco, monospace;">
+                                    {{ props.row.total_amount | numberWithCommas}}
+                                </span>
                             </b-table-column>
 
                             <b-table-column field="particulars" label="Particulars" v-slot="props">
@@ -273,6 +280,16 @@ export default{
     mounted() {
         this.loadAsyncData();
 
+    },
+
+    computed: {
+        utilizeAmount(){
+            let total = 0;
+            this.data.forEach(item => {
+                total += Number(item.total_amount)
+            });
+            return total;
+        }
     }
 }
 </script>
