@@ -144,7 +144,45 @@
                     </div>
 
                     <div class="allotments">
+                        <div class="box" v-for="(item,index) in allotmentClasses" :key="`all${index}`">
+                            <div class="has-text-weight-bold">{{ item.allotment_class }}</div>
+                            <div>
+                                RUNNING BALANCE: {{ (computeApprovedBudget(item.object_expenditures) - computeUtilize(item.accounting_expenditures)) | numberWithCommas }}
+                            </div>
 
+                            <div>
+                                UTILIZE BUDGET:  {{ computeUtilize(item.accounting_expenditures) | numberWithCommas }}
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>Object Expenditure</th>
+                                        <th>Amount</th>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr v-for="(i, ix) in item.accounting_expenditures" :key="`oe${ix}`">
+                                            <td>
+                                                {{ i.accounting_expenditure_id }}
+                                            </td>
+                                            <td>
+                                                <span v-if="i.object_expenditure.account_code">
+                                                    {{ i.object_expenditure.account_code }} -
+                                                </span>
+                                                 {{ i.object_expenditure.object_expenditure }}
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {{ i.amount | numberWithCommas }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                
                     </div>
 
 
@@ -159,7 +197,7 @@ export default{
 
     mounted(){
         this.loadFinancialYears()
-        this.loadAllotments()
+        //this.loadReportByAllotments()
         //this.loadFundSources()
 
     },
@@ -196,15 +234,16 @@ export default{
 
         loadReportDashboard(){
             const params = [
-               
                `fy=${this.search.financial_year['financial_year_id']}`,
                `doc=${this.search.doc}`
            ].join('&')
 
-
-           axios.get(`/load-report-dashboard?${params}`).then(res=>{
-                this.data = res.data
+           axios.get(`/load-report-by-allotment-classes?${params}`).then(res=>{
+                this.allotmentClasses = res.data
             })
+        //    axios.get(`/load-report-dashboard?${params}`).then(res=>{
+        //         this.data = res.data
+        //     })
 
         },
 
@@ -234,14 +273,30 @@ export default{
             })
         },
 
-        loadAllotments(){
-            axios.get('/load-allotment-classes').then(res=>{
+        loadReportByAllotments(){
+            axios.get('/load-report-by-allotment-classes').then(res=>{
                 this.allotmentClasses = res.data
             })
+        },
+
+
+
+        computeUtilize(arr){
+            let sum = 0
+            arr.forEach(item => {
+                sum += item.amount
+            });
+            return sum;
+        },
+
+        
+        computeApprovedBudget(arr){
+            let sum = 0
+            arr.forEach(item => {
+                sum += item.approved_budget
+            });
+            return sum;
         }
-
-   
-
     },
 
 
@@ -250,7 +305,9 @@ export default{
 
         computedEndBudget(){
             return (this.search.financial_year['beginning_budget'] - this.search.financial_year['utilize_budget'])
-        }
+        },
+
+        
     }
 
 }
@@ -258,8 +315,16 @@ export default{
 </script>
 
 <style scoped>
-    .allotment {
+    .allotments {
         display: flex;
-
+        flex-wrap: wrap;
+        gap: 1;
+        justify-content: center;
     }
+
+    .allotments > .box {
+        margin: 6px;
+        min-width: 460px;
+    }
+   
 </style>

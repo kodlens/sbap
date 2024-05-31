@@ -19,5 +19,10 @@ class AllotmentClass extends Model
         'active'
     ];
 
-
+    public function object_expenditures(){
+        return $this->hasMany(ObjectExpenditure::class, 'allotment_class_id', 'allotment_class_id');
+    }
+    public function accounting_expenditures(){
+        return $this->hasMany(AccountingExpenditure::class, 'allotment_class_id', 'allotment_class_id');
+    }
 }

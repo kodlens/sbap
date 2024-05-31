@@ -11,7 +11,8 @@ use App\Models\FinancialYear;
 use App\Models\Accounting;
 use App\Models\Budgeting;
 use App\Models\Procurement;
-use App\Models\AccountingAllotmentClasses;
+use App\Models\AllotmentClass;
+use App\Models\AccountingExpenditure;
 
 class DashboardController extends Controller
 {
@@ -40,6 +41,17 @@ class DashboardController extends Controller
 
         return $data;
 
+    }
+
+    public function loadReportByAllotmentClasses(Request $req){
+
+        $data = AllotmentClass::with(['object_expenditures', 'accounting_expenditures.object_expenditure'])
+            // ->whereHas('accounting_expenditures.financial_year', function($q) use ($req){
+            //     $q->where('financial_year_id', $req->fy);
+            // })
+            ->get();
+
+        return $data;
     }
 
     //this will fetch all data for report in dashboard

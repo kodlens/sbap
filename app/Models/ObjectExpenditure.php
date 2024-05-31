@@ -31,8 +31,13 @@ class ObjectExpenditure extends Model
     }
 
     public function allotment_class(){
-        return $this->hasOne(AllotmentClass::class, 'allotment_class_id', 'allotment_class_id')
-            ->select('allotment_class_id', 'allotment_class_code', 'allotment_class', 'active');
+        return $this->hasOne(AllotmentClass::class, 'allotment_class_id', 'allotment_class_id');
     }
+
+    public function accounting_expenditure(){
+        return $this->hasOne(AccountingExpenditure::class, 'object_expenditure_id', 'object_expenditure_id');
+    }
+
+   
 
 }

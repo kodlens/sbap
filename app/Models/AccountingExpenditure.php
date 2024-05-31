@@ -28,8 +28,14 @@ class AccountingExpenditure extends Model
         return $this->hasOne(ObjectExpenditure::class, 'object_expenditure_id', 'object_expenditure_id');
     }
 
-    
+    public function financial_year(){
+        return $this->hasOne(FinancialYear::class, 'financial_year_id', 'financial_year_id');
+    }
 
+    
+    public function allotment_class(){
+        return $this->hasOne(AllotmentClass::class, 'allotment_class_id', 'allotment_class_id');
+    }
 
 
 }

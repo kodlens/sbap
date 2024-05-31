@@ -15678,10 +15678,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
-    this.loadFinancialYears();
-    this.loadAllotments(); //this.loadFundSources()
+    this.loadFinancialYears(); //this.loadReportByAllotments()
+    //this.loadFundSources()
   },
   data: function data() {
     return {
@@ -15710,9 +15748,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var params = ["fy=".concat(this.search.financial_year['financial_year_id']), "doc=".concat(this.search.doc)].join('&');
-      axios.get("/load-report-dashboard?".concat(params)).then(function (res) {
-        _this.data = res.data;
-      });
+      axios.get("/load-report-by-allotment-classes?".concat(params)).then(function (res) {
+        _this.allotmentClasses = res.data;
+      }); //    axios.get(`/load-report-dashboard?${params}`).then(res=>{
+      //         this.data = res.data
+      //     })
     },
     loadFinancialYears: function loadFinancialYears() {
       var _this2 = this;
@@ -15740,12 +15780,26 @@ __webpack_require__.r(__webpack_exports__);
         _this3.accountingUsedBudget = res.data;
       });
     },
-    loadAllotments: function loadAllotments() {
+    loadReportByAllotments: function loadReportByAllotments() {
       var _this4 = this;
 
-      axios.get('/load-allotment-classes').then(function (res) {
+      axios.get('/load-report-by-allotment-classes').then(function (res) {
         _this4.allotmentClasses = res.data;
       });
+    },
+    computeUtilize: function computeUtilize(arr) {
+      var sum = 0;
+      arr.forEach(function (item) {
+        sum += item.amount;
+      });
+      return sum;
+    },
+    computeApprovedBudget: function computeApprovedBudget(arr) {
+      var sum = 0;
+      arr.forEach(function (item) {
+        sum += item.approved_budget;
+      });
+      return sum;
     }
   },
   computed: {
@@ -38731,7 +38785,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.allotment[data-v-040e2ab9] {\n    display: flex;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.allotments[data-v-040e2ab9] {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 1;\n    justify-content: center;\n}\n.allotments > .box[data-v-040e2ab9] {\n    margin: 6px;\n    min-width: 460px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -57133,7 +57187,99 @@ var render = function () {
             _vm._v(" "),
             _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "allotments" }),
+            _c(
+              "div",
+              { staticClass: "allotments" },
+              _vm._l(_vm.allotmentClasses, function (item, index) {
+                return _c("div", { key: "all" + index, staticClass: "box" }, [
+                  _c("div", { staticClass: "has-text-weight-bold" }, [
+                    _vm._v(_vm._s(item.allotment_class)),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm._v(
+                      "\n                            RUNNING BALANCE: " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(
+                            _vm.computeApprovedBudget(
+                              item.object_expenditures
+                            ) - _vm.computeUtilize(item.accounting_expenditures)
+                          )
+                        ) +
+                        "\n                        "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm._v(
+                      "\n                            UTILIZE BUDGET:  " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(
+                            _vm.computeUtilize(item.accounting_expenditures)
+                          )
+                        ) +
+                        "\n                        "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("table", { staticClass: "table" }, [
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(item.accounting_expenditures, function (i, ix) {
+                          return _c("tr", { key: "oe" + ix }, [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(i.accounting_expenditure_id) +
+                                  "\n                                        "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              i.object_expenditure.account_code
+                                ? _c("span", [
+                                    _vm._v(
+                                      "\n                                                " +
+                                        _vm._s(
+                                          i.object_expenditure.account_code
+                                        ) +
+                                        " -\n                                            "
+                                    ),
+                                  ])
+                                : _vm._e(),
+                              _vm._v(
+                                "\n                                             " +
+                                  _vm._s(
+                                    i.object_expenditure.object_expenditure
+                                  ) +
+                                  "\n                                        "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", [
+                                _vm._v(
+                                  "\n                                                " +
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(i.amount)
+                                    ) +
+                                    "\n                                            "
+                                ),
+                              ]),
+                            ]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]),
+                  ]),
+                ])
+              }),
+              0
+            ),
           ]
         ),
       ]),
@@ -57147,6 +57293,18 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "columns" }, [
       _c("div", { staticClass: "column" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Object Expenditure")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Amount")]),
     ])
   },
 ]

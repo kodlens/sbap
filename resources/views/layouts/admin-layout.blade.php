@@ -38,7 +38,7 @@
                     >
                     <span>
                         <div class="has-text-weight-bold is-size-5">SMART FINANCE</div>
-                        <div class="has-text-weight-bold is-size-6">TANGUB CITY GLOBAL COLLEGE</div>
+                        <div class="has-text-weight-bold">TANGUB CITY GLOBAL COLLEGE</div>
                     </span>
                 </b-navbar-item>
             </template>

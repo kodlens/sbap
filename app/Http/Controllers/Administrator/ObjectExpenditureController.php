@@ -40,7 +40,7 @@ class ObjectExpenditureController extends Controller
                 'created_at',
                 'updated_at'
             )
-            ->where('allotment_class', 'like', '%'. $req->allotment . '%')
+            ->where('object_expenditure', 'like', '%'. $req->allotment . '%')
             ->where('financial_year_id', $fy->financial_year_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);

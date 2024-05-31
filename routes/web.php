@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/get-offices-for-routes', [App\Http\Controllers\Administrator\OfficeController::class, 'getOfficesForRoutes']);
 
     Route::get('/load-accounting-utilizations/{financial}', [App\Http\Controllers\Administrator\DashboardController::class, 'loadAccountingUtilizations']);
-   // Route::get('/load-budgeting-utilizations/{financial}', [App\Http\Controllers\Administrator\DashboardController::class, 'loadBudgetingUtilizations']);
+   Route::get('/load-report-by-allotment-classes', [App\Http\Controllers\Administrator\DashboardController::class, 'loadReportByAllotmentClasses']);
     //Route::get('/load-procurement-utilizations/{financial}', [App\Http\Controllers\Administrator\DashboardController::class, 'loadProcurementUtilizations']);
 
     //dashboard report fetch data
