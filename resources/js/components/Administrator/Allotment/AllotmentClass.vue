@@ -67,7 +67,11 @@
                                 {{ props.row.allotment_class_id }}
                             </b-table-column>
 
-                            <b-table-column field="allotmant_class" label="Allotment Class" v-slot="props">
+                            <b-table-column field="allotment_class_code" label="Code" v-slot="props">
+                                {{ props.row.allotment_class_code }}
+                            </b-table-column>
+
+                            <b-table-column field="allotment_class" label="Allotment Class" v-slot="props">
                                 {{ props.row.allotment_class }}
                             </b-table-column>
 

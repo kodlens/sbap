@@ -25,28 +25,22 @@ class AllotmentClassController extends Controller
     }
 
     public function show($id){
-        return AllotmentClass::with('financial_year')
-            ->find($id);
+        return AllotmentClass::find($id);
     }
 
 
     public function store(Request $req){
-
+        //return $req;
         $req->validate([
-            'financial_year' => ['required'],
-            'allotment_class' =>  Rule::unique('allotment_classes')->where(function ($query) use ($req) {
-                return $query->where('financial_year_id', $req->financial_year['financial_year_id'])
-                    ->where('allotment_class', $req->allotment_class);
-            }),
-            'allotment_class_budget' => ['required']
+            'allotment_class' => ['required'],
+            'allotment_class_code' => ['required', 'unique:allotment_classes'],
         ]);
 
         AllotmentClass::create([
-            'financial_year_id' => $req->financial_year['financial_year_id'],
             'allotment_class' => strtoupper($req->allotment_class),
-            'allotment_class_budget' => $req->allotment_class_budget
-        ]);
+            'allotment_class_code' => strtoupper($req->allotment_class_code),
 
+        ]);
 
         return response()->json([
             'status' => 'saved'
@@ -56,15 +50,13 @@ class AllotmentClassController extends Controller
     public function update(Request $req, $id){
 
         $req->validate([
-            'financial_year' => ['required'],
-            'allotment_class' => ['required', 'unique:allotment_classes,allotment_class,' .$id. ',allotment_class_id'],
-            'allotment_class_budget' => ['required']
+            'allotment_class' => ['required'],
+            'allotment_class_code' => ['required', 'unique:allotment_classes,allotment_class_code,' . $id . ',allotment_class_id'],
         ]);
 
         $data = AllotmentClass::find($id);
-        $data->financial_year_id = $req->financial_year['financial_year_id'];
         $data->allotment_class = strtoupper($req->allotment_class);
-        $data->allotment_class_budget = $req->allotment_class_budget;
+        $data->allotment_class_code = strtoupper($req->allotment_class_code);
         $data->save();
 
         return response()->json([
