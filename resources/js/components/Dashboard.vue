@@ -37,6 +37,7 @@
                             <b-field label="Document Type" label-position="on-border"
                                 expanded>
                                 <b-select v-model="search.doc"
+                                    @input="loadReportDashboard"
                                     expanded>
                                     <option value="ALL">ALL</option>
                                     <option value="ACCOUNTING">ACCOUNTING</option>
@@ -146,35 +147,37 @@
                     <div class="allotments">
                         <div class="box" v-for="(item,index) in allotmentClasses" :key="`all${index}`">
                             <div class="has-text-weight-bold">{{ item.allotment_class }}</div>
+                            <div class="has-text-weight-bold">{{ search.doc }}</div>
+
                             <div>
-                                RUNNING BALANCE: {{ (computeApprovedBudget(item.object_expenditures) - computeUtilize(item.accounting_expenditures)) | numberWithCommas }}
+                                RUNNING BALANCE: {{ item.approved_budget | numberWithCommas }}
                             </div>
 
                             <div>
-                                UTILIZE BUDGET:  {{ computeUtilize(item.accounting_expenditures) | numberWithCommas }}
+                                UTILIZE BUDGET:  {{ item.utilize_budget | numberWithCommas }}
                             </div>
+                            
                             <div>
                                 <table class="table">
                                     <thead>
-                                        <th>ID</th>
+                                        <th>Code</th>
                                         <th>Object Expenditure</th>
                                         <th>Amount</th>
                                     </thead>
 
                                     <tbody>
-                                        <tr v-for="(i, ix) in item.accounting_expenditures" :key="`oe${ix}`">
+                                        <tr v-for="(i, ix) in item.object_expenditure" :key="`oe${ix}`">
                                             <td>
-                                                {{ i.accounting_expenditure_id }}
+                                                {{ i.account_code }}
                                             </td>
                                             <td>
-                                                <span v-if="i.object_expenditure.account_code">
-                                                    {{ i.object_expenditure.account_code }} -
+                                                <span v-if="i.object_expenditure">
+                                                    {{ i.object_expenditure }}
                                                 </span>
-                                                 {{ i.object_expenditure.object_expenditure }}
                                             </td>
                                             <td>
                                                 <span>
-                                                    {{ i.amount | numberWithCommas }}
+                                                    {{ item.amount | numberWithCommas }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -225,7 +228,7 @@ export default{
 
             financialYears: [],
             allotmentClasses: [],
-           
+            objectExpenditures: []
 
         }
     },
@@ -241,9 +244,6 @@ export default{
            axios.get(`/load-report-by-allotment-classes?${params}`).then(res=>{
                 this.allotmentClasses = res.data
             })
-        //    axios.get(`/load-report-dashboard?${params}`).then(res=>{
-        //         this.data = res.data
-        //     })
 
         },
 
@@ -267,17 +267,17 @@ export default{
             })
         },
 
-        loadAccountingUtilizations(){
-            axios.get('/load-accounting-utilizations/' + this.search.financial_year['financial_year_id'] + '/?doc=' + this.search.doc).then(res=>{
-                this.accountingUsedBudget = res.data
-            })
-        },
+        // loadAccountingUtilizations(){
+        //     axios.get('/load-accounting-utilizations/' + this.search.financial_year['financial_year_id'] + '/?doc=' + this.search.doc).then(res=>{
+        //         this.accountingUsedBudget = res.data
+        //     })
+        // },
 
-        loadReportByAllotments(){
-            axios.get('/load-report-by-allotment-classes').then(res=>{
-                this.allotmentClasses = res.data
-            })
-        },
+        // loadReportByAllotments(){
+        //     axios.get('/load-report-by-allotment-classes').then(res=>{
+        //         this.allotmentClasses = res.data
+        //     })
+        // },
 
 
 

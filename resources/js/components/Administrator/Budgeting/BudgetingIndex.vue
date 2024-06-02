@@ -107,11 +107,11 @@
                                         <b-button class="button is-small is-danger mr-1" icon-right="delete"
                                             @click="confirmDelete(props.row.accounting_id)"></b-button>
                                     </b-tooltip>
-                                    <b-tooltip label="Assign Processor" type="is-info"
+                                    <!-- <b-tooltip label="Assign Processor" type="is-info"
                                         v-if="!props.row.processor_id > 0">
                                         <modal-button-browse-processor :props-accounting-id="props.row.accounting_id"
                                             @browseProcessor="emitBrowserProcessor"></modal-button-browse-processor>
-                                    </b-tooltip>
+                                    </b-tooltip> -->
                                 </div>
                             </b-table-column>
 

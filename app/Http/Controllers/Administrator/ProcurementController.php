@@ -128,6 +128,7 @@ class ProcurementController extends Controller
                 foreach ($req->object_expenditures as $item) {
                     $object_expenditures[] = [
                         'accounting_id' => $accountingId,
+                        'doc_type' => 'PROCUREMENT',
                         'financial_year_id' => $financialYearId,
                         'allotment_class_id' => $item['allotment_class_id'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
@@ -217,6 +218,7 @@ class ProcurementController extends Controller
                 ],
                 [
                     'accounting_id' => $accountingId,
+                    'doc_type' => 'PROCUREMENT',
                     'financial_year_id' => $financialYearId,
                     'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],

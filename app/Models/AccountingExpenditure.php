@@ -16,6 +16,7 @@ class AccountingExpenditure extends Model
 
     protected $fillable = [
         'accounting_id',
+        'doc_type',
         'object_expenditure_id',
         'financial_year_id',
         'allotment_class_id',
@@ -25,7 +26,11 @@ class AccountingExpenditure extends Model
     ];
 
     public function object_expenditure(){
-        return $this->hasOne(ObjectExpenditure::class, 'object_expenditure_id', 'object_expenditure_id');
+        return $this->belongsTo(ObjectExpenditure::class, 'object_expenditure_id', 'object_expenditure_id');
+    }
+
+    public function accounting(){
+        return $this->belongsTo(Accounting::class, 'accounting_id', 'accounting_id');
     }
 
     public function financial_year(){
@@ -36,6 +41,7 @@ class AccountingExpenditure extends Model
     public function allotment_class(){
         return $this->hasOne(AllotmentClass::class, 'allotment_class_id', 'allotment_class_id');
     }
+
 
 
 }

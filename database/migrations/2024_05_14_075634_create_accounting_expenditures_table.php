@@ -23,6 +23,8 @@ class CreateAccountingExpendituresTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->string('doc_type', 30)->nullable();
+
             $table->unsignedBigInteger('object_expenditure_id');
             $table->foreign('object_expenditure_id')
                 ->references('object_expenditure_id')

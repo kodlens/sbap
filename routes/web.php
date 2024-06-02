@@ -68,7 +68,7 @@ Route::get('/get-modal-offices', [App\Http\Controllers\OpenModalResourcesControl
 
 
 
-/*     ADMINSITRATOR          */
+/*     ADMINISTRATOR     */
 
 //authenticate
 Route::middleware(['auth'])->group(function() {

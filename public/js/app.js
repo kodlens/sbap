@@ -15711,6 +15711,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.loadFinancialYears(); //this.loadReportByAllotments()
@@ -15735,7 +15738,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       data: [],
       financialYears: [],
-      allotmentClasses: []
+      allotmentClasses: [],
+      objectExpenditures: []
     };
   },
   methods: {
@@ -15745,9 +15749,7 @@ __webpack_require__.r(__webpack_exports__);
       var params = ["fy=".concat(this.search.financial_year['financial_year_id']), "doc=".concat(this.search.doc)].join('&');
       axios.get("/load-report-by-allotment-classes?".concat(params)).then(function (res) {
         _this.allotmentClasses = res.data;
-      }); //    axios.get(`/load-report-dashboard?${params}`).then(res=>{
-      //         this.data = res.data
-      //     })
+      });
     },
     loadFinancialYears: function loadFinancialYears() {
       var _this2 = this;
@@ -15768,20 +15770,16 @@ __webpack_require__.r(__webpack_exports__);
         _this2.search.financial_year['updated_at'] = item.updated_at;
       });
     },
-    loadAccountingUtilizations: function loadAccountingUtilizations() {
-      var _this3 = this;
-
-      axios.get('/load-accounting-utilizations/' + this.search.financial_year['financial_year_id'] + '/?doc=' + this.search.doc).then(function (res) {
-        _this3.accountingUsedBudget = res.data;
-      });
-    },
-    loadReportByAllotments: function loadReportByAllotments() {
-      var _this4 = this;
-
-      axios.get('/load-report-by-allotment-classes').then(function (res) {
-        _this4.allotmentClasses = res.data;
-      });
-    },
+    // loadAccountingUtilizations(){
+    //     axios.get('/load-accounting-utilizations/' + this.search.financial_year['financial_year_id'] + '/?doc=' + this.search.doc).then(res=>{
+    //         this.accountingUsedBudget = res.data
+    //     })
+    // },
+    // loadReportByAllotments(){
+    //     axios.get('/load-report-by-allotment-classes').then(res=>{
+    //         this.allotmentClasses = res.data
+    //     })
+    // },
     computeUtilize: function computeUtilize(arr) {
       var sum = 0;
       arr.forEach(function (item) {
@@ -49217,34 +49215,6 @@ var render = function () {
                                           ],
                                           1
                                         ),
-                                        _vm._v(" "),
-                                        !props.row.processor_id > 0
-                                          ? _c(
-                                              "b-tooltip",
-                                              {
-                                                attrs: {
-                                                  label: "Assign Processor",
-                                                  type: "is-info",
-                                                },
-                                              },
-                                              [
-                                                _c(
-                                                  "modal-button-browse-processor",
-                                                  {
-                                                    attrs: {
-                                                      "props-accounting-id":
-                                                        props.row.accounting_id,
-                                                    },
-                                                    on: {
-                                                      browseProcessor:
-                                                        _vm.emitBrowserProcessor,
-                                                    },
-                                                  }
-                                                ),
-                                              ],
-                                              1
-                                            )
-                                          : _vm._e(),
                                       ],
                                       1
                                     ),
@@ -49254,7 +49224,7 @@ var render = function () {
                             ],
                             null,
                             false,
-                            997985318
+                            914732212
                           ),
                         })
                       : _vm._e(),
@@ -57087,6 +57057,7 @@ var render = function () {
                         "b-select",
                         {
                           attrs: { expanded: "" },
+                          on: { input: _vm.loadReportDashboard },
                           model: {
                             value: _vm.search.doc,
                             callback: function ($$v) {
@@ -57204,15 +57175,15 @@ var render = function () {
                     _vm._v(_vm._s(item.allotment_class)),
                   ]),
                   _vm._v(" "),
+                  _c("div", { staticClass: "has-text-weight-bold" }, [
+                    _vm._v(_vm._s(_vm.search.doc)),
+                  ]),
+                  _vm._v(" "),
                   _c("div", [
                     _vm._v(
                       "\n                            RUNNING BALANCE: " +
                         _vm._s(
-                          _vm._f("numberWithCommas")(
-                            _vm.computeApprovedBudget(
-                              item.object_expenditures
-                            ) - _vm.computeUtilize(item.accounting_expenditures)
-                          )
+                          _vm._f("numberWithCommas")(item.approved_budget)
                         ) +
                         "\n                        "
                     ),
@@ -57222,9 +57193,7 @@ var render = function () {
                     _vm._v(
                       "\n                            UTILIZE BUDGET:  " +
                         _vm._s(
-                          _vm._f("numberWithCommas")(
-                            _vm.computeUtilize(item.accounting_expenditures)
-                          )
+                          _vm._f("numberWithCommas")(item.utilize_budget)
                         ) +
                         "\n                        "
                     ),
@@ -57236,35 +57205,26 @@ var render = function () {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(item.accounting_expenditures, function (i, ix) {
+                        _vm._l(item.object_expenditure, function (i, ix) {
                           return _c("tr", { key: "oe" + ix }, [
                             _c("td", [
                               _vm._v(
                                 "\n                                            " +
-                                  _vm._s(i.accounting_expenditure_id) +
+                                  _vm._s(i.account_code) +
                                   "\n                                        "
                               ),
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              i.object_expenditure.account_code
+                              i.object_expenditure
                                 ? _c("span", [
                                     _vm._v(
                                       "\n                                                " +
-                                        _vm._s(
-                                          i.object_expenditure.account_code
-                                        ) +
-                                        " -\n                                            "
+                                        _vm._s(i.object_expenditure) +
+                                        "\n                                            "
                                     ),
                                   ])
                                 : _vm._e(),
-                              _vm._v(
-                                "\n                                             " +
-                                  _vm._s(
-                                    i.object_expenditure.object_expenditure
-                                  ) +
-                                  "\n                                        "
-                              ),
                             ]),
                             _vm._v(" "),
                             _c("td", [
@@ -57272,7 +57232,7 @@ var render = function () {
                                 _vm._v(
                                   "\n                                                " +
                                     _vm._s(
-                                      _vm._f("numberWithCommas")(i.amount)
+                                      _vm._f("numberWithCommas")(item.amount)
                                     ) +
                                     "\n                                            "
                                 ),
@@ -57308,7 +57268,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("ID")]),
+      _c("th", [_vm._v("Code")]),
       _vm._v(" "),
       _c("th", [_vm._v("Object Expenditure")]),
       _vm._v(" "),

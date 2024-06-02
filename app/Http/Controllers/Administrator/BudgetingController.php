@@ -126,6 +126,7 @@ class BudgetingController extends Controller
                     ],
                     [
                         'accounting_id' => $accountingId,
+                        'doc_type' => 'BUDGETING',
                         'allotment_class_id' => $item['allotment_class_id'],
                         'financial_year_id' => $financialYearId,
                         'object_expenditure_id' => $item['object_expenditure_id'],
@@ -230,6 +231,7 @@ class BudgetingController extends Controller
                 ],
                 [
                     'accounting_id' => $accountingId,
+                    'doc_type' => 'BUDGETING',
                     'financial_year_id' => $financialYearId,
                     'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],

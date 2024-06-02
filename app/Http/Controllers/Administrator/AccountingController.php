@@ -125,6 +125,7 @@ class AccountingController extends Controller
                 foreach ($req->object_expenditures as $item) {
                     $object_expenditures[] = [
                         'accounting_id' => $accountingId,
+                        'doc_type' => 'ACCOUNTING',
                         'allotment_class_id' => $item['allotment_class_id'],
                         'financial_year_id' => $financialYearId,
                         'object_expenditure_id' => $item['object_expenditure_id'],
@@ -231,6 +232,7 @@ class AccountingController extends Controller
                 ],
                 [
                     'accounting_id' => $accountingId,
+                    'doc_type' => 'ACCOUNTING',
                     'financial_year_id' => $financialYearId,
                     'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
