@@ -56,28 +56,31 @@ class DashboardController extends Controller
         //     })
         //     ->get();
         if($req->doc == 'ALL'){
-            $data = DB::select('
-                SELECT
-                a.accounting_expenditure_id,
-                a.accounting_id,
-                e.doc_type,
-                a.allotment_class_id,
-                a.amount,
-                a.financial_year_id,
-                c.financial_year_code, c.financial_year_desc,
-                a.object_expenditure_id,
-                b.allotment_class_code, b.allotment_class,
-                d.object_expenditure, d.approved_budget,
-                d.beginning_budget,
-                SUM(a.amount) AS utilize_budget
-
-                FROM accounting_expenditures a
-                JOIN allotment_classes b ON a.allotment_class_id = b.allotment_class_id
-                JOIN financial_years c ON a.financial_year_id = c.financial_year_id
-                JOIN object_expenditures d ON a.object_expenditure_id = d.object_expenditure_id
-                JOIN accountings e ON a.accounting_id = e.accounting_id
-                GROUP BY a.allotment_class_id
-            ');
+            $data = AccountingExpenditure::with('expenditure_doctype')
+                ->join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
+                ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
+                ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
+                ->join('accountings', 'accounting_expenditures.accounting_id', '=', 'accountings.accounting_id')
+                ->select(
+                    'accounting_expenditures.accounting_expenditure_id',
+                    'accounting_expenditures.accounting_id',
+                    'accountings.doc_type',
+                    'accounting_expenditures.doc_type as acctg_doc_type',
+                    'accounting_expenditures.allotment_class_id',
+                    'accounting_expenditures.amount',
+                    'accounting_expenditures.financial_year_id',
+                    'financial_years.financial_year_code', 
+                    'financial_years.financial_year_desc',
+                    'accounting_expenditures.object_expenditure_id',
+                    'allotment_classes.allotment_class_code', 
+                    'allotment_classes.allotment_class',
+                    'object_expenditures.object_expenditure', 
+                    'object_expenditures.approved_budget',
+                    'object_expenditures.beginning_budget',
+                    DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget')
+                )
+                ->groupBy('accounting_expenditures.allotment_class_id')
+                ->get();
         }else{
             // $data = DB::select('
             //     SELECT
