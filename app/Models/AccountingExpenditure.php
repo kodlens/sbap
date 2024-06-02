@@ -42,6 +42,15 @@ class AccountingExpenditure extends Model
         return $this->hasOne(AllotmentClass::class, 'allotment_class_id', 'allotment_class_id');
     }
 
+    public function accountings(){
+        return $this->hasOne(Accounting::class, 'accounting_id', 'accounting_id');
+    }
+
+    public function expenditure_doctype(){
+        return $this->hasMany(Accounting::class, 'doc_type', 'doc_type')
+            ->whereColumn('accountings.financial_year_id', 'accounting_expenditures.financial_year_id');
+    }
+
 
 
 }

@@ -103,9 +103,7 @@ class DashboardController extends Controller
             //     GROUP BY a.allotment_class_id
             // ', [$req->doc]);
 
-            $data = AccountingExpenditure::with([
-                'users'
-            ])
+            $data = AccountingExpenditure::with('expenditure_doctype')
                 ->join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
                 ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
@@ -114,6 +112,7 @@ class DashboardController extends Controller
                     'accounting_expenditures.accounting_expenditure_id',
                     'accounting_expenditures.accounting_id',
                     'accountings.doc_type',
+                    'accounting_expenditures.doc_type as acctg_doc_type',
                     'accounting_expenditures.allotment_class_id',
                     'accounting_expenditures.amount',
                     'accounting_expenditures.financial_year_id',
