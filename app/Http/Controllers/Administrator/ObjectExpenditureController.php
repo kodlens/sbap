@@ -71,12 +71,12 @@ class ObjectExpenditureController extends Controller
         $req->validate([
             'financial_year_id' => ['required'],
             'object_expenditure' => ['required'],
-            'allotment_class' => ['required']
+            'allotment_class_id' => ['required']
         ]);
 
         $exists = ObjectExpenditure::where('object_expenditure', strtoupper($req->object_expenditure))
             ->where('financial_year_id', $req->financial_year_id)
-            ->where('allotment_class', strtoupper($req->allotment_class['allotment_class']))
+            ->where('allotment_class_id', $req->allotment_class_id)
             ->exists();
 
         if($exists){
@@ -94,8 +94,7 @@ class ObjectExpenditureController extends Controller
             'financial_year_id' => $req->financial_year_id,
             'object_expenditure' => strtoupper($req->object_expenditure),
             'account_code' => strtoupper($req->account_code),
-            'allotment_class' => strtoupper($req->allotment_class['allotment_class']),
-            'allotment_class_code' => strtoupper($req->allotment_class['allotment_class_code']),
+            'allotment_class_id' => $req->allotment_class_id,
             'approved_budget' => $req->approved_budget,
             'beginning_budget' => $req->beginning_budget,
         ]);
@@ -111,12 +110,12 @@ class ObjectExpenditureController extends Controller
         $req->validate([
             'financial_year_id' => ['required'],
             'object_expenditure' => ['required'],
-            'allotment_class' => ['required']
+            'allotment_class_id' => ['required']
         ]);
 
         $exists = ObjectExpenditure::where('object_expenditure', strtoupper($req->object_expenditure))
             ->where('financial_year_id', $req->financial_year_id)
-            ->where('allotment_class', strtoupper($req->allotment_class['allotment_class']))
+            ->where('allotment_class_id', $req->allotment_class_id)
             ->where('object_expenditure_id', '!=', $id)
             ->exists();
 
@@ -136,8 +135,7 @@ class ObjectExpenditureController extends Controller
                 'financial_year_id' => $req->financial_year_id,
                 'object_expenditure' => strtoupper($req->object_expenditure),
                 'account_code' => strtoupper($req->account_code),
-                'allotment_class' => strtoupper($req->allotment_class['allotment_class']),
-                'allotment_class_code' => strtoupper($req->allotment_class['allotment_class_code']),
+                'allotment_class_id' => $req->allotment_class_id,
                 'approved_budget' => $req->approved_budget,
                 'beginning_budget' => $req->beginning_budget,
             ]);

@@ -17,8 +17,6 @@ class ObjectExpenditure extends Model
         'object_expenditure',
         'account_code',
         'allotment_class_id',
-        'allotment_class',
-        'allotment_class_code',
         'approved_budget',
         'beginning_budget',
         'end_budget',

@@ -195,12 +195,12 @@
                                         expanded
                                         :type="errors.allotment_class ? 'is-danger':''"
                                         :message="errors.allotment_class ? errors.allotment_class[0] : ''">
-                                        <b-select v-model="fields.allotment_class" expanded
+                                        <b-select v-model="fields.allotment_class_id" expanded
                                             required
                                             placeholder="Allotment Class">
                                             <option v-for="(item, indx) in allotmentClasses"
                                                 :key="`fy${indx}`"
-                                                :value="{ allotment_class: item.allotment_class, allotment_class_code: item.allotment_class_code }">
+                                                :value="item.allotment_class_id">
                                                 {{ item.allotment_class_code }}
                                                 -
                                                 {{ item.allotment_class }}
@@ -278,10 +278,7 @@ export default{
                 financial_year_id: null,
                 object_expenditure: null,
                 allotment_class_code: null,
-                allotment_class: {
-                    allotment_class: null,
-                    allotment_class_code: null
-                },
+                allotment_class_id: 0,
                 approved_budget: 0,
                 beginning_budget: 0
             },
@@ -358,13 +355,13 @@ export default{
         openModal(){
             this.isModalCreate=true;
             this.clearFields()
-            this.errors = {};
+            
         },
 
 
 
         submit: function(){
-
+            this.errors = {};
             if(this.global_id > 0){
                 //update
                 axios.put('/object-expenditures/'+this.global_id, this.fields).then(res=>{
@@ -439,12 +436,9 @@ export default{
             this.global_id = 0
             this.fields.object_expenditure_id = 0
             this.fields.object_expenditure = null;
-            this.fields.allotment_class_code = null;
-            this.fields.allotment_class = {
-                allotment_class: null,
-                allotment_class_code: null
-            };
+            this.fields.allotment_class_id = 0;
             this.fields.approved_budget = 0;
+            this.fields.account_code = null
             this.fields.beginning_budget = 0;
         },
 
@@ -461,13 +455,7 @@ export default{
                 this.fields.financial_year_id = res.data.financial_year_id;
                 this.fields.object_expenditure = res.data.object_expenditure;
                 this.fields.account_code = res.data.account_code;
-
-                this.fields.allotment_class = {
-                    allotment_class: res.data.allotment_class,
-                    allotment_class_code: res.data.allotment_class_code
-                }
-                
-                console.log(this.fields.allotment_class)
+                this.fields.allotment_class_id = res.data.allotment_class_id;
                 this.fields.approved_budget = res.data.approved_budget
                 this.fields.beginning_budget = res.data.beginning_budget
             });

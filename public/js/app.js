@@ -11520,10 +11520,7 @@ __webpack_require__.r(__webpack_exports__);
         financial_year_id: null,
         object_expenditure: null,
         allotment_class_code: null,
-        allotment_class: {
-          allotment_class: null,
-          allotment_class_code: null
-        },
+        allotment_class_id: 0,
         approved_budget: 0,
         beginning_budget: 0
       },
@@ -11588,10 +11585,11 @@ __webpack_require__.r(__webpack_exports__);
     openModal: function openModal() {
       this.isModalCreate = true;
       this.clearFields();
-      this.errors = {};
     },
     submit: function submit() {
       var _this2 = this;
+
+      this.errors = {};
 
       if (this.global_id > 0) {
         //update
@@ -11675,12 +11673,9 @@ __webpack_require__.r(__webpack_exports__);
       this.global_id = 0;
       this.fields.object_expenditure_id = 0;
       this.fields.object_expenditure = null;
-      this.fields.allotment_class_code = null;
-      this.fields.allotment_class = {
-        allotment_class: null,
-        allotment_class_code: null
-      };
+      this.fields.allotment_class_id = 0;
       this.fields.approved_budget = 0;
+      this.fields.account_code = null;
       this.fields.beginning_budget = 0;
     },
     //update code here
@@ -11696,11 +11691,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.fields.financial_year_id = res.data.financial_year_id;
         _this5.fields.object_expenditure = res.data.object_expenditure;
         _this5.fields.account_code = res.data.account_code;
-        _this5.fields.allotment_class = {
-          allotment_class: res.data.allotment_class,
-          allotment_class_code: res.data.allotment_class_code
-        };
-        console.log(_this5.fields.allotment_class);
+        _this5.fields.allotment_class_id = res.data.allotment_class_id;
         _this5.fields.approved_budget = res.data.approved_budget;
         _this5.fields.beginning_budget = res.data.beginning_budget;
       });
@@ -51314,15 +51305,15 @@ var render = function () {
                                     placeholder: "Allotment Class",
                                   },
                                   model: {
-                                    value: _vm.fields.allotment_class,
+                                    value: _vm.fields.allotment_class_id,
                                     callback: function ($$v) {
                                       _vm.$set(
                                         _vm.fields,
-                                        "allotment_class",
+                                        "allotment_class_id",
                                         $$v
                                       )
                                     },
-                                    expression: "fields.allotment_class",
+                                    expression: "fields.allotment_class_id",
                                   },
                                 },
                                 _vm._l(
@@ -51333,12 +51324,7 @@ var render = function () {
                                       {
                                         key: "fy" + indx,
                                         domProps: {
-                                          value: {
-                                            allotment_class:
-                                              item.allotment_class,
-                                            allotment_class_code:
-                                              item.allotment_class_code,
-                                          },
+                                          value: item.allotment_class_id,
                                         },
                                       },
                                       [
