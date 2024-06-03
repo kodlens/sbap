@@ -138,12 +138,12 @@
                                         <th>Object Expenditure</th>
                                         <th>Amount</th>
                                     </tr>
+
                                     <tr v-for="(i, ix) in props.row.accounting_expenditures" :key="ix">
-                                        <td>{{ i.object_expenditure.allotment_class }}</td>
-                                        <td>({{ i.object_expenditure.allotment_class_code }})</td>
+                                        <td>{{ i.object_expenditure.allotment_class.allotment_class }}</td>
+                                        <td>({{ i.object_expenditure.allotment_class.allotment_class_code }})</td>
                                         <td>{{ i.object_expenditure.object_expenditure }}</td>
                                         <td>{{ i.amount }}</td>
-
                                     </tr>
                                 </table>
 

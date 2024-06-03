@@ -48940,6 +48940,7 @@ var render = function () {
                                         _vm._v(
                                           _vm._s(
                                             i.object_expenditure.allotment_class
+                                              .allotment_class
                                           )
                                         ),
                                       ]),
@@ -48949,6 +48950,7 @@ var render = function () {
                                           "(" +
                                             _vm._s(
                                               i.object_expenditure
+                                                .allotment_class
                                                 .allotment_class_code
                                             ) +
                                             ")"
