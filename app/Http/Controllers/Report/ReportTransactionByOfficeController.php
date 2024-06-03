@@ -21,46 +21,35 @@ class ReportTransactionByOfficeController extends Controller
         $officeId = $req->office;
         $fy = $req->fy;
 
-        $data = DB::select('
+        $data = DB::select("
             SELECT
-            g.service,
-            g.budget as service_budget,
-            g.balance as service_balance,
-            b.doc_type,
-            b.transaction_no,
-            e.financial_year_id,
-            e.financial_year_code,
-            e.financial_year_desc,
-            e.financial_budget,
-            e.balance,
-            h.fund_source,
-
-            a.amount,
-            a.allotment_class_id,
-            c.allotment_class,
-            a.allotment_class_account_id,
-            d.allotment_class_account_code,
-            d.allotment_class_account,
-            c.allotment_class_budget,
-            c.allotment_class_balance,
-            d.allotment_class_account_budget,
-            d.allotment_class_account_balance,
-            f.priority_program,
-            f.priority_program_code,
-            f.priority_program_budget,
-            f.priority_program_balance
+            a.`accounting_id`,
+            a.doc_type,
+            b.`financial_year_code`,
+            b.`financial_year_desc`,
+            a.`pr_no`,
+            a.transaction_no,
+            a.`training_control_no`,
+            d.`bank_account_payee`,
+            a.`total_amount`,
+            e.`office`,
+            h.allotment_class_code, h.allotment_class,
+            g.account_code, g.object_expenditure,
+            SUM(f.amount) AS 'total_utilize',
+            g.approved_budget, g.beginning_budget
             
-            FROM
-            accounting_allotment_classes a
-            JOIN accountings b ON a.accounting_id = b.accounting_id
-            JOIN allotment_classes c ON a.allotment_class_id = c.allotment_class_id
-            JOIN allotment_class_accounts d ON a.allotment_class_account_id = d.allotment_class_account_id
-            JOIN financial_years e ON b.financial_year_id = e.financial_year_id
-            JOIN priority_programs f ON b.priority_program_id = f.priority_program_id
-            LEFT JOIN services g ON b.doc_type = g.service
-            LEFT JOIN fund_sources h ON h.fund_source_id = b.fund_source_id
-            WHERE b.financial_year_id = ? AND b.office_id = ?
-            ', [$fy, $officeId]);
+            FROM accountings a
+            JOIN `financial_years` b ON a.`financial_year_id` = b.`financial_year_id`
+            JOIN payee AS d ON a.`payee_id` = d.`payee_id`
+            JOIN offices e ON a.`office_id` = e.`office_id`
+            LEFT JOIN accounting_expenditures f ON a.accounting_id = f.accounting_id
+            LEFT JOIN object_expenditures g ON f.object_expenditure_id = g.object_expenditure_id
+            LEFT JOIN allotment_classes h ON f.allotment_class_id = h.allotment_class_id
+            WHERE a.office_id = ?
+            AND a.financial_year_id = ?
+            GROUP BY a.office_id, a.doc_type
+            
+        ", [$officeId, $fy]);
 
         return $data;
     }

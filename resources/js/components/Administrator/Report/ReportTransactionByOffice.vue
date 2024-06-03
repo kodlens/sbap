@@ -3,7 +3,7 @@
     <div>
         <section class="section">
             <div class="columns is-centered">
-                <div class="column is-8-desktop">
+                <div class="column is-10-desktop">
                     <div class="box">
                         <span class="has-text-weight-bold">FILTER</span>
 
@@ -46,20 +46,22 @@
                         <table class="table">
                             <tr>
                                 <th>Document</th>
+                                <th>Account Code</th>
                                 <th>Allotment Class</th>
-                                <th>Fund Source</th>
-                                <th>Running Balance</th>
+                                <th>Object Expenditures</th>
                                 <th>Financial Budget</th>
                                 <th>Utilized Budget</th>
+                                <th>Running Balance</th>
                             </tr>
 
                             <tr v-for="(item, index) in reportData" :key="index">
                                 <td>{{ item.doc_type }}</td>
+                                <td>{{ item.account_code }}</td>
                                 <td>{{ item.allotment_class }}</td>
-                                <td>{{ item.fund_source }}</td>
-                                <td>{{ item.allotment_class_account_balance | numberWithCommas }}</td>
-                                <td>{{ item.financial_budget | numberWithCommas }}</td>
-                                <td>{{ item.amount | numberWithCommas }}</td>
+                                <td>{{ item.object_expenditure }}</td>
+                                <td>{{ item.approved_budget | numberWithCommas }}</td>
+                                <td>{{ item.total_utilize | numberWithCommas }}</td>
+                                 <td>{{ (Number(item.approved_budget) - Number(item.total_utilize)) | numberWithCommas }}</td>
                             </tr>
                         </table>
 
@@ -97,7 +99,10 @@ export default{
 
         loadFinancialYears(){
             axios.get('/load-financial-years').then(res=>{
+                //this.financialYears = res.data
                 this.financialYears = res.data
+                const item = res.data.filter(fy => fy.active === 1)[0];
+                this.fields.financial_year_id = item.financial_year_id;
             })
         },
 

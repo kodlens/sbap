@@ -13119,6 +13119,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -13139,7 +13141,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/load-financial-years').then(function (res) {
+        //this.financialYears = res.data
         _this.financialYears = res.data;
+        var item = res.data.filter(function (fy) {
+          return fy.active === 1;
+        })[0];
+        _this.fields.financial_year_id = item.financial_year_id;
       });
     },
     emitBrowseOffice: function emitBrowseOffice(row) {
@@ -53288,7 +53295,7 @@ var render = function () {
   return _c("div", [
     _c("section", { staticClass: "section" }, [
       _c("div", { staticClass: "columns is-centered" }, [
-        _c("div", { staticClass: "column is-8-desktop" }, [
+        _c("div", { staticClass: "column is-10-desktop" }, [
           _c("div", { staticClass: "box" }, [
             _c("span", { staticClass: "has-text-weight-bold" }, [
               _vm._v("FILTER"),
@@ -53396,30 +53403,33 @@ var render = function () {
                   return _c("tr", { key: index }, [
                     _c("td", [_vm._v(_vm._s(item.doc_type))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.account_code))]),
+                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.allotment_class))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.fund_source))]),
+                    _c("td", [_vm._v(_vm._s(item.object_expenditure))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm._f("numberWithCommas")(item.approved_budget))
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(_vm._f("numberWithCommas")(item.total_utilize))
+                      ),
+                    ]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
                         _vm._s(
                           _vm._f("numberWithCommas")(
-                            item.allotment_class_account_balance
+                            Number(item.approved_budget) -
+                              Number(item.total_utilize)
                           )
                         )
                       ),
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        _vm._s(
-                          _vm._f("numberWithCommas")(item.financial_budget)
-                        )
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(_vm._f("numberWithCommas")(item.amount))),
                     ]),
                   ])
                 }),
@@ -53440,15 +53450,17 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_vm._v("Document")]),
       _vm._v(" "),
+      _c("th", [_vm._v("Account Code")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Allotment Class")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Fund Source")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Running Balance")]),
+      _c("th", [_vm._v("Object Expenditures")]),
       _vm._v(" "),
       _c("th", [_vm._v("Financial Budget")]),
       _vm._v(" "),
       _c("th", [_vm._v("Utilized Budget")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Running Balance")]),
     ])
   },
 ]
