@@ -271,20 +271,36 @@ class BudgetingController extends Controller
 
 
     //for excel
-    public function fetchBudgeting(){
+    public function fetchBudgetings(){
 
-        return DB::select('
-        SELECT
-            a.`accounting_id`,  
-            a.`transaction_no`,
-            a.`training_control_no`,
-            a.`total_amount`
-           
+        return DB::select("
+            SELECT
+                a.`accounting_id` AS 'REFERENCE',
+                b.`financial_year_code` AS 'FINANCIAL YEAR CODE',
+                b.`financial_year_desc` AS 'FINANCIAL YEAR DESCRIPTION',
+                a.`transaction_no` AS 'TRANSACTION NO',
+                a.`training_control_no` AS 'TRAINING CONTROL NO',
+                c.`transaction_type` AS 'TRANSACTION TYPE',
+                d.`bank_account_payee` AS 'PAYEE',
+                a.`total_amount` AS 'TOTAL AMOUNT',
+                e.`office` AS 'OFFICE',
+                h.allotment_class_code AS 'ALLOTMENT CLASS CODE', h.allotment_class AS 'ALLOTMENT CLASS',
+                g.account_code AS 'ACCOUNT CODE', g.object_expenditure AS 'OBJECT EXPENDITURE',
+                f.amount AS 'AMOUNT',
+                g.approved_budget AS 'APPROVED BUDGET', g.beginning_budget AS 'BEGINNING BUDGET'
 
-            FROM accountings a
-            join accounting_expenditures b on a.accouting_id = b.accounting_id
-            
-        ');
+                FROM accountings a
+                JOIN `financial_years` b ON a.`financial_year_id` = b.`financial_year_id`
+                JOIN `transaction_types` c ON a.`transaction_type_id` = c.`transaction_type_id`
+                JOIN payee AS d ON a.`payee_id` = d.`payee_id`
+                JOIN offices e ON a.`office_id` = e.`office_id`
+                LEFT JOIN accounting_expenditures f ON a.accounting_id = f.accounting_id
+                LEFT JOIN object_expenditures g ON f.object_expenditure_id = g.object_expenditure_id
+                LEFT JOIN allotment_classes h ON f.allotment_class_id = h.allotment_class_id
+                WHERE a.doc_type = 'BUDGETING'
+                AND a.financial_year_id = (SELECT financial_year_id FROM financial_years WHERE active = 1)
+
+            ");
     }
 
     public function destroy($id){

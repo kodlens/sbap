@@ -164,8 +164,9 @@
                         </b-table>
 
                         <div class="buttons">
-                            <download-excel class="button is-primary" size="is-small" :fetch="fetchData" type="csv"
-                                name="filename.xls">
+                            <download-excel class="button is-primary" 
+                                size="is-small" :fetch="fetchData" type="xlsx"
+                                name="acctg.xlsx">
                                 Download to Excel
                             </download-excel>
                         </div>
