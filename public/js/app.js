@@ -11514,6 +11514,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -50761,6 +50763,8 @@ var render = function () {
                                 _c("td", [_vm._v("Procurement UB")]),
                                 _vm._v(" "),
                                 _c("td", [_vm._v("Utilize Budget")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Running Balance")]),
                               ]),
                               _vm._v(" "),
                               _c("tr", [
@@ -50781,6 +50785,19 @@ var render = function () {
                                         Number(props.row.acctg_ub) +
                                           Number(props.row.budgeting_ub) +
                                           Number(props.row.procurement_ub)
+                                      )
+                                    )
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        Number(props.row.approved_budget) -
+                                          (Number(props.row.acctg_ub) +
+                                            Number(props.row.budgeting_ub) +
+                                            Number(props.row.procurement_ub))
                                       )
                                     )
                                   ),

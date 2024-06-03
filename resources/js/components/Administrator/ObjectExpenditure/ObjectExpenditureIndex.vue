@@ -119,12 +119,14 @@
                                     <td>Budgeting UB</td>
                                     <td>Procurement UB</td>
                                     <td>Utilize Budget</td>
+                                    <td>Running Balance</td>
                                 </tr>
                                 <tr>
                                     <td>{{ props.row.acctg_ub }}</td>
                                     <td>{{ props.row.budgeting_ub }}</td>
                                     <td>{{ props.row.procurement_ub }}</td>
                                     <td>{{ (Number(props.row.acctg_ub) + Number(props.row.budgeting_ub) + Number(props.row.procurement_ub)) | numberWithCommas }}</td>
+                                    <td>{{ (Number(props.row.approved_budget)) - (Number(props.row.acctg_ub) + Number(props.row.budgeting_ub) + Number(props.row.procurement_ub)) | numberWithCommas }}</td>
                                 </tr>
                             </template>
                         </b-table>
