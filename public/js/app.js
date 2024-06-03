@@ -11516,6 +11516,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -50762,9 +50766,11 @@ var render = function () {
                                 _vm._v(" "),
                                 _c("td", [_vm._v("Procurement UB")]),
                                 _vm._v(" "),
-                                _c("td", [_vm._v("Utilize Budget")]),
+                                _c("td", [_vm._v("Acctg RB")]),
                                 _vm._v(" "),
-                                _c("td", [_vm._v("Running Balance")]),
+                                _c("td", [_vm._v("Budget RB")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Procurement RB")]),
                               ]),
                               _vm._v(" "),
                               _c("tr", [
@@ -50782,9 +50788,8 @@ var render = function () {
                                   _vm._v(
                                     _vm._s(
                                       _vm._f("numberWithCommas")(
-                                        Number(props.row.acctg_ub) +
-                                          Number(props.row.budgeting_ub) +
-                                          Number(props.row.procurement_ub)
+                                        Number(props.row.approved_budget) -
+                                          Number(props.row.acctg_ub)
                                       )
                                     )
                                   ),
@@ -50795,9 +50800,18 @@ var render = function () {
                                     _vm._s(
                                       _vm._f("numberWithCommas")(
                                         Number(props.row.approved_budget) -
-                                          (Number(props.row.acctg_ub) +
-                                            Number(props.row.budgeting_ub) +
-                                            Number(props.row.procurement_ub))
+                                          Number(props.row.budgeting_ub)
+                                      )
+                                    )
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        Number(props.row.approved_budget) -
+                                          Number(props.row.procurement_ub)
                                       )
                                     )
                                   ),
