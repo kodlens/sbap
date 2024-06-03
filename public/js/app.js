@@ -17875,12 +17875,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -60788,33 +60782,9 @@ var render = function () {
                             return [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(props.row.date_time) +
+                                  _vm._s(props.row.date_transaction) +
                                   "\n                        "
                               ),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: { field: "fund_source", label: "Fund/Source" },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              props.row.fund_source
-                                ? _c("span", [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(
-                                          props.row.fund_source.fund_source
-                                        ) +
-                                        "\n                            "
-                                    ),
-                                  ])
-                                : _vm._e(),
                             ]
                           },
                         },
@@ -61008,31 +60978,6 @@ var render = function () {
                         },
                       ]),
                     }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "buttons" },
-                  [
-                    _c(
-                      "download-excel",
-                      {
-                        staticClass: "button is-primary",
-                        attrs: {
-                          size: "is-small",
-                          fetch: _vm.fetchData,
-                          type: "csv",
-                          name: "filename.xls",
-                        },
-                      },
-                      [
-                        _vm._v(
-                          "\n                            Download to Excel\n                        "
-                        ),
-                      ]
-                    ),
                   ],
                   1
                 ),

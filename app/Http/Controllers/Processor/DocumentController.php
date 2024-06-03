@@ -22,8 +22,8 @@ class DocumentController extends Controller
         $user = Auth::user();
         
 
-        $data = Accounting::with(['fund_source', 'payee', 'accounting_documentary_attachments.documentary_attachment',
-            'accounting_allotment_classes', 'processor'])
+        $data = Accounting::with(['payee', 'accounting_documentary_attachments.documentary_attachment',
+            'accounting_expenditures', 'processor'])
             ->where(function($q) use ($req){
                 $q->where('particulars', 'like', $req->key . '%')
                 ->orWhere('transaction_no', 'like', $req->key . '%')

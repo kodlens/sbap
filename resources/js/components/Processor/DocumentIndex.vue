@@ -71,13 +71,7 @@
                             </b-table-column>
 
                             <b-table-column field="date_time" label="Date & Time" v-slot="props">
-                                {{ props.row.date_time }}
-                            </b-table-column>
-
-                            <b-table-column field="fund_source" label="Fund/Source" v-slot="props">
-                                <span v-if="props.row.fund_source">
-                                    {{ props.row.fund_source.fund_source }}
-                                </span>
+                                {{ props.row.date_transaction }}
                             </b-table-column>
 
                             <b-table-column field="transaction_no" label="Transaction No" v-slot="props">
@@ -142,17 +136,17 @@
                             </template>
                         </b-table>
 
-                        <div class="buttons">
+                        <!-- <div class="buttons">
                             <download-excel
                                 class="button is-primary"
                                 size="is-small"
                                 :fetch="fetchData"
-                                type="csv"
-                                name="filename.xls"
+                                type="xls"
+                                name="accounting.xls"
                             >
                                 Download to Excel
                             </download-excel>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div><!--col -->
