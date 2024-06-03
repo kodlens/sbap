@@ -37,6 +37,27 @@ class ObjectExpenditureController extends Controller
                         and object_expenditures.object_expenditure_id = accounting_expenditures.object_expenditure_id
                     ) as utilize_budget'
                 ),
+                DB::raw('(
+                    select sum(amount) from accounting_expenditures 
+                        where object_expenditures.financial_year_id = accounting_expenditures.financial_year_id
+                        and object_expenditures.object_expenditure_id = accounting_expenditures.object_expenditure_id
+                        and accounting_expenditures.doc_type = "ACCOUNTING"
+                    ) as acctg_ub'
+                ),
+                DB::raw('(
+                    select sum(amount) from accounting_expenditures 
+                        where object_expenditures.financial_year_id = accounting_expenditures.financial_year_id
+                        and object_expenditures.object_expenditure_id = accounting_expenditures.object_expenditure_id
+                        and accounting_expenditures.doc_type = "BUDGETING"
+                    ) as budgeting_ub'
+                ),
+                DB::raw('(
+                    select sum(amount) from accounting_expenditures 
+                        where object_expenditures.financial_year_id = accounting_expenditures.financial_year_id
+                        and object_expenditures.object_expenditure_id = accounting_expenditures.object_expenditure_id
+                        and accounting_expenditures.doc_type = "PROCUREMENT"
+                    ) as procurement_ub'
+                ),
                 'created_at',
                 'updated_at'
             )

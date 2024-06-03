@@ -56,8 +56,7 @@ class DashboardController extends Controller
         //     })
         //     ->get();
         if($req->doc == 'ALL'){
-            $data = AccountingExpenditure::with('expenditure_doctype')
-                ->join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
+            $data = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
                 ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
                 ->join('accountings', 'accounting_expenditures.accounting_id', '=', 'accountings.accounting_id')
@@ -106,8 +105,7 @@ class DashboardController extends Controller
             //     GROUP BY a.allotment_class_id
             // ', [$req->doc]);
 
-            $data = AccountingExpenditure::with('expenditure_doctype')
-                ->join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
+            $data = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
                 ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
                 ->join('accountings', 'accounting_expenditures.accounting_id', '=', 'accountings.accounting_id')

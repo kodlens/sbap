@@ -47,6 +47,7 @@
                             backend-pagination
                             :total="total"
                             :bordered="true"
+                            detailed
                             :hoverable="true"
                             :per-page="perPage"
                             @page-change="onPageChange"
@@ -92,9 +93,9 @@
                                 {{ props.row.beginning_budget | numberWithCommas}}
                             </b-table-column>
 
-                            <b-table-column field="utilize_budget" label="Utilize Budget" v-slot="props">
+                            <!-- <b-table-column field="utilize_budget" label="Utilize Budget" v-slot="props">
                                 {{ props.row.utilize_budget | numberWithCommas}}
-                            </b-table-column>
+                            </b-table-column> -->
 
                             <b-table-column label="Action" v-slot="props">
                                 <div class="is-flex">
@@ -111,6 +112,21 @@
                                     </b-tooltip>
                                 </div>
                             </b-table-column>
+
+                            <template #detail="props">
+                                <tr>
+                                    <td>Acctg UB</td>
+                                    <td>Budgeting UB</td>
+                                    <td>Procurement UB</td>
+                                    <td>Utilize Budget</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ props.row.acctg_ub }}</td>
+                                    <td>{{ props.row.budgeting_ub }}</td>
+                                    <td>{{ props.row.procurement_ub }}</td>
+                                    <td>{{ (Number(props.row.acctg_ub) + Number(props.row.budgeting_ub) + Number(props.row.procurement_ub)) | numberWithCommas }}</td>
+                                </tr>
+                            </template>
                         </b-table>
 
                         <div class="buttons mt-3">

@@ -157,7 +157,7 @@
                                 UTILIZE BUDGET:  {{ item.utilize_budget | numberWithCommas }}
                             </div>
                             
-                            <div>
+                            <!-- <div>
                                 <table class="table">
                                     <thead>
                                         <th>Code</th>
@@ -183,7 +183,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> -->
                         </div>
                 
                     </div>

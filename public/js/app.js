@@ -11498,6 +11498,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -50721,6 +50737,7 @@ var render = function () {
                         "backend-pagination": "",
                         total: _vm.total,
                         bordered: true,
+                        detailed: "",
                         hoverable: true,
                         "per-page": _vm.perPage,
                         "aria-next-label": "Next page",
@@ -50731,6 +50748,48 @@ var render = function () {
                         "default-sort-direction": _vm.defaultSortDirection,
                       },
                       on: { "page-change": _vm.onPageChange, sort: _vm.onSort },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "detail",
+                          fn: function (props) {
+                            return [
+                              _c("tr", [
+                                _c("td", [_vm._v("Acctg UB")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Budgeting UB")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Procurement UB")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Utilize Budget")]),
+                              ]),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", [_vm._v(_vm._s(props.row.acctg_ub))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(props.row.budgeting_ub)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(props.row.procurement_ub)),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(
+                                        Number(props.row.acctg_ub) +
+                                          Number(props.row.budgeting_ub) +
+                                          Number(props.row.procurement_ub)
+                                      )
+                                    )
+                                  ),
+                                ]),
+                              ]),
+                            ]
+                          },
+                        },
+                      ]),
                     },
                     [
                       _c("b-table-column", {
@@ -50903,31 +50962,6 @@ var render = function () {
                                     _vm._s(
                                       _vm._f("numberWithCommas")(
                                         props.row.beginning_budget
-                                      )
-                                    ) +
-                                    "\n                        "
-                                ),
-                              ]
-                            },
-                          },
-                        ]),
-                      }),
-                      _vm._v(" "),
-                      _c("b-table-column", {
-                        attrs: {
-                          field: "utilize_budget",
-                          label: "Utilize Budget",
-                        },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "default",
-                            fn: function (props) {
-                              return [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(
-                                      _vm._f("numberWithCommas")(
-                                        props.row.utilize_budget
                                       )
                                     ) +
                                     "\n                        "
@@ -57198,52 +57232,6 @@ var render = function () {
                         "\n                        "
                     ),
                   ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("table", { staticClass: "table" }, [
-                      _vm._m(1, true),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(item.object_expenditure, function (i, ix) {
-                          return _c("tr", { key: "oe" + ix }, [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(i.account_code) +
-                                  "\n                                        "
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              i.object_expenditure
-                                ? _c("span", [
-                                    _vm._v(
-                                      "\n                                                " +
-                                        _vm._s(i.object_expenditure) +
-                                        "\n                                            "
-                                    ),
-                                  ])
-                                : _vm._e(),
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(
-                                  "\n                                                " +
-                                    _vm._s(
-                                      _vm._f("numberWithCommas")(item.amount)
-                                    ) +
-                                    "\n                                            "
-                                ),
-                              ]),
-                            ]),
-                          ])
-                        }),
-                        0
-                      ),
-                    ]),
-                  ]),
                 ])
               }),
               0
@@ -57261,18 +57249,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "columns" }, [
       _c("div", { staticClass: "column" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("th", [_vm._v("Code")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Object Expenditure")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Amount")]),
     ])
   },
 ]
