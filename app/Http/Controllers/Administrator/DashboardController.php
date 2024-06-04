@@ -44,7 +44,7 @@ class DashboardController extends Controller
     }
 
     public function loadReportByAllotmentClasses(Request $req){
-
+        
         // $data = AllotmentClass::with(['accounting_expenditures'])
         //     ->whereHas('accounting_expenditures', function($q) use ($req){
         //         $q->where('doc_type', $req->doc);
@@ -55,8 +55,10 @@ class DashboardController extends Controller
         //         $query->where('doc_type', $req->doc);
         //     })
         //     ->get();
+        $data = [];
+
         if($req->doc == 'ALL'){
-            $data = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
+            $allotments = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
                 ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
                 ->join('accountings', 'accounting_expenditures.accounting_id', '=', 'accountings.accounting_id')
@@ -79,7 +81,45 @@ class DashboardController extends Controller
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget')
                 )
                 ->groupBy('accounting_expenditures.allotment_class_id')
+                ->where('accounting_expenditures.financial_year_id', $req->fy)
                 ->get();
+
+            foreach($allotments as $item){
+
+                $accExps = DB::select("
+                    SELECT
+                    a.financial_year_id,
+                    a.doc_type,
+                    a.allotment_class_id,
+                    a.object_expenditure_id,
+                    a.amount,
+                    b.account_code,
+                    b.object_expenditure,
+                    b.approved_budget,
+                    c.allotment_class_code,
+                    c.allotment_class
+                    FROM
+                    accounting_expenditures a
+                    JOIN object_expenditures b ON a.object_expenditure_id = b.object_expenditure_id
+                    JOIN allotment_classes c ON b.allotment_class_id = c.allotment_class_id
+                    WHERE b.allotment_class_id = ? AND a.financial_year_id = ?
+                ", [
+                    $item['allotment_class_id'], 
+                    $item['financial_year_id']
+                ]);
+
+                $data[] = [
+                    'allotment_class_id' => $item['allotment_class_id'],
+                    'allotment_class' => $item['allotment_class'],
+                    'doc_type' => $item['doc_type'],
+                    'financial_year_id' => $item['financial_year_id'],
+                    'approved_budget' => $item['approved_budget'],
+                    'amount' => $item['amount'],
+                    'utilize_budget' => $item['utilize_budget'],
+                    'details' => $accExps
+                ];
+            }
+
         }else{
             // $data = DB::select('
             //     SELECT
@@ -105,7 +145,7 @@ class DashboardController extends Controller
             //     GROUP BY a.allotment_class_id
             // ', [$req->doc]);
 
-            $data = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
+            $allotments = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
                 ->join('object_expenditures', 'accounting_expenditures.object_expenditure_id', '=', 'object_expenditures.object_expenditure_id')
                 ->join('accountings', 'accounting_expenditures.accounting_id', '=', 'accountings.accounting_id')
@@ -128,8 +168,48 @@ class DashboardController extends Controller
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget')
                 )
                 ->where('accountings.doc_type', $req->doc)
+                ->where('accounting_expenditures.financial_year_id', $req->fy)
                 ->groupBy('accounting_expenditures.allotment_class_id')
                 ->get();
+            
+            foreach($allotments as $item){
+
+                $accExps = DB::select("
+                    SELECT
+                    a.financial_year_id,
+                    a.doc_type,
+                    a.allotment_class_id,
+                    a.object_expenditure_id,
+                    a.amount,
+                    b.account_code,
+                    b.object_expenditure,
+                    b.approved_budget,
+                    c.allotment_class_code,
+                    c.allotment_class
+                    FROM
+                    accounting_expenditures a
+                    JOIN object_expenditures b ON a.object_expenditure_id = b.object_expenditure_id
+                    JOIN allotment_classes c ON b.allotment_class_id = c.allotment_class_id
+                    WHERE b.allotment_class_id = ? AND a.financial_year_id = ?
+                    AND a.doc_type = ?
+                ", [
+                    $item['allotment_class_id'], 
+                    $item['financial_year_id'],
+                    $item['doc_type']
+                ]);
+
+                $data[] = [
+                    'allotment_class_id' => $item['allotment_class_id'],
+                    'allotment_class' => $item['allotment_class'],
+                    'doc_type' => $item['doc_type'],
+                    'financial_year_id' => $item['financial_year_id'],
+                    'approved_budget' => $item['approved_budget'],
+                    'amount' => $item['amount'],
+                    'utilize_budget' => $item['utilize_budget'],
+                    'details' => $accExps
+                ];
+            }
+           
         }
         
 

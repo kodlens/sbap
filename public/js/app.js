@@ -15752,6 +15752,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.loadFinancialYears(); //this.loadReportByAllotments()
@@ -15818,6 +15819,10 @@ __webpack_require__.r(__webpack_exports__);
     //         this.allotmentClasses = res.data
     //     })
     // },
+    getDetails: function getDetails(item) {
+      console.log(item);
+      return ['1', '2', '3'];
+    },
     computeUtilize: function computeUtilize(arr) {
       var sum = 0;
       arr.forEach(function (item) {
@@ -57288,6 +57293,52 @@ var render = function () {
                         "\n                        "
                     ),
                   ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("table", { staticClass: "table" }, [
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(item.details, function (i, ix) {
+                          return _c("tr", { key: "oe" + ix }, [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(i.account_code) +
+                                  "\n                                        "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              i.object_expenditure
+                                ? _c("span", [
+                                    _vm._v(
+                                      "\n                                                " +
+                                        _vm._s(i.object_expenditure) +
+                                        "\n                                            "
+                                    ),
+                                  ])
+                                : _vm._e(),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", [
+                                _vm._v(
+                                  "\n                                                " +
+                                    _vm._s(
+                                      _vm._f("numberWithCommas")(i.amount)
+                                    ) +
+                                    "\n                                            "
+                                ),
+                              ]),
+                            ]),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]),
+                  ]),
                 ])
               }),
               0
@@ -57305,6 +57356,20 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "columns" }, [
       _c("div", { staticClass: "column" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Code")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Code")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Object Expenditure")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Amount")]),
     ])
   },
 ]

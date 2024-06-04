@@ -156,17 +156,19 @@
                             <div>
                                 UTILIZE BUDGET:  {{ item.utilize_budget | numberWithCommas }}
                             </div>
+
                             
-                            <!-- <div>
+                            <div>
                                 <table class="table">
                                     <thead>
+                                        <th>Code</th>
                                         <th>Code</th>
                                         <th>Object Expenditure</th>
                                         <th>Amount</th>
                                     </thead>
 
                                     <tbody>
-                                        <tr v-for="(i, ix) in item.object_expenditure" :key="`oe${ix}`">
+                                        <tr v-for="(i, ix) in item.details" :key="`oe${ix}`">
                                             <td>
                                                 {{ i.account_code }}
                                             </td>
@@ -177,15 +179,14 @@
                                             </td>
                                             <td>
                                                 <span>
-                                                    {{ item.amount | numberWithCommas }}
+                                                    {{ i.amount | numberWithCommas }}
                                                 </span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div> -->
+                            </div>
                         </div>
-                
                     </div>
 
 
@@ -279,7 +280,10 @@ export default{
         //     })
         // },
 
-
+        getDetails(item){
+            console.log(item)
+            return ['1','2','3']
+        },
 
         computeUtilize(arr){
             let sum = 0
