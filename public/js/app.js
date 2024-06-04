@@ -49172,35 +49172,6 @@ var render = function () {
                       ]),
                     }),
                     _vm._v(" "),
-                    _c("b-table-column", {
-                      attrs: {
-                        field: "processor",
-                        label: "Assigned Processor",
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "default",
-                          fn: function (props) {
-                            return [
-                              props.row.processor_id > 0
-                                ? _c("span", [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(props.row.processor.lname) +
-                                        ", " +
-                                        _vm._s(props.row.processor.fname) +
-                                        " " +
-                                        _vm._s(props.row.processor.mname) +
-                                        "\n                            "
-                                    ),
-                                  ])
-                                : _vm._e(),
-                            ]
-                          },
-                        },
-                      ]),
-                    }),
-                    _vm._v(" "),
                     _vm.propUser.role !== "STAFF"
                       ? _c("b-table-column", {
                           attrs: { label: "Action" },

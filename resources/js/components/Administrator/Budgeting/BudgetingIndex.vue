@@ -90,12 +90,12 @@
 
                             </b-table-column>
 
-                            <b-table-column field="processor" label="Assigned Processor" v-slot="props">
+                            <!-- <b-table-column field="processor" label="Assigned Processor" v-slot="props">
                                 <span v-if="props.row.processor_id > 0">
                                     {{ props.row.processor.lname }}, {{ props.row.processor.fname }} {{
                                         props.row.processor.mname }}
                                 </span>
-                            </b-table-column>
+                            </b-table-column> -->
 
                             <b-table-column label="Action" v-slot="props" v-if="propUser.role !== 'STAFF'">
                                 <div class="is-flex">
