@@ -151,7 +151,7 @@
                                     Processor: {{ props.row.processor_id }}
                                 </div> -->
                                 <div class="my-1"></div>
-                                <table-bid-award :propRow="props.row" @emitRefresh="loadAsyncData"></table-bid-award>
+                                <!-- <table-bid-award :propRow="props.row" @emitRefresh="loadAsyncData"></table-bid-award>
                                 <br>
                                 <table-city-budget :propRow="props.row"
                                     @emitRefresh="loadAsyncData"></table-city-budget>
@@ -163,7 +163,7 @@
                                     @emitRefresh="loadAsyncData"></table-city-treasurer>
                                 <br>
                                 <table-college-accounting :propRow="props.row"
-                                    @emitRefresh="loadAsyncData"></table-college-accounting>
+                                    @emitRefresh="loadAsyncData"></table-college-accounting> -->
 
                             </template>
 
