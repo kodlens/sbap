@@ -46435,8 +46435,8 @@ var render = function () {
                         attrs: {
                           size: "is-small",
                           fetch: _vm.fetchData,
-                          type: "xlsx",
-                          name: "acctg.xlsx",
+                          type: "xls",
+                          name: "acctg.xls",
                         },
                       },
                       [
@@ -49229,8 +49229,8 @@ var render = function () {
                         attrs: {
                           size: "is-small",
                           fetch: _vm.fetchData,
-                          type: "xlsx",
-                          name: "budgeting.xlsx",
+                          type: "xls",
+                          name: "budgeting.xls",
                         },
                       },
                       [

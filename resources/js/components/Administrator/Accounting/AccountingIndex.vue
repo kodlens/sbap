@@ -165,8 +165,8 @@
 
                         <div class="buttons">
                             <download-excel class="button is-primary" 
-                                size="is-small" :fetch="fetchData" type="xlsx"
-                                name="acctg.xlsx">
+                                size="is-small" :fetch="fetchData" type="xls"
+                                name="acctg.xls">
                                 Download to Excel
                             </download-excel>
                         </div>

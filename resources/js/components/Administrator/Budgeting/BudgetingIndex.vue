@@ -175,8 +175,8 @@
                                 class="button is-primary"
                                 size="is-small"
                                 :fetch="fetchData"
-                                type="xlsx"
-                                name="budgeting.xlsx"
+                                type="xls"
+                                name="budgeting.xls"
                             >
                                 Download to Excel
                             </download-excel>
