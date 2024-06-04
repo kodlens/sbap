@@ -152,16 +152,17 @@
                             <div>
                                 RUNNING BALANCE: {{ item.approved_budget | numberWithCommas }}
                             </div>
-
+                            <div>
+                                TOTAL ALLOTMENT:  {{ item.total_approved_budget | numberWithCommas }}
+                            </div>
                             <div>
                                 UTILIZE BUDGET:  {{ item.utilize_budget | numberWithCommas }}
                             </div>
-
+                           
                             
                             <div>
                                 <table class="table">
                                     <thead>
-                                        <th>Code</th>
                                         <th>Code</th>
                                         <th>Object Expenditure</th>
                                         <th>Amount</th>

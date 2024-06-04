@@ -76,9 +76,12 @@ class DashboardController extends Controller
                     'allotment_classes.allotment_class_code', 
                     'allotment_classes.allotment_class',
                     'object_expenditures.object_expenditure', 
-                    'object_expenditures.approved_budget',
+                    // 'object_expenditures.approved_budget',
                     'object_expenditures.beginning_budget',
-                    DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget')
+                    DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
+                    DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
+                    // DB::raw('(select SUM(object_expenditures.approved_budget) from object_expenditures aa
+                    //    where aa.allotment_class_id = ) AS total_approved_budget')
                 )
                 ->groupBy('accounting_expenditures.allotment_class_id')
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
@@ -116,6 +119,7 @@ class DashboardController extends Controller
                     'approved_budget' => $item['approved_budget'],
                     'amount' => $item['amount'],
                     'utilize_budget' => $item['utilize_budget'],
+                    'total_approved_budget' => $item['total_approved_budget'],
                     'details' => $accExps
                 ];
             }
@@ -165,7 +169,8 @@ class DashboardController extends Controller
                     'object_expenditures.object_expenditure', 
                     'object_expenditures.approved_budget',
                     'object_expenditures.beginning_budget',
-                    DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget')
+                    DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
+                    DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
                 )
                 ->where('accountings.doc_type', $req->doc)
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
@@ -206,6 +211,7 @@ class DashboardController extends Controller
                     'approved_budget' => $item['approved_budget'],
                     'amount' => $item['amount'],
                     'utilize_budget' => $item['utilize_budget'],
+                    'total_approved_budget' => $item['total_approved_budget'],
                     'details' => $accExps
                 ];
             }

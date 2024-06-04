@@ -4,7 +4,7 @@
             <div class="columns is-centered">
                 <div class="column is-6-desktop is-10-tablet">
                     <div class="box">
-                        <div class="has-text-weight-bold">ADD/EDIT REALIGNMENT RECORD</div>
+                        <div class="has-text-weight-bold">ADD/EDIT AUGMENTATION RECORD</div>
 
                         <div class="mt-2">
 

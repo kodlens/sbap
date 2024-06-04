@@ -5,7 +5,7 @@
                 <div class="column is-11-widescreen is-12-desktop is-12-tablet">
                     <div class="box">
 
-                        <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">REALIGNMENT RECORDS</div>
+                        <div class="is-flex is-justify-content-center mb-2" style="font-size: 20px; font-weight: bold;">AUGMENTATION RECORDS</div>
 
                         <div class="level">
                             <div class="level-left">

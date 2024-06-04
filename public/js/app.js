@@ -15753,6 +15753,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.loadFinancialYears(); //this.loadReportByAllotments()
@@ -56488,7 +56489,7 @@ var render = function () {
         _c("div", { staticClass: "column is-6-desktop is-10-tablet" }, [
           _c("div", { staticClass: "box" }, [
             _c("div", { staticClass: "has-text-weight-bold" }, [
-              _vm._v("ADD/EDIT AUGMENTATION BUDGET RECORD"),
+              _vm._v("ADD/EDIT SUPPLEMENTAL BUDGET RECORD"),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "mt-2" }, [
@@ -56728,7 +56729,7 @@ var render = function () {
                     staticClass: "is-flex is-justify-content-center mb-2",
                     staticStyle: { "font-size": "20px", "font-weight": "bold" },
                   },
-                  [_vm._v("AUGMENTATION BUDGET RECORDS")]
+                  [_vm._v("SUPPLEMENTAL BUDGET RECORDS")]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "level" }, [
@@ -57286,6 +57287,16 @@ var render = function () {
                   _vm._v(" "),
                   _c("div", [
                     _vm._v(
+                      "\n                            TOTAL ALLOTMENT:  " +
+                        _vm._s(
+                          _vm._f("numberWithCommas")(item.total_approved_budget)
+                        ) +
+                        "\n                        "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm._v(
                       "\n                            UTILIZE BUDGET:  " +
                         _vm._s(
                           _vm._f("numberWithCommas")(item.utilize_budget)
@@ -57363,8 +57374,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("Code")]),
-      _vm._v(" "),
       _c("th", [_vm._v("Code")]),
       _vm._v(" "),
       _c("th", [_vm._v("Object Expenditure")]),
@@ -63185,7 +63194,7 @@ var render = function () {
         _c("div", { staticClass: "column is-6-desktop is-10-tablet" }, [
           _c("div", { staticClass: "box" }, [
             _c("div", { staticClass: "has-text-weight-bold" }, [
-              _vm._v("ADD/EDIT REALIGNMENT RECORD"),
+              _vm._v("ADD/EDIT AUGMENTATION RECORD"),
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "mt-2" }, [
@@ -63490,7 +63499,7 @@ var render = function () {
                     staticClass: "is-flex is-justify-content-center mb-2",
                     staticStyle: { "font-size": "20px", "font-weight": "bold" },
                   },
-                  [_vm._v("REALIGNMENT RECORDS")]
+                  [_vm._v("AUGMENTATION RECORDS")]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "level" }, [
