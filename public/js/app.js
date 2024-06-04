@@ -7867,6 +7867,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -8040,6 +8042,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this7 = this;
 
       //format the date
+      this.errors = {};
       var formData = new FormData();
       formData.append('accounting_id', this.id);
       formData.append('financial_year_id', this.fields.financial_year_id ? this.fields.financial_year_id : '');
@@ -8088,6 +8091,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         })["catch"](function (err) {
           if (err.response.status === 422) {
             _this7.errors = err.response.data.errors;
+
+            _this7.$buefy.dialog.alert({
+              type: 'is-danger',
+              title: 'Invalid Input.',
+              message: _this7.errors.amount ? _this7.errors.amount[0] : 'Please fill out all required fields.'
+            });
           }
         });
       } else {
@@ -8110,8 +8119,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             _this7.$buefy.dialog.alert({
               type: 'is-danger',
-              title: 'EMPTY FIELDS.',
-              message: 'Please fill out all required fields.'
+              title: 'Invalid Input.',
+              message: _this7.errors.amount ? _this7.errors.amount[0] : 'Please fill out all required fields.'
             });
           }
         });
@@ -45300,7 +45309,15 @@ var render = function () {
                   "div",
                   { staticClass: "column" },
                   [
-                    _c("b-field", { attrs: { label: "Charge To" } }),
+                    _c("b-field", {
+                      attrs: {
+                        label: "Charge To",
+                        type: _vm.errors.object_expenditures ? "is-danger" : "",
+                        message: _vm.errors.object_expenditures
+                          ? _vm.errors.object_expenditures[0]
+                          : "",
+                      },
+                    }),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -45340,11 +45357,11 @@ var render = function () {
                                     attrs: {
                                       label: "Select OOE",
                                       "label-position": "on-border",
-                                      type: _vm.errors.object_expenditure
+                                      type: _vm.errors.object_expenditures
                                         ? "is-danger"
                                         : "",
-                                      message: _vm.errors.object_expenditure
-                                        ? _vm.errors.object_expenditure[0]
+                                      message: _vm.errors.object_expenditures
+                                        ? _vm.errors.object_expenditures[0]
                                         : "",
                                     },
                                   },

@@ -81,7 +81,54 @@ class AccountingController extends Controller
             'office.required' => 'Please select office.',
         ]);
 
+        /*-------------------------------------------------------------
+            validation if inputted amount is within the approved budget
+        --------------------------------------------------------------*/
+        $fy = FinancialYear::where('active', 1)
+            ->first();
 
+        $utilizeSumAmount = 0;
+
+        if($req->has('object_expenditures')){ //check if user selected or inputted any object expenditure
+            /*-------------------------------------------------------------
+                loop and check every inputted amount from user
+            --------------------------------------------------------------*/
+            foreach ($req->object_expenditures as $item) {
+
+                if($item['object_expenditure_id'] < 1 || $item['object_expenditure_id'] == null){ //check if user pick OE
+                    return response()->json([
+                        'errors' => [
+                            'object_expenditures' => ['Please select object expenditure.']
+                        ],
+                        'message' => 'Invalid input.'
+                    ], 422);
+                }
+
+                $accEpxs = AccountingExpenditure::where('object_expenditure_id', $item['object_expenditure_id']) //get object exp amount and total
+                    ->where('financial_year_id', $fy->financial_year_id)
+                    ->get();
+
+                $objexp = ObjectExpenditure::find($item['object_expenditure_id']);  //get the object expenditure approved budget
+                
+
+                foreach ($accEpxs as $itemObjexp) {
+                    $utilizeSumAmount += $itemObjexp['amount'];
+                }//total all object expenditure from accounting expenditures
+
+                $current_balance = ($objexp->approved_budget - $utilizeSumAmount); //current balance = ($objexp->approved_budget - $utilizeSumAmount)
+
+                if($current_balance < $item['amount']){ //compare the total running balance vs the inputted amount of specific object expenditure
+                    //if the total inputted
+                    return response()->json([
+                        'errors' => [
+                            'amount' => ['The expenditure has surpassed the budgeted amount.']
+                        ],
+                        'message' => 'Amount exceed.'
+                    ], 422);
+                }
+            } //next inputted object expenditure (loop)
+        }
+        
         DB::beginTransaction();
 
         try {
@@ -182,6 +229,46 @@ class AccountingController extends Controller
             'payee_id.required' => 'Please select bank account/payee.',
             'office_id.required' => 'Please select office.'
         ]);
+        
+   
+        /*-------------------------------------------------------------
+            validation if inputted amount is within the approved budget
+        --------------------------------------------------------------*/
+        $fy = FinancialYear::where('active', 1)
+            ->first();
+
+        $utilizeSumAmount = 0;
+
+        if($req->has('object_expenditures')){ //check if user selected or inputted any object expenditure
+            /*-------------------------------------------------------------
+                loop and check every inputted amount from user
+            --------------------------------------------------------------*/
+            foreach ($req->object_expenditures as $item) {
+
+                $accEpxs = AccountingExpenditure::where('object_expenditure_id', $item['object_expenditure_id']) //get object exp amount and total
+                    ->where('financial_year_id', $fy->financial_year_id)
+                    ->where('accounting_expenditure_id', '!=', $item['accounting_expenditure_id'])
+                    ->get();
+
+                $objexp = ObjectExpenditure::find($item['object_expenditure_id']);  //get the object expenditure approved budget
+
+                foreach ($accEpxs as $itemObjexp) {
+                    $utilizeSumAmount += $itemObjexp['amount'];
+                }//total all object expenditure from accounting expenditures
+
+                $current_balance = ($objexp->approved_budget - $utilizeSumAmount); //current balance = ($objexp->approved_budget - $utilizeSumAmount)
+
+                if($current_balance < $item['amount']){ //compare the total running balance vs the inputted amount of specific object expenditure
+                    //if the total inputted
+                    return response()->json([
+                        'errors' => [
+                            'amount' => ['The expenditure has surpassed the budgeted amount.']
+                        ],
+                        'message' => 'Amount exceed.'
+                    ], 422);
+                }
+            } //next inputted object expenditure (loop)
+        }//check if user selected or inputted any object expenditure
 
         $data = Accounting::find($id);
 

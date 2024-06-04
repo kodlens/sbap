@@ -84,10 +84,10 @@
                         Office/Institutes
                     </b-navbar-item>
                     <b-navbar-item href="/realignments">
-                        Realignment
+                        Augmentation
                     </b-navbar-item>
                     <b-navbar-item href="/augmentation-budgets">
-                        Augmentation Budget
+                        Supplemental Budget
                     </b-navbar-item>
                     
                     {{-- <b-navbar-item href="/priority-programs">

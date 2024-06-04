@@ -132,7 +132,9 @@
                             <div class="columns">
                                 <div class="column">
 
-                                    <b-field label="Charge To"></b-field>
+                                    <b-field label="Charge To"
+                                        :type="errors.object_expenditures ? 'is-danger':''"
+                                        :message="errors.object_expenditures ? errors.object_expenditures[0] : ''"></b-field>
                                     <div class="buttons">
                                         <b-button @click="newObjectExpenditure"
                                             icon-left="plus"
@@ -146,8 +148,8 @@
                                         <div class="columns">
                                             <div class="column">
                                                 <b-field label="Select OOE" label-position="on-border" class="mb-2 ml-4"
-                                                    :type="errors.object_expenditure ? 'is-danger':''"
-                                                    :message="errors.object_expenditure ? errors.object_expenditure[0] : ''">
+                                                    :type="errors.object_expenditures ? 'is-danger':''"
+                                                    :message="errors.object_expenditures ? errors.object_expenditures[0] : ''">
                                                     <modal-browse-object-expenditures
                                                         :prop-financial-year-id="fields.financial_year_id"
                                                         :prop-object-expenditure="item.object_expenditure"
@@ -457,7 +459,7 @@ export default{
 
         submit: function(){
             //format the date
-
+            this.errors = {}
             let formData = new FormData();
             formData.append('accounting_id', this.id);
             formData.append('financial_year_id', this.fields.financial_year_id ? this.fields.financial_year_id : '');
@@ -508,6 +510,12 @@ export default{
                 }).catch(err=>{
                     if(err.response.status === 422){
                         this.errors = err.response.data.errors;
+
+                         this.$buefy.dialog.alert({
+                            type: 'is-danger',
+                            title: 'Invalid Input.',
+                            message: this.errors.amount ? this.errors.amount[0] : 'Please fill out all required fields.'
+                        })
                     }
                 })
             }else{
@@ -527,11 +535,10 @@ export default{
                 }).catch(err=>{
                     if(err.response.status === 422){
                         this.errors = err.response.data.errors;
-
                         this.$buefy.dialog.alert({
                             type: 'is-danger',
-                            title: 'EMPTY FIELDS.',
-                            message: 'Please fill out all required fields.'
+                            title: 'Invalid Input.',
+                            message: this.errors.amount ? this.errors.amount[0] : 'Please fill out all required fields.'
                         })
                     }
                 });
