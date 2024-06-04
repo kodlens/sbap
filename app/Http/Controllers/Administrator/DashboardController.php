@@ -79,9 +79,9 @@ class DashboardController extends Controller
                     // 'object_expenditures.approved_budget',
                     'object_expenditures.beginning_budget',
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
-                    DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
-                    // DB::raw('(select SUM(object_expenditures.approved_budget) from object_expenditures aa
-                    //    where aa.allotment_class_id = ) AS total_approved_budget')
+                    //DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
+                    DB::raw('(select SUM(aa.approved_budget) from object_expenditures aa
+                       where aa.allotment_class_id = object_expenditures.allotment_class_id group by aa.allotment_class_id) AS total_approved_budget')
                 )
                 ->groupBy('accounting_expenditures.allotment_class_id')
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
@@ -170,7 +170,9 @@ class DashboardController extends Controller
                     'object_expenditures.approved_budget',
                     'object_expenditures.beginning_budget',
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
-                    DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
+                    //DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
+                    DB::raw('(select SUM(aa.approved_budget) from object_expenditures aa
+                       where aa.allotment_class_id = object_expenditures.allotment_class_id group by aa.allotment_class_id) AS total_approved_budget')
                 )
                 ->where('accountings.doc_type', $req->doc)
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
