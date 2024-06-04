@@ -76,7 +76,7 @@ class DashboardController extends Controller
                     'allotment_classes.allotment_class_code', 
                     'allotment_classes.allotment_class',
                     'object_expenditures.object_expenditure', 
-                    // 'object_expenditures.approved_budget',
+                    'object_expenditures.approved_budget',
                     'object_expenditures.beginning_budget',
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
                     //DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')

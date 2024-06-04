@@ -57217,7 +57217,10 @@ var render = function () {
                     _vm._v(
                       "\n                            RUNNING BALANCE: " +
                         _vm._s(
-                          _vm._f("numberWithCommas")(item.approved_budget)
+                          _vm._f("numberWithCommas")(
+                            Number(item.approved_budget) -
+                              Number(item.utilize_budget)
+                          )
                         ) +
                         "\n                        "
                     ),

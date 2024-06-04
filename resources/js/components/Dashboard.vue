@@ -150,7 +150,7 @@
                             <div class="has-text-weight-bold">{{ search.doc }}</div>
 
                             <div>
-                                RUNNING BALANCE: {{ item.approved_budget | numberWithCommas }}
+                                RUNNING BALANCE: {{ (Number(item.approved_budget) - Number(item.utilize_budget)) | numberWithCommas }}
                             </div>
                             <div>
                                 TOTAL ALLOTMENT:  {{ item.total_approved_budget | numberWithCommas }}
