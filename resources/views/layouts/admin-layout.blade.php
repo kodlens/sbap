@@ -56,10 +56,11 @@
             </template>
 
             <template #end>
+              
+                @if($role === 'ADMINISTRATOR')
                 <b-navbar-item href="/dashboard">
                     Home
-                </b-navbar-item>
-                @if($role === 'ADMINISTRATOR')
+                </b-navbar-item>    
                 <b-navbar-dropdown label="Settings">
                     <b-navbar-item href="/financial-years">
                         Financial Years

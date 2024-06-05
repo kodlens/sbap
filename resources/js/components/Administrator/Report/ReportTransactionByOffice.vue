@@ -65,6 +65,15 @@
                             </tr>
                         </table>
 
+                        
+                        <div class="buttons">
+                            <download-excel class="button is-primary" 
+                                size="is-small" :fetch="fetchData" type="xls"
+                                name="acctg.xls">
+                                Download to Excel
+                            </download-excel>
+                        </div>
+
                     </div> <!--box-->
                 </div>
             </div>
@@ -120,6 +129,11 @@ export default{
             }).catch(err=>{
             
             })
+        },
+
+        async fetchData(){
+            const res = await axios.get('load-report-transaction-by-office?fy=' + this.fields.financial_year_id + '&office='+ this.fields.office_id)
+            return res.data
         }
     },
 
