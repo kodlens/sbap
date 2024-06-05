@@ -21,7 +21,7 @@ class ObjectExpenditureController extends Controller
         $fy = FinancialYear::where('active', 1)->first();
 
         $sort = explode('.', $req->sort_by);
-
+   
         return ObjectExpenditure::with(['financial_year', 'allotment_class'])
             ->select(
                 'object_expenditure_id',
@@ -61,7 +61,10 @@ class ObjectExpenditureController extends Controller
                 'created_at',
                 'updated_at'
             )
-            ->where('object_expenditure', 'like', '%'. $req->allotment . '%')
+            ->where('object_expenditure', 'like', '%'. $req->objectexp . '%')
+            ->whereHas('allotment_class', function($q) use ($req){
+                $q->where('allotment_class', 'like', $req->allotment . '%');
+            })
             ->where('financial_year_id', $fy->financial_year_id)
             ->orderBy($sort[0], $sort[1])
             ->paginate($req->perpage);

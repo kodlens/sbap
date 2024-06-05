@@ -11530,6 +11530,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -11544,7 +11556,8 @@ __webpack_require__.r(__webpack_exports__);
       global_id: 0,
       search: {
         code: '',
-        objectexp: ''
+        objectexp: '',
+        allotment: ''
       },
       isModalCreate: false,
       fields: {
@@ -11574,7 +11587,7 @@ __webpack_require__.r(__webpack_exports__);
     loadAsyncData: function loadAsyncData() {
       var _this = this;
 
-      var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "objectexp=".concat(this.search.objectexp), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
+      var params = ["sort_by=".concat(this.sortField, ".").concat(this.sortOrder), "objectexp=".concat(this.search.objectexp), "allotment=".concat(this.search.allotment), "perpage=".concat(this.perPage), "page=".concat(this.page)].join('&');
       this.loading = true;
       axios.get("/get-object-expenditures?".concat(params)).then(function (_ref) {
         var data = _ref.data;
@@ -50695,6 +50708,66 @@ var render = function () {
                         1
                       ),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "columns" }, [
+                    _c(
+                      "div",
+                      { staticClass: "column" },
+                      [
+                        _c(
+                          "b-field",
+                          {
+                            attrs: {
+                              label: "Allotment Class",
+                              position: "on-border",
+                            },
+                          },
+                          [
+                            _c(
+                              "b-select",
+                              {
+                                model: {
+                                  value: _vm.search.allotment,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.search, "allotment", $$v)
+                                  },
+                                  expression: "search.allotment",
+                                },
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("ALL"),
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(
+                                  _vm.allotmentClasses,
+                                  function (allotment, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: "allotment" + index,
+                                        domProps: {
+                                          value: allotment.allotment_class,
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(allotment.allotment_class)
+                                        ),
+                                      ]
+                                    )
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                          ],
+                          1
+                        ),
+                      ],
+                      1
+                    ),
                   ]),
                   _vm._v(" "),
                   _c(

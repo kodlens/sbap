@@ -40,6 +40,18 @@
                             </div>
                         </div>
 
+                        <div class="columns">
+                            <div class="column">
+                                <b-field label="Allotment Class" position="on-border">
+                                    <b-select v-model="search.allotment">
+                                        <option value="">ALL</option>
+                                        <option v-for="(allotment, index) in allotmentClasses" :key="`allotment${index}`" 
+                                            :value="allotment.allotment_class">{{allotment.allotment_class}}</option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                        </div>
+
                         <b-table
                             :data="data"
                             :loading="loading"
@@ -290,7 +302,8 @@ export default{
 
             search: {
                 code: '',
-                objectexp: ''
+                objectexp: '',
+                allotment: ''
             },
 
             isModalCreate: false,
@@ -329,6 +342,7 @@ export default{
             const params = [
                 `sort_by=${this.sortField}.${this.sortOrder}`,
                 `objectexp=${this.search.objectexp}`,
+                `allotment=${this.search.allotment}`,
                 `perpage=${this.perPage}`,
                 `page=${this.page}`
             ].join('&')
