@@ -122,7 +122,9 @@
                 </b-navbar-dropdown>
 
                 @if(in_array($role, ['ADMINISTRATOR']))
-
+                <b-navbar-item href="/users">
+                    Users
+                </b-navbar-item>
                 <b-navbar-dropdown label="Reports">
                     <b-navbar-item href="/report-transaction-by-office">
                         Transaction by Office
