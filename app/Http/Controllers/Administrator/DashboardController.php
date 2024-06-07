@@ -81,7 +81,10 @@ class DashboardController extends Controller
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
                     //DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
                     DB::raw('(select SUM(aa.approved_budget) from object_expenditures aa
-                       where aa.allotment_class_id = object_expenditures.allotment_class_id group by aa.allotment_class_id) AS total_approved_budget')
+                       where aa.allotment_class_id = object_expenditures.allotment_class_id 
+                       and aa.financial_year_id = '. $req->fy.'
+                       group by aa.allotment_class_id
+                       ) AS total_approved_budget')
                 )
                 ->groupBy('accounting_expenditures.allotment_class_id')
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
@@ -125,29 +128,6 @@ class DashboardController extends Controller
             }
 
         }else{
-            // $data = DB::select('
-            //     SELECT
-            //     a.accounting_expenditure_id,
-            //     a.accounting_id,
-            //     e.doc_type,
-            //     a.allotment_class_id,
-            //     a.amount,
-            //     a.financial_year_id,
-            //     c.financial_year_code, c.financial_year_desc,
-            //     a.object_expenditure_id,
-            //     b.allotment_class_code, b.allotment_class,
-            //     d.object_expenditure, d.approved_budget,
-            //     d.beginning_budget,
-            //     SUM(a.amount) AS utilize_budget
-
-            //     FROM accounting_expenditures a
-            //     JOIN allotment_classes b ON a.allotment_class_id = b.allotment_class_id
-            //     JOIN financial_years c ON a.financial_year_id = c.financial_year_id
-            //     JOIN object_expenditures d ON a.object_expenditure_id = d.object_expenditure_id
-            //     JOIN accountings e ON a.accounting_id = e.accounting_id
-            //     WHERE e.doc_type = ?
-            //     GROUP BY a.allotment_class_id
-            // ', [$req->doc]);
 
             $allotments = AccountingExpenditure::join('allotment_classes', 'accounting_expenditures.allotment_class_id', '=', 'allotment_classes.allotment_class_id')
                 ->join('financial_years', 'accounting_expenditures.financial_year_id', '=', 'financial_years.financial_year_id')
@@ -172,7 +152,10 @@ class DashboardController extends Controller
                     DB::raw('SUM(accounting_expenditures.amount) AS utilize_budget'),
                     //DB::raw('SUM(object_expenditures.approved_budget) AS total_approved_budget')
                     DB::raw('(select SUM(aa.approved_budget) from object_expenditures aa
-                       where aa.allotment_class_id = object_expenditures.allotment_class_id group by aa.allotment_class_id) AS total_approved_budget')
+                        where aa.allotment_class_id = object_expenditures.allotment_class_id 
+                        and aa.financial_year_id = '. $req->fy.'
+                        group by aa.allotment_class_id
+                        ) AS total_approved_budget')
                 )
                 ->where('accountings.doc_type', $req->doc)
                 ->where('accounting_expenditures.financial_year_id', $req->fy)
