@@ -49,6 +49,9 @@ class CreateAccountingsTable extends Migration
          
             $table->unsignedBigInteger('office_id')->default(0);
 
+            $table->string('priority_program')->nullable();
+
+
             $table->unsignedBigInteger('processor_id')->nullable()
                 ->default(0);
             $table->dateTime('processor_datetime_received')->nullable();

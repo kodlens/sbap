@@ -47,6 +47,9 @@ class CreateAccountingExpendituresTable extends Migration
             
             $table->unsignedBigInteger('amount');
             
+            $table->string('priority_program')->nullable();
+
+            
 
             $table->timestamps();
         });
