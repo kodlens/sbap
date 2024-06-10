@@ -99,7 +99,8 @@ class ProcurementController extends Controller
                 'payee_id' => $req->payee_id,
                 'pr_status' => $req->pr_status,
                 'others' => $req->others,
-                'office_id' => $req->office_id
+                'office_id' => $req->office_id,
+                'priority_program' => $req->priority_program
             ]);
     
          
@@ -133,6 +134,7 @@ class ProcurementController extends Controller
                         'allotment_class_id' => $item['allotment_class_id'],
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
+                        'priority_program' => $req->priority_program,
                     ];
                 }
                 AccountingExpenditure::insert($object_expenditures);
@@ -185,6 +187,7 @@ class ProcurementController extends Controller
         $data->pr_status =  $req->pr_status;
         $data->others =  $req->others;
         $data->office_id =  $req->office_id;
+        $data->priority_program =  $req->priority_program;
         $data->save();
 
         if($req->has('documentary_attachments')){
@@ -223,6 +226,7 @@ class ProcurementController extends Controller
                     'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
+                    'priority_program' => $req->priority_program,
                 ]);
 
             }
@@ -272,6 +276,7 @@ class ProcurementController extends Controller
             h.allotment_class_code AS 'ALLOTMENT CLASS CODE', h.allotment_class AS 'ALLOTMENT CLASS',
             g.account_code AS 'ACCOUNT CODE', g.object_expenditure AS 'OBJECT EXPENDITURE',
             f.amount AS 'AMOUNT',
+            f.priority_program,
             g.approved_budget AS 'APPROVED BUDGET', g.beginning_budget AS 'BEGINNING BUDGET'
             
             FROM accountings a

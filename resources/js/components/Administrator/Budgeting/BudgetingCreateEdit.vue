@@ -128,6 +128,25 @@
                                 </div>
                             </div>
 
+                            <div class="columns">
+                                <div class="column">
+                                    <b-field label="Priority Program"
+                                        expanded
+                                        :type="errors.priority_program ? 'is-danger':''"
+                                        :message="errors.priority_program ? errors.priority_program[0] : ''">
+                                        <b-select v-model="fields.priority_program" expanded
+                                            required
+                                            placeholder="Priority Program">
+                                            <option v-for="(item, indx) in priorityPrograms"
+                                                :key="`oe${indx}`"
+                                                :value="item.object_expenditure">
+                                                {{ item.object_expenditure }}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                            </div>
+
 
                             <div class="columns">
                                 <div class="column">
@@ -300,16 +319,19 @@ export default{
                 objectExpenditures: [],
 
                 total_amount: 0,
-              
 
                 office_id: null,
                 office: null,
-                others: null
+                others: null,
+                priority_program: null
+
             },
 
             errors: {},
 
             transactionTypes: [],
+            priorityPrograms: [],
+
 
             global_id: 0,
 
@@ -341,6 +363,12 @@ export default{
                 this.documentaryAttachments = res.data
             }).catch(err=>{
 
+            })
+        },
+
+        loadPriorityPrograms(){
+            axios.get('/load-priority-programs').then(res=>{
+                this.priorityPrograms = res.data
             })
         },
 
@@ -473,6 +501,7 @@ export default{
             formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : '');
             formData.append('others', this.fields.others ? this.fields.others : '');
             formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
+            formData.append('priority_program', this.fields.priority_program ? this.fields.priority_program : '');
             
             //doc attachment
             if(this.fields.documentary_attachments){
@@ -583,6 +612,8 @@ export default{
                 this.fields.particulars = result.particulars
                 this.fields.total_amount = Number(result.total_amount)
 
+                this.fields.priority_program = result.priority_program
+
                 //OOE
                 if(result.accounting_expenditures.length > 0){
                     result.accounting_expenditures.forEach((item, index) =>{
@@ -637,6 +668,7 @@ export default{
 
 
         this.loadTransactionTypes()
+        this.loadPriorityPrograms()
         this.loadDocumentaryAttachments()
         //this.loadAllotmentClasses()
     },

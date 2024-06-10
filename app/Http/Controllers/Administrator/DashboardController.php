@@ -65,6 +65,7 @@ class DashboardController extends Controller
                 ->select(
                     'accounting_expenditures.accounting_expenditure_id',
                     'accounting_expenditures.accounting_id',
+                    'accounting_expenditures.priority_program',
                     'accountings.doc_type',
                     'accounting_expenditures.doc_type as acctg_doc_type',
                     'accounting_expenditures.allotment_class_id',
@@ -99,6 +100,7 @@ class DashboardController extends Controller
                     a.allotment_class_id,
                     a.object_expenditure_id,
                     a.amount,
+                    a.priority_program,
                     b.account_code,
                     b.object_expenditure,
                     b.approved_budget,
@@ -136,6 +138,7 @@ class DashboardController extends Controller
                 ->select(
                     'accounting_expenditures.accounting_expenditure_id',
                     'accounting_expenditures.accounting_id',
+                    'accounting_expenditures.priority_program',
                     'accountings.doc_type',
                     'accounting_expenditures.doc_type as acctg_doc_type',
                     'accounting_expenditures.allotment_class_id',
@@ -171,6 +174,7 @@ class DashboardController extends Controller
                     a.allotment_class_id,
                     a.object_expenditure_id,
                     a.amount,
+                    a.priority_program,
                     b.account_code,
                     b.object_expenditure,
                     b.approved_budget,

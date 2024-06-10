@@ -10,6 +10,7 @@ use App\Models\FinancialYear;
 use App\Models\AllotmentClass;
 use App\Models\Office;
 use Illuminate\Support\Facades\DB;
+use App\Models\ObjectExpenditure;
 
 class OpenController extends Controller
 {
@@ -63,7 +64,13 @@ class OpenController extends Controller
             ->get();
     }
 
+    public function loadPriorityPrograms(Request $req){
+        return ObjectExpenditure::where('is_priority_program', 1)
+            ->orderBy('object_expenditure', 'asc')
+            ->get();
+    }
 
+    
 
 
 

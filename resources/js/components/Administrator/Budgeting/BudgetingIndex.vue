@@ -136,6 +136,7 @@
                                         <th>Allotment Class</th>
                                         <th>Allotment Class Account</th>
                                         <th>Object Expenditure</th>
+                                        <th>Priority Program</th>
                                         <th>Amount</th>
                                     </tr>
 
@@ -143,6 +144,7 @@
                                         <td>{{ i.object_expenditure.allotment_class.allotment_class }}</td>
                                         <td>({{ i.object_expenditure.allotment_class.allotment_class_code }})</td>
                                         <td>{{ i.object_expenditure.object_expenditure }}</td>
+                                        <td>{{ i.priority_program }}</td>
                                         <td>{{ i.amount }}</td>
                                     </tr>
                                 </table>

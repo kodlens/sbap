@@ -60,6 +60,7 @@
                             :total="total"
                             :bordered="true"
                             :hoverable="true"
+                            detailed
                             :per-page="perPage"
                             @page-change="onPageChange"
                             aria-next-label="Next page"
@@ -116,6 +117,41 @@
                                     </b-tooltip>
                                 </div>
                             </b-table-column>
+
+                            <template #detail="props">
+                                <table>
+                                    <tr>
+                                        <th>Documentary Attachment</th>
+                                        <th>File</th>
+                                    </tr>
+                                    <tr v-for="(i, ix) in props.row.accounting_documentary_attachments" :key="ix">
+                                        <td>{{ i.documentary_attachment.documentary_attachment }}</td>
+                                        <td>
+                                            <a :href="`/storage/doc_attachments/${i.doc_attachment}`" target="_blank">
+                                                Go to
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table class="mt-2">
+                                    <tr>
+                                        <th>Allotment Class</th>
+                                        <th>Allotment Class Account</th>
+                                        <th>Object Expenditure</th>
+                                        <th>Priority Program</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr v-for="(i, ix) in props.row.accounting_expenditures" :key="ix">
+                                        <td>{{ i.object_expenditure.allotment_class.allotment_class }}</td>
+                                        <td>({{ i.object_expenditure.allotment_class.allotment_class_code }})</td>
+                                        <td>{{ i.object_expenditure.object_expenditure }}</td>
+                                        <td>{{ i.priority_program }}</td>
+                                        <td>{{ i.amount }}</td>
+                                    </tr>
+                                </table>
+
+                            </template>
 
                         </b-table>
 

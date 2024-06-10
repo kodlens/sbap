@@ -36,6 +36,7 @@ class Accounting extends Model
         'pr_status',
         'others',
 
+        'priority_program',
 
         'processor_id',
         'processor_datetime_received',

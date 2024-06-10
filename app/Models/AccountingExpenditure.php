@@ -22,6 +22,7 @@ class AccountingExpenditure extends Model
         'allotment_class_id',
         'allotment_class_code',
         'allotment_class',
+        'priority_program',
         'amount'
     ];
 

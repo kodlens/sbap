@@ -96,7 +96,9 @@ class BudgetingController extends Controller
                 'particulars' => $req->particulars,
                 'total_amount' => (float)$req->total_amount,
                 'others' => $req->others,
-                'office_id' => $req->office_id
+                'office_id' => $req->office_id,
+                'priority_program' => $req->priority_program,
+
             ]);
 
             if($req->has('documentary_attachments')){
@@ -131,6 +133,7 @@ class BudgetingController extends Controller
                         'financial_year_id' => $financialYearId,
                         'object_expenditure_id' => $item['object_expenditure_id'],
                         'amount' => $item['amount'],
+                        'priority_program' => $req->priority_program
                     ]);                    
                 }
             }
@@ -194,6 +197,8 @@ class BudgetingController extends Controller
         $data->total_amount = (float)$req->total_amount;
         $data->office_id =  $req->office_id;
         $data->others =  $req->others;
+        $data->priority_program = $req->priority_program;
+        
 
 
         $data->save();
@@ -236,6 +241,7 @@ class BudgetingController extends Controller
                     'allotment_class_id' => $item['allotment_class_id'],
                     'object_expenditure_id' => $item['object_expenditure_id'],
                     'amount' => $item['amount'],
+                    'priority_program' => $req->priority_program
                 ]);
 
             }

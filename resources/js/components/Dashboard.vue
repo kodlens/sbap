@@ -165,6 +165,7 @@
                                     <thead>
                                         <th>Code</th>
                                         <th>Object Expenditure</th>
+                                        <th>Priority Program</th>
                                         <th>Amount</th>
                                     </thead>
 
@@ -176,6 +177,11 @@
                                             <td>
                                                 <span v-if="i.object_expenditure">
                                                     {{ i.object_expenditure }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span v-if="i.priority_program">
+                                                    {{ i.priority_program }}
                                                 </span>
                                             </td>
                                             <td>

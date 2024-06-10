@@ -7869,6 +7869,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -7894,10 +7914,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         total_amount: 0,
         office_id: null,
         office: null,
-        others: null
+        others: null,
+        priority_program: null
       },
       errors: {},
       transactionTypes: [],
+      priorityPrograms: [],
       global_id: 0,
       payee: {
         payee_id: 0,
@@ -7924,8 +7946,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.documentaryAttachments = res.data;
       })["catch"](function (err) {});
     },
-    loadObjectExpenditures: function loadObjectExpenditures() {
+    loadPriorityPrograms: function loadPriorityPrograms() {
       var _this3 = this;
+
+      axios.get('/load-priority-programs').then(function (res) {
+        _this3.priorityPrograms = res.data;
+      });
+    },
+    loadObjectExpenditures: function loadObjectExpenditures() {
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -7933,8 +7962,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/load-object-expenditures/' + _this3.fields.financial_year_id).then(function (res) {
-                  _this3.objectExpenditures = res.data;
+                return axios.get('/load-object-expenditures/' + _this4.fields.financial_year_id).then(function (res) {
+                  _this4.objectExpenditures = res.data;
                 })["catch"](function (err) {});
 
               case 2:
@@ -7946,11 +7975,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     loadFinancialYears: function loadFinancialYears() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('/load-financial-years').then(function (res) {
-        _this4.financialYears = res.data;
-        _this4.fields.financial_year_id = res.data.filter(function (fy) {
+        _this5.financialYears = res.data;
+        _this5.fields.financial_year_id = res.data.filter(function (fy) {
           return fy.active === 1;
         })[0].financial_year_id;
       });
@@ -7978,18 +8007,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeDoctAttchment: function removeDoctAttchment(ix) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this attachment? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this5.fields.documentary_attachments[ix].acctg_doc_attachment_id;
+          var nId = _this6.fields.documentary_attachments[ix].acctg_doc_attachment_id;
 
           if (nId > 0) {
             axios["delete"]('/accounting-documentary-attachment-delete/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this5.$buefy.toast.open({
+                _this6.$buefy.toast.open({
                   message: "Attachment deleted successfully.",
                   type: 'is-primary'
                 });
@@ -7997,7 +8026,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this5.fields.documentary_attachments.splice(ix, 1);
+          _this6.fields.documentary_attachments.splice(ix, 1);
         }
       });
     },
@@ -8013,18 +8042,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeObjectExpenditure: function removeObjectExpenditure(ix) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this OOE? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this6.fields.objectExpenditures[ix].accounting_expenditure_id;
+          var nId = _this7.fields.objectExpenditures[ix].accounting_expenditure_id;
 
           if (nId > 0) {
             axios["delete"]('/accounting-expenditures/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this6.$buefy.toast.open({
+                _this7.$buefy.toast.open({
                   message: "OOE successfully removed.",
                   type: 'is-primary'
                 });
@@ -8032,14 +8061,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this6.fields.objectExpenditures.splice(ix, 1);
+          _this7.fields.objectExpenditures.splice(ix, 1);
 
-          _this6.computeTotalAmount();
+          _this7.computeTotalAmount();
         }
       });
     },
     submit: function submit() {
-      var _this7 = this;
+      var _this8 = this;
 
       //format the date
       this.errors = {};
@@ -8052,7 +8081,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append('training_control_no', this.fields.training_control_no ? this.fields.training_control_no : '');
       formData.append('payee_id', this.fields.payee_id ? this.fields.payee_id : '');
       formData.append('particulars', this.fields.particulars ? this.fields.particulars : '');
-      formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : ''); //doc attachment
+      formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : '');
+      formData.append('priority_program', this.fields.priority_program ? this.fields.priority_program : ''); //doc attachment
 
       if (this.fields.documentary_attachments) {
         this.fields.documentary_attachments.forEach(function (doc, index) {
@@ -8079,7 +8109,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //update
         axios.post('/accounting-update/' + this.id, formData).then(function (res) {
           if (res.data.status === 'updated') {
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               title: 'UPDATED!',
               message: 'Successfully updated.',
               type: 'is-success',
@@ -8090,12 +8120,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this7.errors = err.response.data.errors;
+            _this8.errors = err.response.data.errors;
 
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               type: 'is-danger',
               title: 'Invalid Input.',
-              message: _this7.errors.amount ? _this7.errors.amount[0] : 'Please fill out all required fields.'
+              message: _this8.errors.amount ? _this8.errors.amount[0] : 'Please fill out all required fields.'
             });
           }
         });
@@ -8103,7 +8133,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //INSERT HERE
         axios.post('/accounting', formData).then(function (res) {
           if (res.data.status === 'saved') {
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               title: 'SAVED!',
               message: 'Successfully saved.',
               type: 'is-success',
@@ -8115,12 +8145,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this7.errors = err.response.data.errors;
+            _this8.errors = err.response.data.errors;
 
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               type: 'is-danger',
               title: 'Invalid Input.',
-              message: _this7.errors.amount ? _this7.errors.amount[0] : 'Please fill out all required fields.'
+              message: _this8.errors.amount ? _this8.errors.amount[0] : 'Please fill out all required fields.'
             });
           }
         });
@@ -8139,26 +8169,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fields.others = 'sample others';
     },
     getData: function getData() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get('/accounting/' + this.id).then(function (res) {
         var result = res.data;
         console.log(result.accounting_allotment_classes);
-        _this8.fields.accounting_id = result.accounting_id;
-        _this8.fields.financial_year_id = result.financial_year_id;
-        _this8.fields.date_transaction = new Date(result.date_transaction);
-        _this8.fields.transaction_no = result.transaction_no;
-        _this8.fields.training_control_no = result.training_control_no;
-        _this8.fields.transaction_type_id = result.transaction_type_id;
-        _this8.payee.bank_account_payee = result.payee.bank_account_payee;
-        _this8.fields.payee_id = result.payee_id;
-        _this8.fields.particulars = result.particulars;
-        _this8.fields.total_amount = Number(result.total_amount); //OOE
+        _this9.fields.accounting_id = result.accounting_id;
+        _this9.fields.financial_year_id = result.financial_year_id;
+        _this9.fields.date_transaction = new Date(result.date_transaction);
+        _this9.fields.transaction_no = result.transaction_no;
+        _this9.fields.training_control_no = result.training_control_no;
+        _this9.fields.transaction_type_id = result.transaction_type_id;
+        _this9.payee.bank_account_payee = result.payee.bank_account_payee;
+        _this9.fields.payee_id = result.payee_id;
+        _this9.fields.particulars = result.particulars;
+        _this9.fields.total_amount = Number(result.total_amount);
+        _this9.fields.priority_program = result.priority_program; //OOE
         //console.log(result.accounting_expenditures )
 
         if (result.accounting_expenditures.length > 0) {
           result.accounting_expenditures.forEach(function (item, index) {
-            _this8.fields.objectExpenditures.push({
+            _this9.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
               allotment_class_id: item.allotment_class_id,
@@ -8172,7 +8203,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (result.accounting_documentary_attachments.length > 0) {
           result.acctg_documentary_attachments.forEach(function (item) {
-            _this8.fields.documentary_attachments.push({
+            _this9.fields.documentary_attachments.push({
               documentary_attachment_id: item.documentary_attachment_id,
               acctg_doc_attachment_id: item.acctg_doc_attachment_id,
               accounting_id: item.accounting_id
@@ -8180,9 +8211,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         }
 
-        _this8.fields.office_id = result.office.office_id;
-        _this8.fields.office = '(' + result.office.office + ') ' + result.office.description;
-        _this8.fields.others = result.others;
+        _this9.fields.office_id = result.office.office_id;
+        _this9.fields.office = '(' + result.office.office + ') ' + result.office.description;
+        _this9.fields.others = result.others;
       });
     },
     computeTotalAmount: function computeTotalAmount() {
@@ -8201,6 +8232,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
 
     this.loadTransactionTypes();
+    this.loadPriorityPrograms();
     this.loadDocumentaryAttachments();
   },
   computed: {}
@@ -8227,6 +8259,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
 //
 //
 //
@@ -9767,6 +9801,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -9792,10 +9845,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         total_amount: 0,
         office_id: null,
         office: null,
-        others: null
+        others: null,
+        priority_program: null
       },
       errors: {},
       transactionTypes: [],
+      priorityPrograms: [],
       global_id: 0,
       payee: {
         payee_id: 0,
@@ -9822,8 +9877,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.documentaryAttachments = res.data;
       })["catch"](function (err) {});
     },
-    loadObjectExpenditures: function loadObjectExpenditures() {
+    loadPriorityPrograms: function loadPriorityPrograms() {
       var _this3 = this;
+
+      axios.get('/load-priority-programs').then(function (res) {
+        _this3.priorityPrograms = res.data;
+      });
+    },
+    loadObjectExpenditures: function loadObjectExpenditures() {
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -9831,8 +9893,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/load-object-expenditures/' + _this3.fields.financial_year_id).then(function (res) {
-                  _this3.objectExpenditures = res.data;
+                return axios.get('/load-object-expenditures/' + _this4.fields.financial_year_id).then(function (res) {
+                  _this4.objectExpenditures = res.data;
                 })["catch"](function (err) {});
 
               case 2:
@@ -9844,11 +9906,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     loadFinancialYears: function loadFinancialYears() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('/load-financial-years').then(function (res) {
-        _this4.financialYears = res.data;
-        _this4.fields.financial_year_id = res.data.filter(function (fy) {
+        _this5.financialYears = res.data;
+        _this5.fields.financial_year_id = res.data.filter(function (fy) {
           return fy.active === 1;
         })[0].financial_year_id;
       });
@@ -9877,18 +9939,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeDoctAttchment: function removeDoctAttchment(ix) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this attachment? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this5.fields.documentary_attachments[ix].acctg_doc_attachment_id;
+          var nId = _this6.fields.documentary_attachments[ix].acctg_doc_attachment_id;
 
           if (nId > 0) {
             axios["delete"]('/accounting-documentary-attachment-delete/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this5.$buefy.toast.open({
+                _this6.$buefy.toast.open({
                   message: "Attachment deleted successfully.",
                   type: 'is-primary'
                 });
@@ -9896,7 +9958,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this5.fields.documentary_attachments.splice(ix, 1);
+          _this6.fields.documentary_attachments.splice(ix, 1);
         }
       });
     },
@@ -9911,18 +9973,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeObjectExpenditure: function removeObjectExpenditure(ix) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this OOE? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this6.fields.objectExpenditures[ix].accounting_expenditure_id;
+          var nId = _this7.fields.objectExpenditures[ix].accounting_expenditure_id;
 
           if (nId > 0) {
             axios["delete"]('/accounting-expenditures/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this6.$buefy.toast.open({
+                _this7.$buefy.toast.open({
                   message: "OOE successfully removed.",
                   type: 'is-primary'
                 });
@@ -9930,14 +9992,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this6.fields.objectExpenditures.splice(ix, 1);
+          _this7.fields.objectExpenditures.splice(ix, 1);
 
-          _this6.computeTotalAmount();
+          _this7.computeTotalAmount();
         }
       });
     },
     submit: function submit() {
-      var _this7 = this;
+      var _this8 = this;
 
       //format the date
       var formData = new FormData();
@@ -9951,7 +10013,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append('particulars', this.fields.particulars ? this.fields.particulars : '');
       formData.append('total_amount', this.fields.total_amount ? this.fields.total_amount : '');
       formData.append('others', this.fields.others ? this.fields.others : '');
-      formData.append('office_id', this.fields.office_id ? this.fields.office_id : ''); //doc attachment
+      formData.append('office_id', this.fields.office_id ? this.fields.office_id : '');
+      formData.append('priority_program', this.fields.priority_program ? this.fields.priority_program : ''); //doc attachment
 
       if (this.fields.documentary_attachments) {
         this.fields.documentary_attachments.forEach(function (doc, index) {
@@ -9975,7 +10038,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //update
         axios.post('/budgeting-update/' + this.id, formData).then(function (res) {
           if (res.data.status === 'updated') {
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               title: 'UPDATED!',
               message: 'Successfully updated.',
               type: 'is-success',
@@ -9986,14 +10049,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this7.errors = err.response.data.errors;
+            _this8.errors = err.response.data.errors;
           }
         });
       } else {
         //INSERT HERE
         axios.post('/budgeting', formData).then(function (res) {
           if (res.data.status === 'saved') {
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               title: 'SAVED!',
               message: 'Successfully saved.',
               type: 'is-success',
@@ -10005,9 +10068,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this7.errors = err.response.data.errors;
+            _this8.errors = err.response.data.errors;
 
-            _this7.$buefy.dialog.alert({
+            _this8.$buefy.dialog.alert({
               type: 'is-danger',
               title: 'EMPTY FIELDS.',
               message: 'Please fill out all required fields.'
@@ -10030,25 +10093,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fields.others = 'sample others';
     },
     getData: function getData() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get('/budgeting/' + this.id).then(function (res) {
         var result = res.data;
         console.log(result.accounting_allotment_classes);
-        _this8.fields.accounting_id = result.accounting_id;
-        _this8.fields.financial_year_id = result.financial_year_id;
-        _this8.fields.date_transaction = new Date(result.date_transaction);
-        _this8.fields.transaction_no = result.transaction_no;
-        _this8.fields.training_control_no = result.training_control_no;
-        _this8.fields.transaction_type_id = result.transaction_type_id;
-        _this8.payee.bank_account_payee = result.payee.bank_account_payee;
-        _this8.fields.payee_id = result.payee_id;
-        _this8.fields.particulars = result.particulars;
-        _this8.fields.total_amount = Number(result.total_amount); //OOE
+        _this9.fields.accounting_id = result.accounting_id;
+        _this9.fields.financial_year_id = result.financial_year_id;
+        _this9.fields.date_transaction = new Date(result.date_transaction);
+        _this9.fields.transaction_no = result.transaction_no;
+        _this9.fields.training_control_no = result.training_control_no;
+        _this9.fields.transaction_type_id = result.transaction_type_id;
+        _this9.payee.bank_account_payee = result.payee.bank_account_payee;
+        _this9.fields.payee_id = result.payee_id;
+        _this9.fields.particulars = result.particulars;
+        _this9.fields.total_amount = Number(result.total_amount);
+        _this9.fields.priority_program = result.priority_program; //OOE
 
         if (result.accounting_expenditures.length > 0) {
           result.accounting_expenditures.forEach(function (item, index) {
-            _this8.fields.objectExpenditures.push({
+            _this9.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
               allotment_class_code: item.allotment_class_code,
@@ -10063,7 +10127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (result.accounting_documentary_attachments.length > 0) {
           result.acctg_documentary_attachments.forEach(function (item) {
-            _this8.fields.documentary_attachments.push({
+            _this9.fields.documentary_attachments.push({
               documentary_attachment_id: item.documentary_attachment_id,
               acctg_doc_attachment_id: item.acctg_doc_attachment_id,
               accounting_id: item.accounting_id
@@ -10071,9 +10135,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         }
 
-        _this8.fields.office_id = result.office.office_id;
-        _this8.fields.office = '(' + result.office.office + ') ' + result.office.description;
-        _this8.fields.others = result.others;
+        _this9.fields.office_id = result.office.office_id;
+        _this9.fields.office = '(' + result.office.office + ') ' + result.office.description;
+        _this9.fields.others = result.others;
       });
     },
     computeTotalAmount: function computeTotalAmount() {
@@ -10092,6 +10156,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
 
     this.loadTransactionTypes();
+    this.loadPriorityPrograms();
     this.loadDocumentaryAttachments(); //this.loadAllotmentClasses()
   },
   computed: {}
@@ -10118,6 +10183,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
 //
 //
 //
@@ -12428,6 +12495,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     id: {
@@ -12457,6 +12543,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         others: null
       },
       errors: {},
+      priorityPrograms: [],
       transactionTypes: [],
       global_id: 0,
       payee: {
@@ -12505,21 +12592,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    loadFinancialYears: function loadFinancialYears() {
+    loadPriorityPrograms: function loadPriorityPrograms() {
       var _this4 = this;
 
+      axios.get('/load-priority-programs').then(function (res) {
+        _this4.priorityPrograms = res.data;
+      });
+    },
+    loadFinancialYears: function loadFinancialYears() {
+      var _this5 = this;
+
       axios.get('/load-financial-years').then(function (res) {
-        _this4.financialYears = res.data;
-        _this4.fields.financial_year_id = res.data.filter(function (fy) {
+        _this5.financialYears = res.data;
+        _this5.fields.financial_year_id = res.data.filter(function (fy) {
           return fy.active === 1;
         })[0].financial_year_id;
       });
     },
     loadFundSources: function loadFundSources() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get('/load-fund-sources').then(function (res) {
-        _this5.fundSources = res.data;
+        _this6.fundSources = res.data;
       });
     },
     emitPayee: function emitPayee(row) {
@@ -12546,18 +12640,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeDoctAttchment: function removeDoctAttchment(ix) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this attachment? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this6.fields.documentary_attachments[ix].acctg_doc_attachment_id;
+          var nId = _this7.fields.documentary_attachments[ix].acctg_doc_attachment_id;
 
           if (nId > 0) {
             axios["delete"]('/procurement-documentary-attachment-delete/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this6.$buefy.toast.open({
+                _this7.$buefy.toast.open({
                   message: "Attachment deleted successfully.",
                   type: 'is-primary'
                 });
@@ -12565,7 +12659,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this6.fields.documentary_attachments.splice(ix, 1);
+          _this7.fields.documentary_attachments.splice(ix, 1);
         }
       });
     },
@@ -12581,18 +12675,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     removeObjectExpenditure: function removeObjectExpenditure(ix) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.$buefy.dialog.confirm({
         title: 'DELETE?',
         message: 'Are you sure you want to remove this OOE? This cannot be undone.',
         onConfirm: function onConfirm() {
-          var nId = _this7.fields.objectExpenditures[ix].accounting_expenditure_id;
+          var nId = _this8.fields.objectExpenditures[ix].accounting_expenditure_id;
 
           if (nId > 0) {
             axios["delete"]('/accounting-expenditures/' + nId).then(function (res) {
               if (res.data.status === 'deleted') {
-                _this7.$buefy.toast.open({
+                _this8.$buefy.toast.open({
                   message: "OOE successfully removed.",
                   type: 'is-primary'
                 });
@@ -12600,14 +12694,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             });
           }
 
-          _this7.fields.objectExpenditures.splice(ix, 1);
+          _this8.fields.objectExpenditures.splice(ix, 1);
 
-          _this7.computeTotalAmount();
+          _this8.computeTotalAmount();
         }
       });
     },
     submit: function submit() {
-      var _this8 = this;
+      var _this9 = this;
 
       //format the date
       var formData = new FormData();
@@ -12619,7 +12713,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append('transaction_type_id', this.fields.transaction_type_id ? this.fields.transaction_type_id : '');
       formData.append('payee_id', this.fields.payee_id ? this.fields.payee_id : '');
       formData.append('particulars', this.fields.particulars ? this.fields.particulars : '');
-      formData.append('pr_amount', this.fields.pr_amount ? this.fields.pr_amount : ''); //doc attachment
+      formData.append('pr_amount', this.fields.pr_amount ? this.fields.pr_amount : '');
+      formData.append('priority_program', this.fields.priority_program ? this.fields.priority_program : ''); //doc attachment
 
       if (this.fields.documentary_attachments) {
         this.fields.documentary_attachments.forEach(function (doc, index) {
@@ -12645,7 +12740,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //update
         axios.post('/procurements-update/' + this.id, formData).then(function (res) {
           if (res.data.status === 'updated') {
-            _this8.$buefy.dialog.alert({
+            _this9.$buefy.dialog.alert({
               title: 'UPDATED!',
               message: 'Successfully updated.',
               type: 'is-success',
@@ -12656,14 +12751,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this8.errors = err.response.data.errors;
+            _this9.errors = err.response.data.errors;
           }
         });
       } else {
         //INSERT HERE
         axios.post('/procurements', formData).then(function (res) {
           if (res.data.status === 'saved') {
-            _this8.$buefy.dialog.alert({
+            _this9.$buefy.dialog.alert({
               title: 'SAVED!',
               message: 'Successfully saved.',
               type: 'is-success',
@@ -12675,9 +12770,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         })["catch"](function (err) {
           if (err.response.status === 422) {
-            _this8.errors = err.response.data.errors;
+            _this9.errors = err.response.data.errors;
 
-            _this8.$buefy.dialog.alert({
+            _this9.$buefy.dialog.alert({
               type: 'is-danger',
               title: 'EMPTY FIELDS.',
               message: 'Please fill out all required fields.'
@@ -12698,23 +12793,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fields.others = 'sample others';
     },
     getData: function getData() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get('/procurements/' + this.id).then(function (res) {
         var result = res.data;
-        _this9.fields.procurement_id = result.procurement_id;
-        _this9.fields.financial_year_id = result.financial_year_id;
-        _this9.fields.date_transaction = new Date(result.date_transaction);
-        _this9.fields.training_control_no = result.training_control_no;
-        _this9.fields.pr_no = result.pr_no;
-        _this9.payee.bank_account_payee = result.payee.bank_account_payee;
-        _this9.fields.payee_id = result.payee_id;
-        _this9.fields.particulars = result.particulars;
-        _this9.fields.pr_amount = Number(result.total_amount); //OOE
+        _this10.fields.procurement_id = result.procurement_id;
+        _this10.fields.financial_year_id = result.financial_year_id;
+        _this10.fields.date_transaction = new Date(result.date_transaction);
+        _this10.fields.training_control_no = result.training_control_no;
+        _this10.fields.pr_no = result.pr_no;
+        _this10.payee.bank_account_payee = result.payee.bank_account_payee;
+        _this10.fields.payee_id = result.payee_id;
+        _this10.fields.particulars = result.particulars;
+        _this10.fields.pr_amount = Number(result.total_amount);
+        _this10.fields.priority_program = result.priority_program; //OOE
 
         if (result.accounting_expenditures.length > 0) {
           result.accounting_expenditures.forEach(function (item, index) {
-            _this9.fields.objectExpenditures.push({
+            _this10.fields.objectExpenditures.push({
               accounting_expenditure_id: item.accounting_expenditure_id,
               object_expenditure_id: item.object_expenditure_id,
               allotment_class_id: item.allotment_class_id ? item.allotment_class_id : 0,
@@ -12727,7 +12823,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (result.accounting_documentary_attachments.length > 0) {
           result.acctg_documentary_attachments.forEach(function (item) {
-            _this9.fields.documentary_attachments.push({
+            _this10.fields.documentary_attachments.push({
               documentary_attachment_id: item.documentary_attachment_id,
               acctg_doc_attachment_id: item.acctg_doc_attachment_id,
               accounting_id: item.accounting_id
@@ -12735,9 +12831,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
         }
 
-        _this9.fields.office_id = result.office.office_id;
-        _this9.fields.office = '(' + result.office.office + ') ' + result.office.description;
-        _this9.fields.others = result.others;
+        _this10.fields.office_id = result.office.office_id;
+        _this10.fields.office = '(' + result.office.office + ') ' + result.office.description;
+        _this10.fields.others = result.others;
       });
     },
     computeTotalAmount: function computeTotalAmount() {
@@ -12756,6 +12852,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
 
     this.loadTransactionTypes();
+    this.loadPriorityPrograms();
     this.loadDocumentaryAttachments();
   }
 });
@@ -12781,6 +12878,42 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -15624,6 +15757,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -45507,6 +45646,66 @@ var render = function () {
                   "div",
                   { staticClass: "column" },
                   [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Priority Program",
+                          expanded: "",
+                          type: _vm.errors.priority_program ? "is-danger" : "",
+                          message: _vm.errors.priority_program
+                            ? _vm.errors.priority_program[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c(
+                          "b-select",
+                          {
+                            attrs: {
+                              expanded: "",
+                              required: "",
+                              placeholder: "Priority Program",
+                            },
+                            model: {
+                              value: _vm.fields.priority_program,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.fields, "priority_program", $$v)
+                              },
+                              expression: "fields.priority_program",
+                            },
+                          },
+                          _vm._l(_vm.priorityPrograms, function (item, indx) {
+                            return _c(
+                              "option",
+                              {
+                                key: "oe" + indx,
+                                domProps: { value: item.object_expenditure },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(item.object_expenditure) +
+                                    "\n                                        "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
                     _c("b-field", {
                       attrs: {
                         label: "Charge To",
@@ -46261,6 +46460,8 @@ var render = function () {
                                   _vm._v(" "),
                                   _c("th", [_vm._v("Object Expenditure")]),
                                   _vm._v(" "),
+                                  _c("th", [_vm._v("Priority Program")]),
+                                  _vm._v(" "),
                                   _c("th", [_vm._v("Amount")]),
                                 ]),
                                 _vm._v(" "),
@@ -46296,6 +46497,10 @@ var render = function () {
                                               .object_expenditure
                                           )
                                         ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(i.priority_program)),
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [_vm._v(_vm._s(i.amount))]),
@@ -48399,6 +48604,66 @@ var render = function () {
                   "div",
                   { staticClass: "column" },
                   [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Priority Program",
+                          expanded: "",
+                          type: _vm.errors.priority_program ? "is-danger" : "",
+                          message: _vm.errors.priority_program
+                            ? _vm.errors.priority_program[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c(
+                          "b-select",
+                          {
+                            attrs: {
+                              expanded: "",
+                              required: "",
+                              placeholder: "Priority Program",
+                            },
+                            model: {
+                              value: _vm.fields.priority_program,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.fields, "priority_program", $$v)
+                              },
+                              expression: "fields.priority_program",
+                            },
+                          },
+                          _vm._l(_vm.priorityPrograms, function (item, indx) {
+                            return _c(
+                              "option",
+                              {
+                                key: "oe" + indx,
+                                domProps: { value: item.object_expenditure },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(item.object_expenditure) +
+                                    "\n                                        "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
                     _c("b-field", { attrs: { label: "Charge To" } }),
                     _vm._v(" "),
                     _c(
@@ -49145,6 +49410,8 @@ var render = function () {
                                   _vm._v(" "),
                                   _c("th", [_vm._v("Object Expenditure")]),
                                   _vm._v(" "),
+                                  _c("th", [_vm._v("Priority Program")]),
+                                  _vm._v(" "),
                                   _c("th", [_vm._v("Amount")]),
                                 ]),
                                 _vm._v(" "),
@@ -49180,6 +49447,10 @@ var render = function () {
                                               .object_expenditure
                                           )
                                         ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(i.priority_program)),
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [_vm._v(_vm._s(i.amount))]),
@@ -52576,6 +52847,66 @@ var render = function () {
                   "div",
                   { staticClass: "column" },
                   [
+                    _c(
+                      "b-field",
+                      {
+                        attrs: {
+                          label: "Priority Program",
+                          expanded: "",
+                          type: _vm.errors.priority_program ? "is-danger" : "",
+                          message: _vm.errors.priority_program
+                            ? _vm.errors.priority_program[0]
+                            : "",
+                        },
+                      },
+                      [
+                        _c(
+                          "b-select",
+                          {
+                            attrs: {
+                              expanded: "",
+                              required: "",
+                              placeholder: "Priority Program",
+                            },
+                            model: {
+                              value: _vm.fields.priority_program,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.fields, "priority_program", $$v)
+                              },
+                              expression: "fields.priority_program",
+                            },
+                          },
+                          _vm._l(_vm.priorityPrograms, function (item, indx) {
+                            return _c(
+                              "option",
+                              {
+                                key: "oe" + indx,
+                                domProps: { value: item.object_expenditure },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(item.object_expenditure) +
+                                    "\n                                        "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ],
+                      1
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "columns" }, [
+                _c(
+                  "div",
+                  { staticClass: "column" },
+                  [
                     _c("b-field", { attrs: { label: "Charge To" } }),
                     _vm._v(" "),
                     _c(
@@ -53248,6 +53579,7 @@ var render = function () {
                       total: _vm.total,
                       bordered: true,
                       hoverable: true,
+                      detailed: "",
                       "per-page": _vm.perPage,
                       "aria-next-label": "Next page",
                       "aria-previous-label": "Previous page",
@@ -53257,6 +53589,123 @@ var render = function () {
                       "default-sort-direction": _vm.defaultSortDirection,
                     },
                     on: { "page-change": _vm.onPageChange, sort: _vm.onSort },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "detail",
+                        fn: function (props) {
+                          return [
+                            _c(
+                              "table",
+                              [
+                                _c("tr", [
+                                  _c("th", [_vm._v("Documentary Attachment")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("File")]),
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(
+                                  props.row.accounting_documentary_attachments,
+                                  function (i, ix) {
+                                    return _c("tr", { key: ix }, [
+                                      _c("td", [
+                                        _vm._v(
+                                          _vm._s(
+                                            i.documentary_attachment
+                                              .documentary_attachment
+                                          )
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "/storage/doc_attachments/" +
+                                                i.doc_attachment,
+                                              target: "_blank",
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                            Go to\n                                        "
+                                            ),
+                                          ]
+                                        ),
+                                      ]),
+                                    ])
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "table",
+                              { staticClass: "mt-2" },
+                              [
+                                _c("tr", [
+                                  _c("th", [_vm._v("Allotment Class")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Allotment Class Account")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Object Expenditure")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Priority Program")]),
+                                  _vm._v(" "),
+                                  _c("th", [_vm._v("Amount")]),
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(
+                                  props.row.accounting_expenditures,
+                                  function (i, ix) {
+                                    return _c("tr", { key: ix }, [
+                                      _c("td", [
+                                        _vm._v(
+                                          _vm._s(
+                                            i.object_expenditure.allotment_class
+                                              .allotment_class
+                                          )
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          "(" +
+                                            _vm._s(
+                                              i.object_expenditure
+                                                .allotment_class
+                                                .allotment_class_code
+                                            ) +
+                                            ")"
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          _vm._s(
+                                            i.object_expenditure
+                                              .object_expenditure
+                                          )
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(i.priority_program)),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [_vm._v(_vm._s(i.amount))]),
+                                    ])
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                          ]
+                        },
+                      },
+                    ]),
                   },
                   [
                     _c("b-table-column", {
@@ -57596,6 +58045,18 @@ var render = function () {
                             ]),
                             _vm._v(" "),
                             _c("td", [
+                              i.priority_program
+                                ? _c("span", [
+                                    _vm._v(
+                                      "\n                                                " +
+                                        _vm._s(i.priority_program) +
+                                        "\n                                            "
+                                    ),
+                                  ])
+                                : _vm._e(),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
                               _c("span", [
                                 _vm._v(
                                   "\n                                                " +
@@ -57639,6 +58100,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Code")]),
       _vm._v(" "),
       _c("th", [_vm._v("Object Expenditure")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Priority Program")]),
       _vm._v(" "),
       _c("th", [_vm._v("Amount")]),
     ])
