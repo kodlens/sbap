@@ -126,7 +126,6 @@
                             </b-table-column>
 
                             <template #detail="props">
-                                
                                 <tr>
                                     <td>Acctg UB</td>
                                     <td>Budgeting UB</td>
@@ -134,6 +133,7 @@
                                     <td>Acctg RB</td>
                                     <td>Budget RB</td>
                                     <td>Procurement RB</td>
+                                    <td>Priority Program</td>
                                 </tr>
                                 <tr>
                                     <td>{{ props.row.acctg_ub }}</td>
@@ -142,7 +142,10 @@
                                     <td>{{ (Number(props.row.approved_budget) - Number(props.row.acctg_ub)) | numberWithCommas }}</td>
                                     <td>{{ (Number(props.row.approved_budget) - Number(props.row.budgeting_ub)) | numberWithCommas }}</td>
                                     <td>{{ (Number(props.row.approved_budget) - Number(props.row.procurement_ub)) | numberWithCommas }}</td>
-                                   
+                                    <td>
+                                        <span class="yes" v-if="props.row.is_priority_program === 1"> YES </span>
+                                        <span v-else class="no">NO</span>
+                                    </td>
                                 </tr>
                             </template>
                         </b-table>
@@ -265,6 +268,16 @@
                                     </b-field>
                                 </div>
                             </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <b-checkbox v-model="fields.is_priority_program"
+                                        :true-value="1"
+                                        :false-value="0">
+                                        Priority Program
+                                    </b-checkbox>
+                                </div>
+                            </div>
                         </div>
                     </section>
                     <footer class="modal-card-foot">
@@ -315,7 +328,8 @@ export default{
                 allotment_class_code: null,
                 allotment_class_id: 0,
                 approved_budget: 0,
-                beginning_budget: 0
+                beginning_budget: 0,
+                is_priority_program: 0,
             },
             errors: {},
 
@@ -494,6 +508,7 @@ export default{
                 this.fields.allotment_class_id = res.data.allotment_class_id;
                 this.fields.approved_budget = res.data.approved_budget
                 this.fields.beginning_budget = res.data.beginning_budget
+                this.fields.is_priority_program = res.data.is_priority_program
             });
         },
 
@@ -525,6 +540,22 @@ export default{
 <style scoped>
     .modal-card-title{
         font-weight: bold;
+    }
+
+    .yes {
+        padding: 5px;
+        font-size: 10px;
+        font-weight: bold;
+        background-color: green;
+        color: white;
+    }
+
+    .no {
+        padding: 5px;
+        font-size: 10px;
+        font-weight: bold;
+        background-color: red;
+        color: white;
     }
 
 </style>

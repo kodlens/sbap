@@ -11542,6 +11542,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -11567,7 +11580,8 @@ __webpack_require__.r(__webpack_exports__);
         allotment_class_code: null,
         allotment_class_id: 0,
         approved_budget: 0,
-        beginning_budget: 0
+        beginning_budget: 0,
+        is_priority_program: 0
       },
       errors: {},
       btnClass: {
@@ -11739,6 +11753,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.fields.allotment_class_id = res.data.allotment_class_id;
         _this5.fields.approved_budget = res.data.approved_budget;
         _this5.fields.beginning_budget = res.data.beginning_budget;
+        _this5.fields.is_priority_program = res.data.is_priority_program;
       });
     },
     loadFinancialYears: function loadFinancialYears() {
@@ -38726,7 +38741,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-card-title[data-v-a07b2be4]{\n    font-weight: bold;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-card-title[data-v-a07b2be4]{\n    font-weight: bold;\n}\n.yes[data-v-a07b2be4] {\n    padding: 5px;\n    font-size: 10px;\n    font-weight: bold;\n    background-color: green;\n    color: white;\n}\n.no[data-v-a07b2be4] {\n    padding: 5px;\n    font-size: 10px;\n    font-weight: bold;\n    background-color: red;\n    color: white;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -50972,6 +50987,8 @@ var render = function () {
                                 _c("td", [_vm._v("Budget RB")]),
                                 _vm._v(" "),
                                 _c("td", [_vm._v("Procurement RB")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Priority Program")]),
                               ]),
                               _vm._v(" "),
                               _c("tr", [
@@ -51016,6 +51033,16 @@ var render = function () {
                                       )
                                     )
                                   ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  props.row.is_priority_program === 1
+                                    ? _c("span", { staticClass: "yes" }, [
+                                        _vm._v(" YES "),
+                                      ])
+                                    : _c("span", { staticClass: "no" }, [
+                                        _vm._v("NO"),
+                                      ]),
                                 ]),
                               ]),
                             ]
@@ -51659,6 +51686,38 @@ var render = function () {
                               }),
                             ],
                             1
+                          ),
+                        ],
+                        1
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "columns" }, [
+                      _c(
+                        "div",
+                        { staticClass: "column" },
+                        [
+                          _c(
+                            "b-checkbox",
+                            {
+                              attrs: { "true-value": 1, "false-value": 0 },
+                              model: {
+                                value: _vm.fields.is_priority_program,
+                                callback: function ($$v) {
+                                  _vm.$set(
+                                    _vm.fields,
+                                    "is_priority_program",
+                                    $$v
+                                  )
+                                },
+                                expression: "fields.is_priority_program",
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Priority Program\n                                "
+                              ),
+                            ]
                           ),
                         ],
                         1

@@ -41,6 +41,9 @@ class CreateObjectExpendituresTable extends Migration
             $table->double('end_budget')->nullable()->default(0);
             $table->double('utilize_budget')->nullable()->default(0);
 
+            $table->tinyInteger('is_priority_program')->default(0);
+
+
             $table->timestamps();
         });
     }

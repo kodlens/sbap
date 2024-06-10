@@ -31,6 +31,7 @@ class ObjectExpenditureController extends Controller
                 'account_code',
                 'approved_budget',
                 'beginning_budget',
+                'is_priority_program',
                 DB::raw('(
                         select sum(amount) from accounting_expenditures 
                         where object_expenditures.financial_year_id = accounting_expenditures.financial_year_id
@@ -121,6 +122,7 @@ class ObjectExpenditureController extends Controller
             'allotment_class_id' => $req->allotment_class_id,
             'approved_budget' => $req->approved_budget,
             'beginning_budget' => $req->beginning_budget,
+            'is_priority_program' => $req->is_priority_program,
         ]);
 
         return response()->json([
@@ -162,6 +164,7 @@ class ObjectExpenditureController extends Controller
                 'allotment_class_id' => $req->allotment_class_id,
                 'approved_budget' => $req->approved_budget,
                 'beginning_budget' => $req->beginning_budget,
+                'is_priority_program' => $req->is_priority_program,
             ]);
         return response()->json([
             'status' => 'updated'

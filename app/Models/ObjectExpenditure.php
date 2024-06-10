@@ -20,7 +20,8 @@ class ObjectExpenditure extends Model
         'approved_budget',
         'beginning_budget',
         'end_budget',
-        'utilize_budget'
+        'utilize_budget',
+        'is_priority_program'
     ];
 
     public function financial_year(){
